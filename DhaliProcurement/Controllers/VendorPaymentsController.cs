@@ -495,6 +495,8 @@ namespace DhaliProcurement.Controllers
             List<SelectListItem> POList = new List<SelectListItem>();
 
             var itemsPONo = (from purMas in db.Proc_PurchaseOrderMas
+                             join purdet in db.Proc_PurchaseOrderDet on purMas.Id equals purdet.Proc_PurchaseOrderMasId
+                             join metDet in db.Proc_MaterialEntryDet on purdet.Id equals metDet.Proc_PurchaseOrderDetId
                              join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
                              join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
                              join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
