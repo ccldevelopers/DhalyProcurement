@@ -32,6 +32,8 @@ namespace DhaliProcurement.ViewModel
         public decimal TotalPrice { get; set; }
         public string Size { get; set; }
         public int ProcPurchaseMasterId { get; set; }
+        public int ProcPurchaseDetId { get; set; }
+        
     }
 
 }

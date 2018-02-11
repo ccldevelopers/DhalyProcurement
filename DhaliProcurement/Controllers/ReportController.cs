@@ -401,6 +401,11 @@ namespace DhaliProcurement.Controllers
         }
 
 
+        [HttpGet]
+        public ActionResult PurchaseOrderReportGet(int? ProjectId, int? SiteId, int? PONo, int? VendorId)
+        {
+            return PurchaseOrderReport(ProjectId, SiteId, PONo, VendorId);
+        }
 
         [HttpGet]
         public ActionResult PurchaseOrderReport()
@@ -430,6 +435,8 @@ namespace DhaliProcurement.Controllers
 
 
             ViewBag.PONo = new SelectList(db.Proc_RequisitionMas, "Id", "PONo");
+
+
             ViewBag.VendorId = new SelectList(db.Vendor, "Id", "Name");
 
             return View();
@@ -633,6 +640,18 @@ namespace DhaliProcurement.Controllers
             return null;
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         [HttpGet]

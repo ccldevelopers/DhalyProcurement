@@ -155,20 +155,31 @@ namespace DhaliProcurement.Controllers
                                    where purchaseMas.Id == purchaseOrderId
                                    select reqMas).FirstOrDefault();
 
-            if (purchaseItemDet != null)
-            {
-                ViewBag.ProjectName = purchaseItemDet.ProcProject.ProjectSite.Project.Name;
-                ViewBag.SiteName = purchaseItemDet.ProcProject.ProjectSite.Name;
-            }
-
-            //ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
-
-
             var vendorAndTenderId = (from purchaseOrderMas in db.Proc_PurchaseOrderMas
                                      join vendors in db.Vendor on purchaseOrderMas.VendorId equals vendors.Id
                                      where purchaseOrderMas.Id == purchaseOrderId
                                      select purchaseOrderMas).FirstOrDefault();
+
+            //   if (purchaseItemDet != null)
+            // {
+            ViewBag.ProjectName = purchaseItemDet.ProcProject.ProjectSite.Project.Name;
+            ViewBag.SiteName = purchaseItemDet.ProcProject.ProjectSite.Name;
+            ViewBag.PONoId = purchaseOrderId;
+            ViewBag.ProjectId = purchaseItemDet.ProcProject.ProjectSite.ProjectId;
+            ViewBag.SiteId = purchaseItemDet.ProcProject.ProjectSiteId;
+            //ViewBag.VendorId = vendorAndTenderId.VendorId;
+            //  ViewBag.VendorId = new SelectList(db.Vendor, "Id", "Name", vendorAndTenderId.VendorId);
+
+            //  }
+
+            //ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
+            //      ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+
+
+            //var vendorAndTenderId = (from purchaseOrderMas in db.Proc_PurchaseOrderMas
+            //                         join vendors in db.Vendor on purchaseOrderMas.VendorId equals vendors.Id
+            //                         where purchaseOrderMas.Id == purchaseOrderId
+            //                         select purchaseOrderMas).FirstOrDefault();
             ViewBag.VendorId = new SelectList(db.Vendor, "Id", "Name", vendorAndTenderId.VendorId);
             ViewBag.TenderId = new SelectList(db.Proc_TenderMas.Where(x => x.Id == tenderMasId), "Id", "TNo", vendorAndTenderId.Proc_TenderMasId);
             ViewBag.PurchaseAddress = purchaseItemDet.ProcProject.ProjectSite.Location;
@@ -210,6 +221,13 @@ namespace DhaliProcurement.Controllers
                 ViewBag.RcvConcernPerson = NullHelper.ObjectToString(puchaseOrders.RecvConcernPerson);
                 ViewBag.RcvConcernPersonCell = NullHelper.ObjectToString(puchaseOrders.RecvConcernPersonCell);
             }
+
+
+
+
+            //new 7feb 18
+
+
             return View();
         }
 
@@ -724,7 +742,7 @@ namespace DhaliProcurement.Controllers
                     }
                     else
                     {
-                        var Proc_PurchaseDet_Id = db.Proc_PurchaseOrderDet.FirstOrDefault(x => x.Proc_PurchaseOrderMasId == PurchaseMasId);
+                        var Proc_PurchaseDet_Id = db.Proc_PurchaseOrderDet.FirstOrDefault(x => x.Id == item.ProcPurchaseDetId);
                         var getItem = db.Proc_PurchaseOrderDet.Find(Proc_PurchaseDet_Id.Id);
                         getItem.POAmt = item.TotalPrice;
                         getItem.POQty = item.POQuantity;
