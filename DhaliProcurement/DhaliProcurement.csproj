@@ -237,6 +237,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PurchaseOrderDetail.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ReportDataset\TenderDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TenderDetails.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ReportDataset\TenderDetailsAccepted.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TenderDetailsAccepted.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ReportDataset\VendorPaymentDS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -769,6 +779,28 @@
     </Content>
     <Content Include="ReportDataset\VendorPaymentDS.xsc">
       <DependentUpon>VendorPaymentDS.xsd</DependentUpon>
+    </Content>
+    <Content Include="ReportDataset\TenderDetails.xsc">
+      <DependentUpon>TenderDetails.xsd</DependentUpon>
+    </Content>
+    <None Include="ReportDataset\TenderDetails.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TenderDetails.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="ReportDataset\TenderDetails.xss">
+      <DependentUpon>TenderDetails.xsd</DependentUpon>
+    </Content>
+    <Content Include="ReportDataset\TenderDetailsAccepted.xsc">
+      <DependentUpon>TenderDetailsAccepted.xsd</DependentUpon>
+    </Content>
+    <None Include="ReportDataset\TenderDetailsAccepted.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TenderDetailsAccepted.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="ReportDataset\TenderDetailsAccepted.xss">
+      <DependentUpon>TenderDetailsAccepted.xsd</DependentUpon>
     </Content>
     <None Include="ReportDataset\VendorPaymentDS.xsd">
       <SubType>Designer</SubType>
@@ -1657,6 +1689,8 @@
     <Content Include="Views\Report\MaterialsEntry.cshtml" />
     <Content Include="Views\Report\MaterialRequisitionList.cshtml" />
     <Content Include="Views\Report\VendorPayment.cshtml" />
+    <Content Include="Views\Report\TenderInformation.cshtml" />
+    <Content Include="Views\Report\TenderInformationAccepted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1685,6 +1719,8 @@
     <Content Include="Reports\MaterialRequisitionList_Different.rpt" />
     <Content Include="Reports\MaterialRequisitionList.rpt" />
     <Content Include="Reports\VendorPayment.rpt" />
+    <Content Include="Reports\Tender_Information.rpt" />
+    <Content Include="Reports\Tender_Information_Accepted.rpt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

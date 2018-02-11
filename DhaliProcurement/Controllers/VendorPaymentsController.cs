@@ -169,7 +169,7 @@ namespace DhaliProcurement.Controllers
                                   join project in db.Project on site.ProjectId equals project.Id
                                   where materialEntryDet.Proc_PurchaseOrderDet.Proc_PurchaseOrderMas.VendorId == vendorIdforProject
                                    && materialEntryMas.ProcProject.ProjectSiteId == site.Id
-                                  select project).ToList();
+                                  select project).Distinct().ToList();
 
             foreach (var x in paymentProject)
             {
@@ -197,7 +197,7 @@ namespace DhaliProcurement.Controllers
 
 
             List<ProjectSite> sites = new List<ProjectSite>();
-            foreach (var i in paymentSite)
+            foreach (var i in paymentSite.Distinct())
             {
                 var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.Id);
                 sites.Add(site);
@@ -405,7 +405,7 @@ namespace DhaliProcurement.Controllers
                                    && materialEntryMas.ProcProject.ProjectSiteId == site.Id
                                   select project).Distinct().ToList();
 
-            foreach (var x in paymentProject)
+            foreach (var x in paymentProject.Distinct())
             {
 
                 ProjectList.Add(new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
@@ -912,7 +912,7 @@ namespace DhaliProcurement.Controllers
                                   join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                                   join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
                                   join items in db.Item on procProjectItem.ItemId equals items.Id
-                                  where vendorPayMas.Id == vPayId
+                                  where vendorPayMas.Id == vPayId && purchaseDet.ItemId == items.Id
                                   select items).FirstOrDefault();
                     vm.ItemId = ItemId.Id;
                     vm.ItemName = ItemId.Name;
@@ -958,15 +958,17 @@ namespace DhaliProcurement.Controllers
                     vm.ChallanNo = db.Proc_MaterialEntryDet.SingleOrDefault(x => x.ChallanNo == requisitionId.metEntryDet.ChallanNo).Id;
                     vm.ChallanNoName = requisitionId.metEntryDet.ChallanNo;
 
-                    var getUnitPrice = (from metDet in db.Proc_MaterialEntryDet
-                                        join purchaseDet in db.Proc_PurchaseOrderDet on metDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
+                    var getUnitPrice = (from vendorPayMas in db.Proc_VendorPaymentMas
+                                        join vendorPayDet in db.Proc_VendorPaymentDet on vendorPayMas.Id equals vendorPayDet.Proc_VendorPaymentMasId
+                                        join entryDet in db.Proc_MaterialEntryDet on vendorPayDet.Proc_MaterialEntryDetId equals entryDet.Id
+                                        join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
                                         join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
                                         join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
                                         join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                        where metDet.ChallanNo == requisitionId.metEntryDet.ChallanNo
-                                        select new { metDet, tenderDet }).FirstOrDefault();
+                                        where entryDet.ChallanNo == vendorPayDet.Proc_MaterialEntryDet.ChallanNo && purchaseDet.ItemId == ItemId.Id
+                                        select new { entryDet, tenderDet }).FirstOrDefault();
 
-                    var qty = getUnitPrice.metDet.EntryQty;
+                    var qty = getUnitPrice.entryDet.EntryQty;
                     var unitPrice = getUnitPrice.tenderDet.TQPrice;
                     var totalAmt = qty * unitPrice;
 

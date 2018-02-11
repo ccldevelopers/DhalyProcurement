@@ -220,8 +220,10 @@
                                         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "PurchaseOrderReport" ? "active" : "")"><a href="@Url.Action("PurchaseOrderReport", "Report")">Purchase Order</a></li>
                                         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "MaterialsEntry" ? "active" : "")"><a href="@Url.Action("MaterialsEntry", "Report")">Materials Entry</a></li>
                                         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "MaterialRequisitionList" ? "active" : "")"><a href="@Url.Action("MaterialRequisitionList", "Report")">Requisition List</a></li>
-                                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "VendorPayment" ? "active" : "")"><a href="@Url.Action("VendorPayment", "Report")">Vendor Paymeent</a></li>
-                                     </ul>
+                                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "VendorPayment" ? "active" : "")"><a href="@Url.Action("VendorPayment", "Report")">Vendor Payment</a></li>
+                                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "TenderInformation" ? "active" : "")"><a href="@Url.Action("TenderInformation", "Report")">Tender Information</a></li>
+                                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "TenderInformationAccepted" ? "active" : "")"><a href="@Url.Action("TenderInformationAccepted", "Report")">Accepted Tender</a></li>
+                                    </ul>
                                 </li>
                                 @*<li><a href="@Url.Action("StatusSlide","ProjectStatusSlideShow")"><i class="fa fa-film "></i> <span>Slide Show</span></a></li>*@
                                 <li>
