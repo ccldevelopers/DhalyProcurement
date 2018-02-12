@@ -576,18 +576,12 @@ namespace DhaliProcurement.Controllers
         public JsonResult GetItems(int PONo)
         {
             List<SelectListItem> itemList = new List<SelectListItem>();
-
+        
             var itemsPONo = (from purDet in db.Proc_PurchaseOrderDet
+                             join metDet in db.Proc_MaterialEntryDet on purDet.Id equals metDet.Proc_PurchaseOrderDetId
                              join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
-                             join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
-                             join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                             join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                             join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
                              join itemLists in db.Item on purDet.ItemId equals itemLists.Id
-                             join vendors in db.Vendor on purMas.VendorId equals vendors.Id
-                             // join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
-                             // join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
-                             where purMas.Id == PONo
+                             where purMas.Id == PONo && purDet.ItemId == itemLists.Id
                              select new { purDet, itemLists }).Distinct().ToList();
 
 
@@ -634,40 +628,28 @@ namespace DhaliProcurement.Controllers
 
 
 
-            var metEntryDet = (from metEntry in db.Proc_MaterialEntryDet
+            //var metEntryDet = (from metEntry in db.Proc_MaterialEntryDet
+            //                   join purDet in db.Proc_PurchaseOrderDet on metEntry.Proc_PurchaseOrderDetId equals purDet.Id
+            //                   join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
+            //                   join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+            //                   join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+            //                   join vendors in db.Vendor on tenderDet.VendorId equals vendors.Id
+            //                   join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+            //                   join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+            //                   join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+            //                   join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+            //                   where reqDet.ItemId == itemId  && procProj.ProjectSiteId == siteId && metEntry.Proc_PurchaseOrderDetId == purDet.Id && metEntry.Id == 
+            //                   select new { metEntry }).Distinct().FirstOrDefault();
+
+
+
+            var metEntryDet = (from metEntry in db.Proc_MaterialEntryDet                            
                                join purDet in db.Proc_PurchaseOrderDet on metEntry.Proc_PurchaseOrderDetId equals purDet.Id
-                               join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
-                               join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
-                               join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                               join vendors in db.Vendor on tenderDet.VendorId equals vendors.Id
-                               join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                               join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
-                               join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
-                               join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
-                               where reqDet.ItemId == itemId  && procProj.ProjectSiteId == siteId
-                               select new { metEntry }).Distinct().FirstOrDefault();
+                               join items in db.Item on purDet.ItemId equals items.Id
+                               where purDet.ItemId == itemId
+                               select new { metEntry }).Distinct().SingleOrDefault();
 
-            //if (totalRequired == null)
-            //{
-            //    totalRequired.PQuantity = 0;
-            //}
-
-            //List<SelectListItem> ReqList = new List<SelectListItem>();
-            //var requisition = from requisitionDet in db.Proc_RequisitionDet
-            //                  join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-            //                  join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-            //                  join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-            //                  where requisitionDet.ItemId == itemId && site.Id == siteId
-            //                  select requisitionMas;
-            //foreach (var x in requisition)
-            //{
-            //    ReqList.Add(new SelectListItem { Text = x.Rcode, Value = x.Rcode.ToString() });
-            //}
-
-
-            //var tenders = db.Proc_TenderDet.FirstOrDefault(x=>x.);
-
-
+       
             foreach (var x in challanData.Distinct())
             {
 
@@ -902,20 +884,33 @@ namespace DhaliProcurement.Controllers
                     vm.ReqNo = db.Proc_RequisitionMas.SingleOrDefault(x=>x.Rcode== projectId.requisitionMas.Rcode).Id;
                     vm.ReqNoName = projectId.requisitionMas.Rcode;
 
+                    //var ItemId = (from vendorPayMas in db.Proc_VendorPaymentMas
+                    //              join vendorPayDet in db.Proc_VendorPaymentDet on vendorPayMas.Id equals vendorPayDet.Proc_VendorPaymentMasId
+                    //              join entryDet in db.Proc_MaterialEntryDet on vendorPayDet.Proc_MaterialEntryDetId equals entryDet.Id
+                    //              join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
+                    //              join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+                    //              join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                    //              join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                    //              join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                    //              join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                    //              join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                    //              join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
+                    //              join items in db.Item on procProjectItem.ItemId equals items.Id
+                    //              where vendorPayMas.Id == vPayId && purchaseDet.ItemId == requisitionDet.ItemId && requisitionDet.ItemId==items.Id && entryDet.Id == vm.Proc_MaterialEntryDetId && vendorPayDet.Id == vm.Proc_VendorPaymentDetId
+                    //              select items).Distinct().SingleOrDefault();
+
+
+
                     var ItemId = (from vendorPayMas in db.Proc_VendorPaymentMas
                                   join vendorPayDet in db.Proc_VendorPaymentDet on vendorPayMas.Id equals vendorPayDet.Proc_VendorPaymentMasId
                                   join entryDet in db.Proc_MaterialEntryDet on vendorPayDet.Proc_MaterialEntryDetId equals entryDet.Id
                                   join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
                                   join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                  join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                                  join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                  join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                                  join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                                  join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-                                  join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
-                                  join items in db.Item on procProjectItem.ItemId equals items.Id
-                                  where vendorPayMas.Id == vPayId && purchaseDet.ItemId == items.Id
-                                  select items).FirstOrDefault();
+                                  join items in db.Item on purchaseDet.ItemId equals items.Id
+                                  where vendorPayDet.Id == i.Id && purchaseDet.ItemId == items.Id
+                                  select items).Distinct().SingleOrDefault();
+
+
                     vm.ItemId = ItemId.Id;
                     vm.ItemName = ItemId.Name;
 
