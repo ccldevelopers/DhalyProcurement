@@ -576,33 +576,53 @@ namespace DhaliProcurement.Controllers
                                    join proj in db.Project on projSite.ProjectId equals proj.Id
                                    join items in db.Item on procItem.ItemId equals items.Id
                                    join units in db.Unit on procItem.UnitId equals units.Id
-                                   where purDet.Proc_PurchaseOrderMasId == purchaseMaster.PurchaseMasId && purDet.ItemId == items.Id /*&& tenderDet.Proc_RequisitionDetId == reqDet.Id*/ && purDet.ItemId == reqDet.ItemId
+                                   where purDet.Proc_PurchaseOrderMasId == purchaseMaster.PurchaseMasId
+                                   && purDet.ItemId == items.Id
+                                   && projSite.Id == purchaseMaster.SiteId
                                    select new
                                    {
                                        PurchaseDetId = purDet.Id,
                                        Proc_PurchaseOrderMasId = purMas.Id,
-                                       ItemId = purDet.ItemId,
-                                       ItemName = purDet.Item.Name,
+                                       ItemId = items.Id,
+                                       ItemName = items.Name,
                                        POQty = purDet.POQty,
                                        POAmt = purDet.POAmt,
                                        PORcv = purDet.PORcv,
-                                       Size = reqDet.Size,
-                                       UnitPrice = tenderDet.TQPrice,
+                                       //Size = reqDet.Size,
+                                       //UnitPrice = tenderDet.TQPrice,
                                        UnitId = procItem.UnitId,
                                        UnitName = procItem.Unit.Name
                                    }).Distinct().ToList();
 
 
-                //var findUnitPrice = (from purDet in db.Proc_PurchaseOrderDet
-                //                     join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
-                //                     join tenderMas in db.Proc_TenderDet on purMas.Proc_TenderMasId equals tenderMas.Id
-                //                     join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                //                     join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                //                     where tenderDet.Proc_TenderMasId == tenderMas.Id && purMas.Id == purchaseMaster.PurchaseMasId && purDet.ItemId == reqDet.ItemId
-                //                     select tenderDet.TQPrice).Distinct().FirstOrDefault();
+                //var purchaseDet = (from purDet in db.Proc_PurchaseOrderDet
+                //                   join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
+                //                   join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                //                   join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                //                   join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                //                   join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                //                   join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                //                   join procItem in db.ProcProjectItem on procProj.Id equals procItem.ProcProjectId
+                //                   where purDet.Proc_PurchaseOrderMasId == purchaseMaster.PurchaseMasId
+                //                   select new
+                //                   {
+                //                       PurchaseDetId = purDet.Id,
+                //                       Proc_PurchaseOrderMasId = purMas.Id,
+                //                       ItemId = purDet.Item.Id,
+                //                       ItemName = purDet.Item.Name,
+                //                       POQty = purDet.POQty,
+                //                       POAmt = purDet.POAmt,
+                //                       PORcv = purDet.PORcv,
+                //                       //Size = reqDet.Size,
+                //                       //UnitPrice = tenderDet.TQPrice,
+                //                       UnitId = procItem.UnitId,
+                //                       UnitName = procItem.Unit.Name
+                //                   }).Distinct().ToList();
 
                 foreach (var item in purchaseDet)
                 {
+
+                    //var unitPrice = db.Proc_TenderDet.SingleOrDefault(x=>x.)
                     dsPurchaseOrder.PurchaseOrderDetails.AddPurchaseOrderDetailsRow(item.PurchaseDetId,
                                                                        item.Proc_PurchaseOrderMasId,
                                                                        item.ItemId,
@@ -610,9 +630,11 @@ namespace DhaliProcurement.Controllers
                                                                        item.POQty,
                                                                        item.POAmt,
                                                                        item.PORcv,
-                                                                       item.Size,
+                                                                        //item.Size,
+                                                                        item.ItemName,
                                                                        item.UnitName,
-                                                                       item.UnitPrice,
+                                                                         //item.UnitPrice,
+                                                                         item.PORcv,
                                                                        item.UnitId
                                                                         );
 
@@ -2087,5 +2109,188 @@ namespace DhaliProcurement.Controllers
         }
 
 
+
+
+
+
+
+        //Vendoy payment item wise
+        [HttpGet]
+        public ActionResult VendorPaymentItemWise()
+        {
+            var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
+                                       join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+                                       where requisitionMas.ProcProjectId == procproject.Id && requisitionMas.Status == "A"
+                                       select procproject).ToList();
+
+            List<ProjectSite> sites = new List<ProjectSite>();
+
+            foreach (var i in requisitionProjects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                sites.Add(site);
+            }
+
+            List<Project> projects = new List<Project>();
+
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+            ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
+
+            ViewBag.PONo = new SelectList(db.Proc_RequisitionMas, "Id", "PONo");
+
+
+            ViewBag.VendorId = new SelectList(db.Vendor, "Id", "Name");
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public ActionResult VendorPaymentItemWise(int? ProjectId, int? SiteId, int? ItemId, int? VendorId)
+        {
+
+            var companyInfo = db.CompanyInformation.SingleOrDefault();
+            VendorPaymentItemWiseDS vendorPaymentItemWise = new VendorPaymentItemWiseDS();
+
+
+            vendorPaymentItemWise.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                         companyInfo.Address,
+                                                         companyInfo.Phone,
+                                                         companyInfo.Web,
+                                                         companyInfo.Email,
+                                                         companyInfo.Id);
+
+
+
+
+
+            //var MasterTableData = (from purdet in db.Proc_PurchaseOrderDet
+            //                       join purMas in db.Proc_PurchaseOrderMas on purdet.Proc_PurchaseOrderMasId equals purMas.Id
+            //                       join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+            //                       join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+            //                       join vendors in db.Vendor on tenderDet.VendorId equals vendors.Id
+            //                       join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+            //                       join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+            //                       join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+            //                       join procItem in db.ProcProjectItem on procProj.Id equals procItem.ProcProjectId
+            //                       join items in db.Item on procItem.ItemId equals items.Id
+            //                       join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+            //                       join proj in db.Project on projSite.ProjectId equals proj.Id
+            //                       where procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id && purdet.ItemId == items.Id && purMas.VendorId == vendors.Id
+
+            //procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id  &&
+
+            var MasterTableData = (from purdet in db.Proc_PurchaseOrderDet
+                               join purMas in db.Proc_PurchaseOrderMas on purdet.Proc_PurchaseOrderMasId equals purMas.Id
+                               join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                               join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                               join vendors in db.Vendor on purMas.VendorId equals vendors.Id
+                               join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                               join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                               join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                             //join procItem in db.ProcProjectItem on procProj.Id equals procItem.ProcProjectId
+                               join items in db.Item on purdet.ItemId equals items.Id
+                               join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+                               join proj in db.Project on projSite.ProjectId equals proj.Id
+                               where purdet.ItemId == items.Id && purMas.VendorId == vendors.Id
+                               select new
+                                {
+                                   ProjectId= proj.Id,
+                                   ProjectName= proj.Name,
+                                   SiteId = projSite.Id,
+                                   SiteName= projSite.Name,
+                                   VendorId= vendors.Id,
+                                   VendorName= purMas.Vendor.Name,
+                                   ItemId= purdet.ItemId,
+                                   ItemName= purdet.Item.Name,
+                                   TenderDetId= tenderDet.Id,
+                                   UnitPrice= tenderDet.TQPrice,
+                                   PurchaseMasterId= purMas.Id,
+                                   PONo= purMas.PONo,
+                                   PODate= purMas.PODate,
+                                   POQty= purdet.POQty,
+                                   POAmt=purdet.POAmt                                    
+                                 }).Distinct().ToList();
+
+
+            //if (TenderId != null && DateFrom != null && DateTo != null && !String.IsNullOrEmpty(Status))
+            //{
+            //    TenderMasters = TenderMasters.Where(x => x.TenderId == TenderId && x.TenderDate >= DateFrom && x.TenderDate <= DateTo && x.TenderApporved == Status).ToList();
+            //}
+
+            //else if (DateFrom != null && DateTo != null && !String.IsNullOrEmpty(Status))
+            //{
+            //    TenderMasters = TenderMasters.Where(x => x.TenderDate >= DateFrom && x.TenderDate <= DateTo && x.TenderApporved == Status).ToList();
+            //}
+            //else if (DateFrom != null && DateTo != null && String.IsNullOrEmpty(Status))
+            //{
+            //    TenderMasters = TenderMasters.Where(x => x.TenderDate >= DateFrom && x.TenderDate <= DateTo).ToList();
+            //}
+
+            //else if (TenderId != null && !String.IsNullOrEmpty(Status))
+            //{
+            //    TenderMasters = TenderMasters.Where(x => x.TenderId == TenderId && x.TenderApporved == Status).ToList();
+            //}
+            //else if (TenderId != null)
+            //{
+
+            //    TenderMasters = TenderMasters.Where(x => x.TenderId == TenderId).Distinct().ToList();
+            //}
+
+            //else if (!String.IsNullOrEmpty(Status))
+            //{
+
+            //    TenderMasters = TenderMasters.Where(x => x.TenderApporved == Status).Distinct().ToList();
+            //}
+
+
+
+            foreach (var master in MasterTableData)
+            {
+                vendorPaymentItemWise.MasterTable.AddMasterTableRow(master.ProjectId,
+                                           master.SiteId,
+                                           master.ProjectName,
+                                           master.SiteName,
+                                           master.ItemId,
+                                           master.ItemName,
+                                           master.VendorId,
+                                           master.VendorName,
+                                           master.PurchaseMasterId,
+                                           master.PONo,
+                                           master.PODate,
+                                           master.TenderDetId,
+                                           master.UnitPrice,
+                                           master.POQty,
+                                           master.POAmt                                      
+                                           );                                     
+
+            }
+
+            ReportDocument rd = new ReportDocument();
+
+            rd.Load(Path.Combine(Server.MapPath("~/Reports"), "VendorPaymentItemWiseReport.rpt"));
+
+            rd.SetDataSource(vendorPaymentItemWise);
+
+            Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            Byte[] fileBuffer = ms.ToArray();
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-length", fileBuffer.Length.ToString());
+            Response.BinaryWrite(fileBuffer);
+            return null;
+        }
+
     }
-}
+    }

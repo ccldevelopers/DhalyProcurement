@@ -409,7 +409,7 @@ namespace DhaliProcurement.Controllers
                            join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
                            join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                            join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                           where site.Id == SiteId && tenderMas.isApproved=="A"
+                           where site.Id == SiteId && tenderMas.isApproved=="A" && tenderDet.Proc_RequisitionDetId == requisitionDet.Id
                            select tenderMas).Distinct().ToList();
 
             List<SelectListItem> tenderList = new List<SelectListItem>();
@@ -449,7 +449,7 @@ namespace DhaliProcurement.Controllers
                          join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                          join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
                          join item in db.Item on procProjectItem.ItemId equals item.Id
-                         where tenderDet.VendorId == VendorId && requisitionDet.ItemId == item.Id
+                         where tenderDet.VendorId == VendorId && requisitionDet.ItemId == item.Id && tenderDet.Status=="A"
                          select item).Distinct().ToList();
             List<SelectListItem> itemList = new List<SelectListItem>();
             foreach (var x in items)

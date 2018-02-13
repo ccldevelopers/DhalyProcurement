@@ -454,7 +454,7 @@ namespace DhaliProcurement.Controllers
                     var requisitionId = (from tenderDet in db.Proc_TenderDet
                                          join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
                                          join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                                         where tenderDet.Proc_TenderMasId == TenderId
+                                         where tenderDet.Proc_TenderMasId == TenderId && tenderDet.Proc_RequisitionDetId == i.Proc_RequisitionDetId
                                          select requisitionMas).FirstOrDefault();
 
                     vm.RCode = requisitionId.Id;

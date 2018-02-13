@@ -252,6 +252,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VendorPaymentDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ReportDataset\VendorPaymentItemWiseDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\VendorPaymentEdit.cs" />
     <Compile Include="ViewModel\VMVenderPayment.cs" />
     <Compile Include="Views\CustomRoleProvider.cs" />
@@ -809,6 +814,17 @@
     </None>
     <Content Include="ReportDataset\VendorPaymentDS.xss">
       <DependentUpon>VendorPaymentDS.xsd</DependentUpon>
+    </Content>
+    <Content Include="ReportDataset\VendorPaymentItemWiseDS.xsc">
+      <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
+    </Content>
+    <None Include="ReportDataset\VendorPaymentItemWiseDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>VendorPaymentItemWiseDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="ReportDataset\VendorPaymentItemWiseDS.xss">
+      <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
@@ -1691,6 +1707,7 @@
     <Content Include="Views\Report\VendorPayment.cshtml" />
     <Content Include="Views\Report\TenderInformation.cshtml" />
     <Content Include="Views\Report\TenderInformationAccepted.cshtml" />
+    <Content Include="Views\Report\VendorPaymentItemWise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1721,6 +1738,7 @@
     <Content Include="Reports\VendorPayment.rpt" />
     <Content Include="Reports\Tender_Information.rpt" />
     <Content Include="Reports\Tender_Information_Accepted.rpt" />
+    <Content Include="Reports\VendorPaymentItemWiseReport.rpt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

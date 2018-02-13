@@ -116,35 +116,59 @@
                     //console.log(data);
                     if(data.flag)
                         for (var i = 0; i < data.List.length; i++) {
-                        counter++;
-                        //cnTaskRow++;
+                            counter++;
+                            //cnTaskRow++;
+                            if(data.List[i].Status=="A"){
+                                var row = $('<tr  bgcolor="#D0F0C0" style="font-weight:bold;">'
+                                   +'<td class="index"><label name="TaskId" style="font-weight:bold;">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/></td>'
+                                   + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;">' + data.List[i].ProjectName + '<label></td>'
+                                   + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;">' + data.List[i].SitetName + '<label></td>'
+                                   + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="RCode"/><label style="font-weight:bold;">' + data.List[i].RCodeName + '<label></td>'
+                                   + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label style="font-weight:bold;">' + data.List[i].ItemName + '<label><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                                   //+ '<td><input value="' + data.List[i].Qty + '" type="hidden" name="Qty"/>'
+                                   //+ '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label>' + data.List[i].UnitName + '<label></td>'
+                                   + '<td><label style="font-weight:bold;">' + data.List[i].Qty + '<label></td>'
+                                   + '<td><input value="" type="hidden" name="UnitId"/><label style="font-weight:bold;">' + data.List[i].UnitName + '<label></td>'
+                                   + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="VendorId"/><label style="font-weight:bold;">' + data.List[i].VendorName + '<label></td>'
+                                   +'<td><label style="font-weight:bold;">' + data.List[i].TQNo + '</label></td>'
+                                   +'<td><label style="font-weight:bold;">' + data.List[i].TQDate + '</label></td>'
+                                   +'<td><label style="font-weight:bold;">'  + data.List[i].TQPrice + '</label></td>'
+                                   +'<td><label style="font-weight:bold;">' + data.List[i].Qty * data.List[i].TQPrice + '<label></td>'
+                                   //+'<td">'+
+                                   //         '<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'+
+                                   //         ' <input type="checkbox"  />'+
+                                   //         ' <button   type="button"  onclick="AddNewRowAfter(this);"   class="btn  text-success-600 btn-flat btn-icon btn-rounded "><i class=" icon-plus-circle2"></i></button></td>'
+                                 +'</tr>');
 
-                            var row = $('<tr>'
-                               +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/></td>'
-                               + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label>' + data.List[i].ProjectName + '<label></td>'
-                               + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label>' + data.List[i].SitetName + '<label></td>'
-                               + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="RCode"/><label>' + data.List[i].RCode + '<label></td>'
-                               + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label>' + data.List[i].ItemName + '<label><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
-                               //+ '<td><input value="' + data.List[i].Qty + '" type="hidden" name="Qty"/>'
-                               //+ '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label>' + data.List[i].UnitName + '<label></td>'
-                               + '<td><label>' + data.List[i].Qty + '<label></td>'
-                               + '<td><input value="" type="hidden" name="UnitId"/><label>' + data.List[i].UnitName + '<label></td>'
-                               + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="VendorId"/><label>' + data.List[i].VendorName + '<label></td>'
-                               +'<td><label>' + data.List[i].TQNo + '</label></td>'
-                               +'<td><label>' + data.List[i].TQDate + '</label></td>'
-                               +'<td><label>'  + data.List[i].TQPrice + '</label></td>'
-                               +'<td><label>' + data.List[i].Qty * data.List[i].TQPrice + '<label></td>'
-                               //+'<td">'+
-                               //         '<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'+
-                               //         ' <input type="checkbox"  />'+
-                               //         ' <button   type="button"  onclick="AddNewRowAfter(this);"   class="btn  text-success-600 btn-flat btn-icon btn-rounded "><i class=" icon-plus-circle2"></i></button></td>'
-                             +'</tr>');
+                                $('#RequisitionDetails').append(row);
+                                //$("input[name='StartDate']").addClass('datepicker').datepicker();
+                                //$("input[name='EndDate']").addClass('datepicker').datepicker();
+                            }
+                            else{
+                                var row = $('<tr>'
+                                  +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/></td>'
+                                  + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label>' + data.List[i].ProjectName + '<label></td>'
+                                  + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label>' + data.List[i].SitetName + '<label></td>'
+                                  + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="RCode"/><label>' + data.List[i].RCodeName + '<label></td>'
+                                  + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label>' + data.List[i].ItemName + '<label><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                                  //+ '<td><input value="' + data.List[i].Qty + '" type="hidden" name="Qty"/>'
+                                  //+ '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label>' + data.List[i].UnitName + '<label></td>'
+                                  + '<td><label>' + data.List[i].Qty + '<label></td>'
+                                  + '<td><input value="" type="hidden" name="UnitId"/><label>' + data.List[i].UnitName + '<label></td>'
+                                  + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="VendorId"/><label>' + data.List[i].VendorName + '<label></td>'
+                                  +'<td><label>' + data.List[i].TQNo + '</label></td>'
+                                  +'<td><label>' + data.List[i].TQDate + '</label></td>'
+                                  +'<td><label>'  + data.List[i].TQPrice + '</label></td>'
+                                  +'<td><label>' + data.List[i].Qty * data.List[i].TQPrice + '<label></td>'
+                                  //+'<td">'+
+                                  //         '<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'+
+                                  //         ' <input type="checkbox"  />'+
+                                  //         ' <button   type="button"  onclick="AddNewRowAfter(this);"   class="btn  text-success-600 btn-flat btn-icon btn-rounded "><i class=" icon-plus-circle2"></i></button></td>'
+                                +'</tr>');
 
-                            $('#RequisitionDetails').append(row);
-                            //$("input[name='StartDate']").addClass('datepicker').datepicker();
-                            //$("input[name='EndDate']").addClass('datepicker').datepicker();
+                                $('#RequisitionDetails').append(row);
+                            }
                         }
-
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

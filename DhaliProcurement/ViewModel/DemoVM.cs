@@ -23,8 +23,8 @@ namespace DhaliProcurement.ViewModel
     {
         public int ItemISLNO { get; set; }
         public int UnitUSLNO { get; set; }
-        public int PQuantity { get; set; }
-        public int PCost { get; set; }
+        public decimal PQuantity { get; set; }
+        public decimal PCost { get; set; }
         public string Remarks { get; set; }
         //public int ProjectId { get; set; }
         public int ProjectSiteId { get; set; }

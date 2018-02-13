@@ -547,7 +547,7 @@
             for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
                 var quantity = $('#Item-list tr').eq(cn).find("td input[name=POQuantity]").val();
                 // console.log('Quantity: ' + quantity);
-                var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();
+                var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();``
                 // console.log('Cost: ' + cost);
                 var result = parseFloat(quantity) * parseFloat(cost);
                 ItemTotalCost = parseFloat(ItemTotalCost + result);
