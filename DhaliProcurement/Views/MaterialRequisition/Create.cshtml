@@ -3,7 +3,6 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -24,10 +23,8 @@
                         <tr>
                             <td>Project Name</td>
                             <td>
-
                                 @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2", @style = "width: 500px !important" })
                                 @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
-
                             </td>
                             <td>Req. No.</td>
                             <td>
@@ -45,15 +42,12 @@
                                 @Html.TextBox("RequisitionDate", "", new { @class = "form-control datepicker" })
                             </td>
                         </tr>
-
                         <tr>
                             <td>Site Engineer</td>
                             <td>
                                 @Html.TextBox("SiteEngineer", null, new { @class = "form-control", disabled = "true" })
                             </td>
-
                         </tr>
-
                         <tr>
                             <td>Project Manager</td>
                             <td>
@@ -65,104 +59,98 @@
                             <td>
                                 @Html.TextBox("ProjectRemarks", "", new { @class = "form-control" })
                             </td>
-
                         </tr>
-
                     </table>
                     <hr />
                     <div class="details well" style=" border 1px solid black;">
                         <h4>Requisition Items</h4>
-                        <div class="jumbotron" style="padding:1px;">
+                        <div class="jumbotron" style="padding:10px;">
                             <table class="table-responsive">
-
                                 <tr style="text-align:center;">
                                     @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
-                                    <td style="font-size: 15px; font-weight: bold;">Required Materials</td>
+                                    <td style="font-weight: bold;">Required Materials</td>
                                     <td>
-
                                         @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                     </td>
-
-                                    <td style="font-size: 15px; font-weight: bold;">Unit</td>
+                                    <td style="font-weight: bold;">Unit</td>
                                     <td>
                                         @*@Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })*@
                                         @Html.TextBox("Unit", "", new { @disabled = "disabled", @class = "form-control", @id = "UnitName" })
                                         <input type="hidden" value="" id="UnitId" />
                                     </td>
-                                    <td style="font-size: 15px; font-weight: bold;">Total Required</td>
-
+                                    <td style="font-weight: bold;">Total Required</td>
                                     <td>
                                         <input type="text" id="TotalRequired" class="form-control" disabled="disabled" />
                                     </td>
-                                    <td style="font-size: 15px; font-weight: bold;">Total Received</td>
+                                    <td style="font-weight: bold;">Total Received</td>
                                     <td>
                                         <input type="text" id="TotalReceived" class="form-control" disabled="disabled" />
                                     </td>
-
-                                </tr>
-                                <tr style="text-align:center;">
-                                    <td style="font-size: 15px; font-weight: bold;">Remaining</td>
-                                    <td>
-                                        <input type="text" id="RemainingBalance" class="form-control" disabled="disabled" />
-                                    </td>
-                                    <td style="font-size: 15px; font-weight: bold;">Current Stock</td>
-                                    <td>
-                                        <input type="text" id="CurrentStock" class="form-control" />
-                                    </td>
-                                    <td style="font-size: 15px; font-weight: bold;">Req. Qty</td>
-                                    <td>
-                                        <input type="text" id="ReqQty" class="form-control" />
-                                    </td>
-                                    <td style="font-size: 15px; font-weight: bold;">Required Before(Date)</td>
-                                    <td>
-                                        <input type="text" id="RequiredDate" class="form-control datepicker" />
-                                    </td>
-
-
-
-
-                                </tr>
-                                <tr style="text-align:center;">
-                                    <td style="font-size: 15px; font-weight: bold;">Brand/Quantity</td>
-                                    <td>
-                                        <input type="text" id="Brand" class="form-control" />
-                                    </td>
-
-                                    <td style="font-size: 15px; font-weight: bold;">Size</td>
-                                    <td>
-                                        <input type="text" id="Size" class="form-control" />
-                                    </td>
-                                    @*<td>
-                        <input type="text" id="Qty" class="form-control" />
-                    </td>*@
-                                    <td style="font-size: 15px; font-weight: bold;">Remarks</td>
-                                    <td>
-                                        <input type="text" id="ItemRemarks" class="form-control" />
-                                    </td>
-
-                                    <td>
-                                        <input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" />
-                                    </td>
-                                    <td>&nbsp;</td>
                                 </tr>
                                 <tr>
+                                    <td></td>
                                     <td><span class="error" id="ItemName_Error">Item name required</span></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    @*<td><span class="error" id="CurrentStock_Error">Current Stock required</span></td>*@
-                                    <td><span class="error" id="ReqQty_Error">Req Qty must be a number</span></td>
-                                    @*<td><span class="error" id="Brand_Error">brand required</span></td>
-                    <td><span class="error" id="Size_Error">Size required</span></td>
-                    <td><span class="error" id="RequiredDate_Error">Date required</span></td>*@
+                                    <td></td>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td style="font-weight: bold;">Remaining</td>
+                                    <td>
+                                        <input type="text" id="RemainingBalance" class="form-control" disabled="disabled" />
+                                    </td>
+                                    <td style="font-weight: bold;">Current Stock</td>
+                                    <td>
+                                        <input type="text" id="CurrentStock" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;">Req. Qty</td>
+                                    <td>
+                                        <input type="text" id="ReqQty" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;">Required Before(Date)</td>
+                                    <td>
+                                        <input type="text" id="RequiredDate" class="form-control datepicker" />
+                                    </td>
+                                </tr>
+                                <tr>
+
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <span class="error" id="ReqQty_Error">Req Qty must be a number</span>
+                                        <span class="error" id="ReqQty_Error2">Req Qty can not be empty</span>
+                                    </td>
                                     <td></td>
                                     <td></td>
                                 </tr>
+                                <tr style="text-align:center;">
+                                    <td style="font-weight: bold;">Brand/Quantity</td>
+                                    <td>
+                                        <input type="text" id="Brand" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;">Size</td>
+                                    <td>
+                                        <input type="text" id="Size" class="form-control" />
+                                    </td>
+                                    @*<td>
+                                            <input type="text" id="Qty" class="form-control" />
+                                        </td>*@
+                                    <td style="font-weight: bold;">Remarks</td>
+                                    <td>
+                                        <input type="text" id="ItemRemarks" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+
                             </table>
                         </div>
                         @*<br />*@
@@ -189,31 +177,25 @@
                             </table>
                         </div>
 
-
                     </div>
 
                 }
             </div>
 
-
-
         </div>
-
 
     </div>
     <div class="form-group">
         <div class="col-md-offset-5 col-md-10">
             @*@Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" ,@style = "background-color: grey;border: none;" })*@
-            <button type="button" id="SaveItem" class="btn btn-primary"><i class="icon-add position-left"  ></i>Create</button>
+            <button type="button" id="SaveItem" class="btn btn-primary"><i class="icon-add position-left"></i>Create</button>
         </div>
     </div>
 </div>
 
-
-
 <!-- Modal -->
 <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;" >
+    <div class="modal-dialog" role="document" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staffModalTitle">Edit Item</h5>
@@ -224,23 +206,24 @@
             <div class="modal-body">
                 <div class="panel-body">
                     @Html.AntiForgeryToken()
-                    
+
                     <div class="form-horizontal">
                         <div class="form-group">
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
-                            @Html.Label("Item Name", htmlAttributes: new { @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
+                            @Html.Label("Item Name", htmlAttributes: new
+                       {
+                           @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                             </div>
                         </div>
-
                         <div class="form-group">
                             @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 <input type="hidden" id="modalunitId" />
-                                @Html.TextBox("ModalUnitName", null, new { @class = "form-control" ,@disabled= "disabled" })
+                                @Html.TextBox("ModalUnitName", null, new { @class = "form-control", @disabled = "disabled" })
                                 @*@Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @id = "ModalUnit", @data_required = "required", @style = "width: 150px;" })*@
                             </div>
                         </div>
@@ -321,8 +304,6 @@
 </div>
 
 
-
-
 <script>
     var counter = 0; //counter for the serial
     var selRow;
@@ -337,6 +318,7 @@
 
         $('#ItemName_Error').hide();
         $('#ReqQty_Error').hide();
+        $('#ReqQty_Error2').hide();
         //RebindDatePicker();
     });
 
@@ -388,7 +370,7 @@
             success: function (data) {
                 $('#SiteEngineer').val(data.siteEngineer);
                 $('#ItemName').removeAttr("disabled");
-               
+
                 var listOfitems = data.Items.length;
                 var items = "<select id='ItemName'>";
                 items = items + '<option value="">--Select--</option>';
@@ -441,7 +423,7 @@
                 var TotalReceived = $('#TotalReceived').val();
                 var RemainingBalance = TotalRequired - TotalReceived;
 
-                $('#RemainingBalance').val(RemainingBalance);              
+                $('#RemainingBalance').val(RemainingBalance);
             }
 
         });
@@ -485,7 +467,14 @@
             $('#ItemName_Error').hide();
         }
 
-        if (ReqQty =="" || isNaN(ReqQty)) {
+        if (ReqQty == "") {
+            $('#ReqQty_Error2').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ReqQty_Error2').hide();
+        }
+        if (isNaN(ReqQty)) {
             $('#ReqQty_Error').show();
             isAllValid = false;
         }
@@ -560,7 +549,7 @@
                 //$('#ModalItemName').val(SiteName);
                 $('#ModalItemName').val(itemId).change();
                 $('#modalunitId').val(UnitId);
-                $('#ModalUnitName').val(ItemUnit);               
+                $('#ModalUnitName').val(ItemUnit);
                 $('#ModalTotalRequired').val(TotalRequired);
                 $('#ModalTotalReceived').val(TotalReceived);
                 $('#ModalRemainingBalance').val(RemainingBalance);
@@ -647,7 +636,7 @@
 
     $('#SaveItem').click(function (e) {
         //alert('Length:' + $('.Resource-list tr').length)
-        
+
         if ($('#ProjectId option:selected').text() === "--Select--") {
             alert('Please select project');
             $('#ProjectId option:selected').focus();
@@ -664,8 +653,8 @@
             alert('Please insert Requisition No.');
             $('#ReqNo').focus();
         }
-        else if ($('.Resource-list tr').length <2) {
-            alert('Please Add Item to this requisition');          
+        else if ($('.Resource-list tr').length < 2) {
+            alert('Please Add Item to this requisition');
         }
         else {
             CreateSitePlanTask();
@@ -793,7 +782,6 @@
     }
 
 </script>
-
 
 <style>
     /*.scrolling {

@@ -61,130 +61,83 @@
                     <hr />
                     <div class="details well" style=" border 1px solid black;">
                         <h4>Tender Items</h4>
-                        <div class="jumbotron" style="padding:10px;">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td style="font-weight: bold;" class="col-lg-1">Project</td>
-                                    <td class="col-lg-3">
-                                        @Html.DropDownList("ProjectId", null, "Select Project", htmlAttributes: new
-                                   {
-                                       @class = "form-control select2",
-                                       @data_required = "required",
-                                       @id = "ProjectId"
-                                   })
-                                    </td>
-                                    <td style="font-weight: bold;" class="col-lg-1">Site</td>
-                                    <td class="col-lg-3">
-                                        @Html.DropDownList("SiteId", null, "Select Site", htmlAttributes: new
-                                   {
-                                       @class = "form-control select2",
-                                       @data_required = "required",
-                                       @id = "SiteId"
-                                   })
-                                    </td>
-                                    <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
-                                    <td class="col-lg-3">
-                                        @Html.DropDownList("RCode", null, "Select Requisition", htmlAttributes: new
-                                   {
-                                       @class = "form-control select2",
-                                       @data_required = "required",
-                                       @id = "RCode"
-                                   })
-                                        <input type="hidden" id="Proc_RequisitionDetId" />
-                                    </td>
+                        <table style="width: 100%;">
+                            <tr>
+                                @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-2">Project Name</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Site</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Req. No.</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Item Name</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Qty</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Unit</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Vendor Name</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Qtn. No.</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Qtn. Date</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Unit Price</th>
+                                <th style="font-size: 15px; font-weight: bold;" class="col-md-1">Total Price</th>
+                                @*<th style="font-size: 15px; font-weight: bold;">Remarks</th>
+                                    <th>&nbsp;</th>*@
+                                @*<th>&nbsp;</th>*@
+                            </tr>
+                            <tr>
+                                <td>
 
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><span class="error" id="ProjectName_Error">Project required</span></td>
-                                    <td></td>
-                                    <td><span class="error" id="SiteName_Error">Site required</span></td>
-                                    <td></td>
-                                    <td><span class="error" id="ReqNo_Error">Req No. required</span></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold;" class="col-lg-1">Item</td>
-                                    <td class="col-lg-3">
-                                        @Html.DropDownList("ItemName", null, "Select Item", htmlAttributes: new
-                                   {
-                                       @class = "form-control select2",
-                                       @data_required = "required",
-                                       @id = "ItemName"
-                                   })
-                                    </td>
-
-                                    <td style="font-weight: bold;" class="col-lg-1">Qty</td>
-                                    <td class="col-lg-3">
-                                        <input type="text" id="Qty" class="form-control" disabled="disabled" />
-                                    </td>
-
-                                    <td style="font-weight: bold;" class="col-lg-1">Unit</td>
-                                    <td class="col-lg-3">
-                                        <input type="text" id="UnitName" class="form-control" disabled="disabled" />
-                                        <input type="hidden" id="UnitId" value="" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-lg-1"></td>
-                                    <td class="col-lg-3"><span class="error" id="ItemName_Error">Item required</span></td>
-                                    <td class="col-lg-1"></td>
-                                    <td class="col-lg-3"></td>
-                                    <td class="col-lg-1"></td>
-                                    <td class="col-lg-3"></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold;" class="col-lg-1">Vendor</td>
-                                    <td class="col-lg-3">
-                                        @Html.DropDownList("VendorId", null, "Select Vendor", htmlAttributes: new
-                                   {
-                                       @class = "form-control select2",
-                                       @data_required = "required",
-                                       @id = "VendorId"@*, @style = "width: 150px;"*@ })
-                                    </td>
-                                    <td style="font-weight: bold;" class="col-lg-1">Qtn. No.</td>
-                                    <td class="col-lg-3">
-                                        <input type="text" id="TQNo" class="form-control" />
-                                    </td>
-                                    <td style="font-weight: bold;" class="col-lg-1">Qtn. Date</td>
-                                    <td class="col-lg-3">
-                                        <input type="text" id="TQDate" class="form-control datepicker" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><span class="error" id="VendorName_Error">Vendor required</span></td>
-                                    <td></td>
-                                    <td><span class="error" id="QtnNo_Error">Qtn No. required</span></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-
-                                    <td style="font-weight: bold;" class="col-lg-1">Unit Price</td>
-                                    <td class="col-lg-3">
-                                        <input type="text" id="TQPrice" class="form-control" name="unitPrice" />
-                                    </td>
-
-                                    <td style="font-weight: bold;" class="col-lg-1">Total Price</td>
-                                    <td class="col-lg-3">
-                                        <input type="text" id="TotalPrice" class="form-control" disabled="disabled" />
-                                    </td>
-                                    <td class="col-lg-1"></td>
-                                    <td class="col-lg-3">
-                                        <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><span class="error" id="UnitPrice_Error">Unit Price required</span></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-
-                            </table>
-                        </div>                   
+                                    @Html.DropDownList("ProjectId", null, "Select Project", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("SiteId", null, "Select Site", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
+                                    @*<input type="hidden" value="" id="UnitId" />*@
+                                </td>
+                                <td>
+                                    @Html.DropDownList("RCode", null, "Select Requisition", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "RCode" })
+                                    <input type="hidden" value="" id="Proc_RequisitionDetId" />
+                                </td>
+                                <td>
+                                    @Html.DropDownList("ItemName", null, "Select Item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
+                                </td>
+                                <td>
+                                    <input type="text" id="Qty" class="form-control" disabled="disabled" />
+                                </td>
+                                <td>
+                                    <input type="text" id="UnitName" class="form-control" disabled="disabled" />
+                                    <input type="hidden" id="UnitId" value="" />
+                                </td>
+                                <td>
+                                    @Html.DropDownList("VendorId", null, "Select Vendor", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "VendorId" })
+                                </td>
+                                <td>
+                                    <input type="text" id="TQNo" class="form-control" />
+                                </td>
+                                <td>
+                                    <input type="text" id="TQDate" class="form-control datepicker" />
+                                </td>
+                                <td>
+                                    <input type="text" id="TQPrice" class="form-control" name="unitPrice" />
+                                </td>
+                                <td>
+                                    <input type="text" id="TotalPrice" class="form-control" disabled="disabled" />
+                                </td>
+                                <td>
+                                    <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><span class="error" id="ProjectName_Error">Project required</span></td>
+                                <td><span class="error" id="SiteName_Error">Site required</span></td>
+                                <td><span class="error" id="ReqNo_Error">Req No. required</span></td>
+                                <td><span class="error" id="ItemName_Error">Item name required</span></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="error" id="VendorName_Error">Vendor name required</span></td>
+                                <td><span class="error" id="QtnNo_Error">Qtn No. required</span></td>
+                                <td></td>
+                                <td><span class="error" id="UnitPrice_Error">Unit Price required</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <br />
                         <div class="table-responsive scrolling">
                             <table class="Resource-list table table-bordered" id="RequisitionDetails">
                                 <tr class="bg-grey">

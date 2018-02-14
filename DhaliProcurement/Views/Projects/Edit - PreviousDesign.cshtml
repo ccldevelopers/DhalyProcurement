@@ -32,11 +32,13 @@
                     <table class="table">
                         <tr>
                             <td class="col-lg-2">Project Name</td>
-                            <td class="col-lg-10" colspan="2">
-                                <input type="text" value="@ViewBag.ProjectName" id="ProjectName" class="form-control" />
+                            <td  class="col-lg-10" colspan="2">
+                                <input type="text" value="@ViewBag.ProjectName" id="ProjectName" class="form-control"/>
+
 
                             </td>
                         </tr>
+
                         <tr>
                             <td class="col-lg-">Project Manager</td>
                             <td class="col-lg-10">
@@ -44,81 +46,92 @@
                                 @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
                             </td>
                             <td class="col-lg-1">
-                                <button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal" style="background-color: grey;border: none;">Add</button>
+                                <button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal" style ="background-color: grey;border: none;">Add</button>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Project Start Date</td>
+                            <td  colspan="2">
+                                <input type="text" value="@ViewBag.StartDate" id="StartDate" class="form-control datepicker" />
                             </td>
                         </tr>
 
                         <tr>
-                            <td>Project Start Date</td>
-                            <td colspan="2">
-                                <input type="text" value="@ViewBag.StartDate" id="StartDate" class="form-control datepicker" />
-                            </td>
-                        </tr>
-                        <tr>
                             <td>Project End Date</td>
-                            <td colspan="2">
+                            <td  colspan="2">
                                 <input type="text" value="@ViewBag.EndDate" id="EndDate" class="form-control datepicker" />
                             </td>
                         </tr>
                         @*<tr>
 
 
-                    <td>Client</td>
-                    <td>
-                        @Html.DropDownList("ClientId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @required = "required" })
-                        @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+                            <td>Client</td>
+                            <td>
+                                @Html.DropDownList("ClientId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @required = "required" })
+                                @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
 
-                       <button type="button" id="addClient" class="btn btn-primary" data-toggle="modal" data-target="#resourceClientModal">Add</button>
+                               <button type="button" id="addClient" class="btn btn-primary" data-toggle="modal" data-target="#resourceClientModal">Add</button>
 
-                    </td>
+                            </td>
 
-                         </tr>*@
+                                 </tr>*@
+
                         <tr>
                             <td>Remarks</td>
                             <td colspan="2">
                                 <input type="text" value="@ViewBag.ProjectRemarks" id="ProjectRemarks" class="form-control" />
+
                             </td>
                         </tr>
+
 
                     </table>
                     <hr />
 
 
                     @*<div class="form-group">
-                    <div class="col-md-offset-5 col-md-10">
-                        <button type="button" id="SaveProject" class="btn btn-primary"><i class="icon-add position-left"></i> Save</button>
-                    </div>
-                </div>*@
+                            <div class="col-md-offset-5 col-md-10">
+                                <button type="button" id="SaveProject" class="btn btn-primary"><i class="icon-add position-left"></i> Save</button>
+                            </div>
+                        </div>*@
 
 
                 }
 
-                <div class="jumbotron" style="padding:10px;">
+
+                <div class="details well" style=" border 1px solid black;">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="font-weight: bold;" class="col-lg-4">Site Name</td>
-                            <td style="font-weight: bold;" class="col-lg-4">Location</td>
-                            <td style="font-weight: bold;" class="col-lg-3">Site Engineer</td>
+                            <td style="font-size: 15px; font-weight: bold;">Site Name</td>
+                            <td style="font-size: 15px; font-weight: bold;">Location</td>
+                            <td style="font-size: 15px; font-weight: bold;">Site Engineer</td>
                             <td>&nbsp;</td>
                         </tr>
+
                         <tr>
                             <td>
                                 <input type="text" id="SiteName" class="form-control" />
                             </td>
+
                             <td>
                                 <input type="text" id="SiteLocation" class="form-control" />
                             </td>
+
                             <td>
                                 @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteRName" })
                             </td>
+
                             <td>
-                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
+                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style ="background-color: grey;border: none;"/>
                             </td>
                         </tr>
+
                         <tr>
-                            <td><span class="error" id="SiteName_Error">Site required</span></td>
-                            <td><span class="error" id="SiteLocation_Error">Location required</span></td>
-                            <td><span class="error" id="SiteEngineer_Error">Site Engineer required</span></td>
+                            <td><span class="error" id="SiteName_Error">Item name required</span></td>
+                            <td><span class="error" id="SiteLocation_Error">Quantity required</span></td>
+                            <td><span class="error" id="SiteEngineer_Error">Unit required</span></td>
                         </tr>
                     </table>
                     <br />
@@ -132,6 +145,7 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
+
                     </table>
                 </div>
             </div>

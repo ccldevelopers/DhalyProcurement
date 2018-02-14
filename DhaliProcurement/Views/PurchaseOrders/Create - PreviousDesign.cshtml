@@ -3,6 +3,7 @@
     ViewBag.Title = "Purchase Order";
 }
 
+
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -19,6 +20,7 @@
                 @using (Html.BeginForm())
                 {
                     <table class="table">
+
                         <tr>
                             <td>PO No</td>
                             <td>
@@ -30,19 +32,23 @@
                             </td>
                         </tr>
 
+
+
                         <tr>
                             @*<td>Project</td>
-                                <td>
+                            <td>
 
-                                    @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2" })
-                                    @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
+                                @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2" })
+                                @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
 
-                                </td>*@
+                            </td>*@
+
                             <td class="col-lg-2">Project</td>
                             <td class="col-lg-8" colspan="5">
                                 @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2" })
                                 @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
                             </td>
+
 
                         </tr>
                         <tr>
@@ -53,12 +59,15 @@
                             </td>
                         </tr>
 
+
+
                         <tr>
                             <td class="col-lg-2">Address</td>
                             <td class="col-lg-8" colspan="5">
                                 @Html.TextBox("PurchaseAddress", "", new { @class = "form-control" })
                             </td>
                         </tr>
+
 
                         <tr>
                             <td class="col-lg-2">Tender No</td>
@@ -67,6 +76,7 @@
                                 @Html.ValidationMessage("TenderId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
+
 
                         <tr>
                             <td>Vendor</td>
@@ -77,28 +87,35 @@
                         </tr>
 
 
+
+
                         <tr>
                             <td>Attention</td>
                             <td>
                                 @Html.TextBox("VContactPerson", null, new { @class = "form-control" })
                                 @*<input id="VContactPerson" type="text" class="form-control"/>*@
                             </td>
+
                             <td>To</td>
                             <td>
                                 @Html.TextBox("ProjectManager", null, new { @class = "form-control" })
                             </td>
                         </tr>
 
+
                         <tr>
                             <td>Cell</td>
                             <td>
                                 @Html.TextBox("Cell", null, new { @id = "AttnCell", @class = "form-control" })
                             </td>
+
                             <td>Email</td>
                             <td>
                                 @Html.TextBox("Email", null, new { @class = "form-control" })
                             </td>
                         </tr>
+
+
 
                         <tr>
                             <td class="col-lg-2">Subject</td>
@@ -106,13 +123,18 @@
                                 @Html.TextBox("Subject", null, new { @class = "form-control" })
                             </td>
 
+                          
                         </tr>
+
                         <tr>
                             <td class="col-lg-2">Lead Time</td>
                             <td class="col-lg-2" colspan="1">
                                 @Html.TextBox("LeadTime", null, new { @class = "form-control" })
+
                             </td>
                         </tr>
+
+
 
                         <tr>
                             <td class="col-lg-1">Content</td>
@@ -121,85 +143,91 @@
                             </td>
                         </tr>
 
+
+
                         <tr>
                             <td class="col-lg-1">Receive Concern Person</td>
                             <td class="col-lg-2" colspan="1">
                                 @Html.TextBox("RcvConcenPerson", null, new { @class = "form-control" })
                             </td>
-                            <td>Cell</td>
+
+                            <td >Cell</td>
                             <td>
                                 @Html.TextBox("Cell", null, new { @id = "RcvPersonCell", @class = "form-control" })
                             </td>
                         </tr>
+
                     </table>
                     <hr />
 
                 }
 
+
                 <div class="details well" style=" border 1px solid black;">
                     <h4>Purchase Order Items</h4>
-                    <div class="jumbotron" style="padding:10px;">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Item</td>
-                                <td class="col-lg-2">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="UnitName" class="form-control" disabled="disabled" />
-                                    <input type="hidden" id="UnitId" value="" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Size</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="Size" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit Price</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
-                                </td>  
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><span class="error" id="ItemName_Error" style="padding-left:10px;">Item  required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Requisition Qty</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="RequisitionQty" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">PO Quantity</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="POQuantity1" name="POQuantity1" class="form-control" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Total Price</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
-                                </td>
-                                <td class="col-lg-1"></td>
-                                <td class="col-lg-2">
-                                    <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><span class="error" id="POQuantity_Error"  style="padding-left:10px;">PO Quantity required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="font-size: 15px; font-weight: bold;">Item Name</td>
+                            <td style="font-size: 15px; font-weight: bold;">Unit</td>
+                            <td style="font-size: 15px; font-weight: bold;">Size</td>
+                            <td style="font-size: 15px; font-weight: bold;">Unit Price</td>
+                            <td style="font-size: 15px; font-weight: bold;">Requisition Qty</td>
+                            <td style="font-size: 15px; font-weight: bold;">PO Quantity</td>
+                            <td style="font-size: 15px; font-weight: bold;">Total Price</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
 
+                            <td>
+                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                            </td>
+
+                            <td>
+                                <input type="text" id="UnitName" class="form-control" disabled="disabled" />
+                                <input type="hidden" id="UnitId" value="" />
+                            </td>
+
+                            <td>
+                                <input type="text" id="Size" class="form-control" disabled="disabled" />
+
+                            </td>
+
+                            <td>
+                                <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
+
+                            </td>
+
+                            <td>
+                                <input type="text" id="RequisitionQty" class="form-control" disabled="disabled" />
+
+                            </td>
+                            <td>
+                                <input type="text" id="POQuantity1" name="POQuantity1" class="form-control" />
+
+                            </td>
+                            <td>
+                                <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
+
+                            </td>
+                            <td>
+                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="error" id="ItemName_Error">Item name required</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="error" id="POQuantity_Error">PO Quantity required</span></td>
+                            <td></td>
+
+                        </tr>
+
+                    </table>
+                    <br />
                     <table class="Resource-list table table-bordered" id="Item-list">
                         <tr class="bg-grey">
                             <th>Item Name</th>
@@ -211,6 +239,7 @@
                             <th>Total Price</th>
                             <th></th>
                         </tr>
+
                         <tfoot>
                             <tr>
                                 @*<td></td>
@@ -233,8 +262,10 @@
             <button type="button" id="SaveItem" class="btn btn-primary"><i class="icon-add position-left"></i> Create</button>
         </div>
 
+
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
@@ -248,6 +279,7 @@
             <div class="modal-body">
                 <div class="panel-body">
                     @Html.AntiForgeryToken()
+
                     <div class="form-horizontal">
                         <div class="form-group">
                             <input type="hidden" id="ProjectId" value="" />
@@ -260,6 +292,7 @@
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                             </div>
                         </div>
+
                         <div class="form-group">
                             @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -303,7 +336,7 @@
                                 @Html.TextBox("ModalTotalPrice", null, new { @class = "form-control", @disabled = "disabled" })
                             </div>
                         </div>
-
+                       
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
@@ -316,6 +349,7 @@
         </div>
     </div>
 </div>
+
 <script>
     var counter = 0; //counter for the serial
     var selRow;
@@ -418,7 +452,7 @@
               + '<td><input class="form-control POQuantityNew" value="' + POQuantity + '" type="text" name="POQuantity"/></td>'
               + '<td><input class="form-control TotalPriceNew" value="' + TotalPrice + '" type="text" readonly="true" name="TotalPrice"/></td>'
               //+ '<td><button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td>'
-
+           
                  + '<td> '
                     + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                  + '<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick" value="Delete"><i class="icon-cross"></i></button></td>'
@@ -513,7 +547,7 @@
             for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
                 var quantity = $('#Item-list tr').eq(cn).find("td input[name=POQuantity]").val();
                 // console.log('Quantity: ' + quantity);
-                var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val(); ``
+                var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();``
                 // console.log('Cost: ' + cost);
                 var result = parseFloat(quantity) * parseFloat(cost);
                 ItemTotalCost = parseFloat(ItemTotalCost + result);
@@ -563,9 +597,9 @@
             alert('Lead Time required!');
             $('#LeadTime').focus();
         }
-            //else if ($('.Resource-list tr').length < 2) {
-            //        alert('Please Add Item to this order');
-            //    }
+        //else if ($('.Resource-list tr').length < 2) {
+        //        alert('Please Add Item to this order');
+        //    }
         else {
             //alert('All Validation Donne...');
             CreatePurchaseOrder();
@@ -804,7 +838,7 @@
                 $('#ItemName').html(sites);
 
 
-
+                
 
                 var sites = "<select id='ModalItemName'>";
                 sites = sites + '<option value="">--Select--</option>';
@@ -841,6 +875,7 @@
 
 
 </script>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Plugins/select2/select2.min.js"></script>
@@ -856,6 +891,7 @@
         });
     </script>
 }
+
 <style>
     /*.scrolling {
         width: 100%;

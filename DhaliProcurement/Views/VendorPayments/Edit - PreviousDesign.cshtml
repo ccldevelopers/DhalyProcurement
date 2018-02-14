@@ -39,121 +39,92 @@
                 <br />
                 <div class="details well" style=" border 1px solid black;">
                     <h4>Items Entry</h4>
-                    <div class="jumbotron" style="padding:10px;">
-                        <table style="width: 100%;" class="table-responsive">
-                            <tr>
-                                @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
-                                <td style="font-weight: bold;" class="col-lg-1">Project</td>
-                                <td class="col-lg-3">
-                                    @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
-                                    <input type="hidden" value="" id="ProjectId" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Site</td>
-                                <td class="col-lg-3">
-                                    @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
-                                    <input type="hidden" value="" id="SiteId" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
-                                <td class="col-lg-3">
-                                    @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
-                                    <input type="hidden" value="" id="ReqNo" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><span class="error" id="ProjectId_Error" style="padding-left:10px;">Project Required</span></td>
-                                <td></td>
-                                <td><span class="error" id="SiteId_Error" style="padding-left:10px;">Site Required</span></td>
-                                <td></td>
-                                <td><span class="error" id="Req_Error" style="padding-left:10px;"> Req. No. Required</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
-                                <td class="col-lg-3">
-                                    @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
-                                    <input type="hidden" value="" id="PONo" />
+                    <table style="width: 100%;">
+                        <tr>
+                            @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
+                            <th style="font-size: 15px; font-weight: bold;">Project Name</th>
+                            <th style="font-size: 15px; font-weight: bold;">Site</th>
+                            <th style="font-size: 15px; font-weight: bold;">Req. No.</th>
+                            <th style="font-size: 15px; font-weight: bold;">PO No.</th>
+                            <th style="font-size: 15px; font-weight: bold;">Item Name</th>
+                            <th style="font-size: 15px; font-weight: bold;">Req. Qty Material</th>
+                            <th style="font-size: 15px; font-weight: bold;">Unit</th>
+                            <th style="font-size: 15px; font-weight: bold;">Challan No</th>
+                            <th style="font-size: 15px; font-weight: bold;">Bill No.</th>
+                            <th style="font-size: 15px; font-weight: bold;">Total Amount(tk)</th>
+                            <th style="font-size: 15px; font-weight: bold;">Payment</th>
+                            <th style="font-size: 15px; font-weight: bold;">Remarks</th>
+                            @*<th>&nbsp;</th>*@
+                        </tr>
+                        <tr>
+                            <td>
 
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Item</td>
-                                <td class="col-lg-3">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Req. Qty Material</td>
-                                <td class="col-lg-3">
-                                    <input type="text" id="ReqQty" class="form-control" disabled="disabled" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><span class="error" id="PO_Error" style="padding-left:10px;">PO Required</span></td>
-                                <td></td>
-                                <td><span class="error" id="ItemId_Error" style="padding-left:10px;">Item Required</span></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit</td>
-                                <td class="col-lg-3">
-                                    <input type="text" id="UnitName" class="form-control" disabled="disabled" />
-                                    <input type="hidden" value="" id="UnitId" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Challan No</td>
-                                <td class="col-lg-3">
-                                    @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo" })
-                                    <input type="hidden" value="" id="Proc_MaterialEntryDetId" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Bill No.</td>
-                                <td class="col-lg-3">
-                                    <input type="text" id="BillNo" class="form-control" />
-                                </td>
+                                @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId", @style = "width: 100px;" })
+                                @*<input type="hidden" value="" id="ProjectId" />*@
+                            </td>
+                            <td>
+                                @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId", @style = "width: 100px;" })
+                                @*<input type="hidden" value="" id="SiteId" />*@
+                            </td>
+                            <td>
+                                @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo", @style = "width: 100px;" })
+                                @*<input type="hidden" value="" id="ReqNo" />*@
+                            </td>
+                            <td>
+                                @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo", @style = "width: 100px;" })
+                                @*<input type="hidden" value="" id="PONo" />*@
 
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><span class="error" id="Challan_Error" style="padding-left:10px;">Challan No. Required</span></td>
-                                <td></td>
-                                <td></td>
+                            </td>
+                            <td>
+                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 100px;" })
+                            </td>
+                            <td>
+                                <input type="text" id="ReqQty" class="form-control" disabled="disabled" style="width: 60px;" />
+                            </td>
+                            <td>
+                                <input type="text" id="UnitName" class="form-control" disabled="disabled" style="width: 50px;" />
+                                <input type="hidden" value="" id="UnitId" />
+                            </td>
+                            <td>
+                                @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo", @style = "width: 100px;" })
+                                <input type="hidden" value="" id="Proc_MaterialEntryDetId" />
+                            </td>
+                            <td>
+                                <input type="text" id="BillNo" class="form-control" style="width: 50px;" />
+                            </td>
+                            <td>
 
-                            </tr>
-                            <tr>
+                                <input type="text" id="TotalAmount" class="form-control" disabled="disabled" />
+                            </td>
+                            <td>
+                                <input type="text" id="Payment" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" id="Remarks" class="form-control" />
+                            </td>
 
-                                <td style="font-weight: bold;" class="col-lg-1">Challan Amount(tk)</td>
-                                <td class="col-lg-3">
-
-                                    <input type="text" id="TotalAmount" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Payment</td>
-                                <td class="col-lg-3">
-                                    <input type="text" id="Payment" class="form-control" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Remarks</td>
-                                <td class="col-lg-3">
-                                    <input type="text" id="Remarks" class="form-control" />
-                                    @*<input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />*@
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><span class="error" id="Payment_Error" style="padding-left:10px;">Payment Required</span></td>
-                                <td></td>
-                                <td></td>
-
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td class="pull-right" style="padding-right:10px;"><input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" /></td>
-                            </tr>
-
-                        </table>
-                    </div>
+                            <td>
+                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style = "background-color: grey;border: none;"/>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><span class="error" id="ProjectId_Error">Required</span></td>
+                            <td><span class="error" id="SiteId_Error">Required</span></td>
+                            <td><span class="error" id="Req_Error">Required</span></td>
+                            <td><span class="error" id="PO_Error">Required</span></td>
+                            <td><span class="error" id="ItemId_Error">Required</span></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="error" id="Challan_Error">Required</span></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="error" id="Payment_Error">Required</span></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <br />
                     <div class="table-responsive scrolling">
                         <table class="Resource-list table table-bordered" id="PaymentDetails">
                             <tr class="bg-grey">

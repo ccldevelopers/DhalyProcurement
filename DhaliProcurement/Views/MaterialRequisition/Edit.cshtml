@@ -6,7 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     DhaliProcurement.Models.DCPSContext db = new DhaliProcurement.Models.DCPSContext();
 }
-
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -37,14 +36,12 @@
                         <tr>
                             <td>Project Name</td>
                             <td>
-
                                 @*@Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2", @style = "width: 500px !important" })*@
                                 <input type="text" value="@ViewBag.ProjectName" class="form-control" disabled="disabled" />
                                 <input type="hidden" value="@ViewBag.ProjectId" id="ProjectId" />
                                 <input type="hidden" value="@ViewBag.RequisitionMasId" id="RequisitionMasId" />
                                 @*@ViewData["ReqMAsterId"] = ViewBag.RequisitionMasId;*@
                                 @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
-
                             </td>
                             <td>Req. No.</td>
                             <td>
@@ -67,15 +64,12 @@
                                 @*<input type="text" value="@ViewBag.ReqDate" class="form-control datepicker" id="ReqDate" />*@
                             </td>
                         </tr>
-
                         <tr>
                             <td>Site Engineer</td>
                             <td>
                                 @Html.TextBox("SiteEngineer", null, new { @class = "form-control", disabled = "true" })
                             </td>
-
                         </tr>
-
                         <tr>
                             <td>Project Manager</td>
                             <td>
@@ -87,109 +81,100 @@
                             <td>
                                 @Html.TextBox("Remarks", Model.requisitionMaster.Remarks, new { @class = "form-control" })
                             </td>
-
                         </tr>
-
                     </table>
                     <hr />
                     <div class="details well" style=" border 1px solid black;">
                         <h4>Requisition Items</h4>
-                        <table style="width: 100%;">
-                            <tr>
-                                @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
-                                <th style="font-size: 15px; font-weight: bold;">Required Materials</th>
-                                <th style="font-size: 15px; font-weight: bold;">Unit</th>
-                                <th style="font-size: 15px; font-weight: bold;">Total Required</th>
-                                <th style="font-size: 15px; font-weight: bold;">Total Received</th>
-                                <th style="font-size: 15px; font-weight: bold;">Remaining</th>
-                                <th style="font-size: 15px; font-weight: bold;">Current Stock</th>
-                                <th style="font-size: 15px; font-weight: bold;">Req. Qty</th>
-                                <th style="font-size: 15px; font-weight: bold;">Required Before(Date)</th>
-                                <th style="font-size: 15px; font-weight: bold;">Brand/Quantity</th>
-                                <th style="font-size: 15px; font-weight: bold;">Size</th>
+                        <div class="jumbotron" style="padding:10px;">
+                            <table class="table-responsive">
+                                <tr style="text-align:center;">
+                                    @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
+                                    <td style="font-weight: bold;">Required Materials</td>
+                                    <td>
+                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                    </td>
+                                    <td style="font-weight: bold;">Unit</td>
+                                    <td>
+                                        @*@Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })*@
+                                        @Html.TextBox("Unit", "", new { @disabled = "disabled", @class = "form-control", @id = "UnitName" })
+                                        <input type="hidden" value="" id="UnitId" />
+                                    </td>
+                                    <td style="font-weight: bold;">Total Required</td>
+                                    <td>
+                                        <input type="text" id="TotalRequired" class="form-control" disabled="disabled" />
+                                    </td>
+                                    <td style="font-weight: bold;">Total Received</td>
+                                    <td>
+                                        <input type="text" id="TotalReceived" class="form-control" disabled="disabled" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span class="error" id="ItemName_Error">Item name required</span></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td style="font-weight: bold;">Remaining</td>
+                                    <td>
+                                        <input type="text" id="RemainingBalance" class="form-control" disabled="disabled" />
+                                    </td>
+                                    <td style="font-weight: bold;">Current Stock</td>
+                                    <td>
+                                        <input type="text" id="CurrentStock" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;">Req. Qty</td>
+                                    <td>
+                                        <input type="text" id="ReqQty" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;">Required Before(Date)</td>
+                                    <td>
+                                        <input type="text" id="RequiredDate" class="form-control datepicker" />
+                                    </td>
+                                </tr>
+                                <tr>
 
-                                <th style="font-size: 15px; font-weight: bold;">Remarks</th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                            <tr>
-                                <td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <span class="error" id="ReqQty_Error">Req Qty must be a number</span>
+                                        <span class="error" id="ReqQty_Error2">Req Qty can not be empty</span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="text-align:center;">
+                                    <td style="font-weight: bold;">Brand/Quantity</td>
+                                    <td>
+                                        <input type="text" id="Brand" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;">Size</td>
+                                    <td>
+                                        <input type="text" id="Size" class="form-control" />
+                                    </td>
+                                    @*<td>
+                                            <input type="text" id="Qty" class="form-control" />
+                                        </td>*@
+                                    <td style="font-weight: bold;">Remarks</td>
+                                    <td>
+                                        <input type="text" id="ItemRemarks" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
 
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
-                                    @*<span class="error">Item name required</span>*@
-                                </td>
-                                @*<td>
-                                        <input type="text" id="Qty" class="form-control" />
-                                        <span class="error">Valid quantity required</span>
-                                    </td>*@
-                                <td>
-                                    @*@Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })*@
-                                    @Html.TextBox("Unit", "", new { @disabled = "disabled", @class = "form-control", @id = "UnitName" })
-                                    <input type="hidden" value="" id="UnitId" />
-                                    @*<span class="error">Unit required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="TotalRequired" class="form-control" disabled="disabled" />
-                                    @*<span class="error">Valid rate required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="TotalReceived" class="form-control" disabled="disabled" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="RemainingBalance" class="form-control" disabled="disabled" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="CurrentStock" class="form-control" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="ReqQty" class="form-control" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="RequiredDate" class="form-control datepicker" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="Brand" class="form-control" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="text" id="Size" class="form-control" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-
-                                <td>
-                                    <input type="text" id="ItemRemarks" class="form-control" />
-                                    @*<span class="error">Item remarks required</span>*@
-                                </td>
-                                <td>
-                                    <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
-                                    @*<span class="error">required</span>*@
-                                </td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td><span class="error" id="ItemName_Error">Item name required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                @*<td><span class="error" id="CurrentStock_Error">Current Stock required</span></td>*@
-                                <td><span class="error" id="ReqQty_Error">Req Qty must be a number</span></td>
-                                @*<td><span class="error" id="Brand_Error">brand required</span></td>
-                                    <td><span class="error" id="Size_Error">Size required</span></td>
-                                    <td><span class="error" id="RequiredDate_Error">Date required</span></td>*@
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </table>
+                            </table>
+                        </div>
                         <br />
                         <div class="table-responsive scrolling">
                             <table class="Resource-list table table-bordered" id="RequisitionDetails">
@@ -216,8 +201,8 @@
                                             <input type="hidden" value="@item.Id" name="TaskId" />
                                             @{
                                                 var itemName = db.Item.SingleOrDefault(x => x.Id == item.ItemId);
-                                            }                                         
-                                            <input class="form-control" value="@itemName.Name" type="text" name="ItemName"  style="width:90px;" disabled="disabled"/>
+                                            }
+                                            <input class="form-control" value="@itemName.Name" type="text" name="ItemName" style="width:90px;" disabled="disabled" />
                                             @*<input type="text" value="@itemName.Name" class="form-control" />*@
                                             <input type="hidden" value="@item.ItemId" class="form-control" name="ItemId" />
                                         </td>
@@ -230,7 +215,7 @@
                                                             select units).FirstOrDefault();
                                             }
                                             @*<label>@unit.Name</label>*@
-                                            <input type="text" value="@unit.Name" class="form-control" name="ItemUnit" style="width:80px;"  disabled="disabled"/>
+                                            <input type="text" value="@unit.Name" class="form-control" name="ItemUnit" style="width:80px;" disabled="disabled" />
                                             <input type="hidden" value="@unit.Id" class="form-control" name="UnitId" />
                                         </td>
                                         <td>
@@ -251,7 +236,6 @@
                                                                      where procProjectItem.ItemId == itemid && project.Id == pid && site.Id == sid
                                                                      select procProjectItem).FirstOrDefault();
                                             }
-
                                             @*<input type="text" value="" class="form-control" name="TotalRequired" disabled="disabled" />*@
                                             <input type="text" value="@totalRequired.PQuantity" class="form-control" name="TotalRequired" disabled="disabled" style="width:90px;" />
                                         </td>
@@ -300,7 +284,6 @@
                                         <td>
                                             <input type="text" value="@item.Size" class="form-control" name="Size" style="width:80px;" />
                                         </td>
-
                                         <td>
                                             <input type="text" value="@item.Remarks" class="form-control" name="ItemRemarks" style="width:80px;" />
                                         </td>
@@ -311,7 +294,6 @@
                                             @*<input type="button" class="btn btn-danger btn-xs deleteItem" value="Delete" onclick="$(this).parent().parent().remove();" />*@
                                             @*<span class="btn text-warning-600 btn-flat btn-icon btn-rounded" onclick="RemoveTask(@item.Id)"><i class="icon-cross"></i></span>*@
                                         </td>
-
                                         @*@{
                                                 var unit = (from procProjectItem in db.ProcProjectItem
                                                            join itemUnit in db.Unit on procProjectItem.UnitId equals itemUnit.Id
@@ -324,16 +306,12 @@
                             </table>
                         </div>
 
-
                     </div>
 
                                                 }
             </div>
 
-
-
         </div>
-
 
     </div>
     <div class="form-group">
@@ -373,11 +351,9 @@
                     <button type="button" id="ApproveItem" class="btn btn-danger" disabled="disabled"><i class="icon-select2 position-left"></i>Pending Approval</button>
                 }
             }
-
         </div>
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -392,7 +368,6 @@
             <div class="modal-body">
                 <div class="panel-body">
                     @Html.AntiForgeryToken()
-
                     <div class="form-horizontal">
                         <div class="form-group">
                             <input type="hidden" id="ProjectId" value="" />
@@ -405,7 +380,6 @@
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                             </div>
                         </div>
-
                         <div class="form-group">
                             @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -490,8 +464,6 @@
     </div>
 </div>
 
-
-
 <script>
     var counter = 0;
     var selRow;
@@ -501,6 +473,7 @@
         $(".select2").select2();
         $('#ItemName_Error').hide();
         $('#ReqQty_Error').hide();
+        $('#ReqQty_Error2').hide();
     });
 
     $("#ItemName").change(function () {
@@ -575,14 +548,20 @@
             $('#ItemName_Error').hide();
         }
 
-        if (ReqQty == "" || isNaN(ReqQty)) {
+        if (ReqQty == "") {
+            $('#ReqQty_Error2').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ReqQty_Error2').hide();
+        }
+        if (isNaN(ReqQty)) {
             $('#ReqQty_Error').show();
             isAllValid = false;
         }
         else {
             $('#ReqQty_Error').hide();
         }
-
         $('table.Resource-list tr').each(function () {
             var name = $(this).find("td input[name=ItemName]").val();
             //alert(name);
@@ -611,7 +590,7 @@
                     + '<td><input class="form-control" value="' + Size + '"  type="text" name="Size"style="width:80px;"/></td>'
                     + '<td><input class="form-control" value="' + ItemRemarks + '" type="text" name="ItemRemarks"/></td>'
                     //+ '</td><td> <input type="button" class="btn btn-danger btn-xs deleteItem" value="Delete" onclick="$(this).parent().parent().remove();" /></td></tr>');
-                    +'<td>'
+                    + '<td>'
                      + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                      + ' <button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded" onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
                      + '</td></tr>');
@@ -834,7 +813,7 @@
 
 
         //===========Detail Form===========
-        var ProcRequisitionDetId =  document.getElementsByName("TaskId");
+        var ProcRequisitionDetId = document.getElementsByName("TaskId");
         var ItemId = document.getElementsByName("ItemId");
         var TotalRequired = document.getElementsByName("TotalRequired");
         var TotalReceived = document.getElementsByName("TotalReceived");
@@ -985,7 +964,7 @@
                 console.log(result);
                 if (result.flag === true) {
                     alert("Record approved successfully!");
-                    
+
                     window.location.replace("/MaterialRequisition/Index");
                 }
                 else {
@@ -1007,37 +986,37 @@
 
     $('.deleteRequisitionItem').click(function () {
         //if (retVal == true) {
-            var row = $(this).closest('tr');
-            var itemDetId = $(this).closest('tr').find('td input[name=TaskId]').val();
-            //alert(itemDetId);
+        var row = $(this).closest('tr');
+        var itemDetId = $(this).closest('tr').find('td input[name=TaskId]').val();
+        //alert(itemDetId);
 
-            RequisitionDelete = JSON.stringify({
-                RequisitionDetailId: itemDetId
-            });
+        RequisitionDelete = JSON.stringify({
+            RequisitionDetailId: itemDetId
+        });
 
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: '/MaterialRequisition/DeleteRequisitionDetailItem',
-                data: RequisitionDelete,
-                success: function (result) {
-                    console.log(result);
-                    if (result.flag === true) {
-                        deleteList[deleteCounter] = itemDetId;
-                        deleteCounter++;
-                        row.remove();
-                    }
-                    else {
-                        alert(result.message);
-                    }
-
-
-                },
-                failure: function (response) {
-                    alert('error');
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '/MaterialRequisition/DeleteRequisitionDetailItem',
+            data: RequisitionDelete,
+            success: function (result) {
+                console.log(result);
+                if (result.flag === true) {
+                    deleteList[deleteCounter] = itemDetId;
+                    deleteCounter++;
+                    row.remove();
                 }
-            });
+                else {
+                    alert(result.message);
+                }
+
+
+            },
+            failure: function (response) {
+                alert('error');
+            }
+        });
 
     });
 
@@ -1054,7 +1033,6 @@
 
     }
 </script>
-
 
 <style>
     span.error {

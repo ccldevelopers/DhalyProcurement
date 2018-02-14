@@ -1708,6 +1708,16 @@
     <Content Include="Views\Report\TenderInformation.cshtml" />
     <Content Include="Views\Report\TenderInformationAccepted.cshtml" />
     <Content Include="Views\Report\VendorPaymentItemWise.cshtml" />
+    <Content Include="Views\Projects\Create - PreviousDesign.cshtml" />
+    <Content Include="Views\Projects\Edit - PreviousDesign.cshtml" />
+    <Content Include="Views\TenderQuotation\Create - Previous Design.cshtml" />
+    <Content Include="Views\TenderQuotation\Edit - Previous Design.cshtml" />
+    <Content Include="Views\PurchaseOrders\Create - PreviousDesign.cshtml" />
+    <Content Include="Views\PurchaseOrders\Edit - PreviousDesign.cshtml" />
+    <Content Include="Views\MaterialsEntry\Create - PreviousDesign.cshtml" />
+    <Content Include="Views\MaterialsEntry\Edit - PreviousDesign.cshtml" />
+    <Content Include="Views\VendorPayments\Create - PreviousDesign.cshtml" />
+    <Content Include="Views\VendorPayments\Edit - PreviousDesign.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

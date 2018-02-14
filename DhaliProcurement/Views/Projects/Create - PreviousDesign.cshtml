@@ -33,14 +33,14 @@
                         <tr>
                             <td  class="col-lg-2">Project Name</td>
                             <td  class="col-lg-10" colspan="2">
-                                @Html.TextBox("ProjectName", "", new { @class = "form-control" ,@tabindex = "1" })
+                                @Html.TextBox("ProjectName", "", new { @class = "form-control" })
                             </td>
                         </tr>
 
                         <tr>
                             <td class="col-lg-">Project Manager</td>
                             <td class="col-lg-10">
-                                @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @id = "RName", @class = "form-control select2", @style = "width: 500px !important", @tabindex = "2" })
+                                @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @id = "RName", @class = "form-control select2", @style = "width: 500px !important" })
                                 @Html.ValidationMessage("RName", "", new { @class = "text-danger" })
                                 
                             </td>
@@ -53,22 +53,38 @@
                         <tr>
                             <td>Project Start Date</td>
                             <td colspan="2">
-                                @Html.TextBox("StartDate", null, new { @class = "form-control datepicker", @tabindex = "3" })
+                                @Html.TextBox("StartDate", null, new { @class = "form-control datepicker" })
                             </td>
                         </tr>
 
                         <tr>
                             <td>Project End Date</td>
                             <td colspan="2">
-                                @Html.TextBox("EndDate", null, new { @class = "form-control datepicker", @tabindex = "4" })
+                                @Html.TextBox("EndDate", null, new { @class = "form-control datepicker" })
                             </td>
                         </tr>
+                        @*<tr>
+
+
+                            <td>Client</td>
+                            <td>
+                                @Html.DropDownList("ClientId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @required = "required" })
+                                @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+
+                               <button type="button" id="addClient" class="btn btn-primary" data-toggle="modal" data-target="#resourceClientModal">Add</button>
+
+                            </td>
+
+                                 </tr>*@
+
                         <tr>
                             <td>Remarks</td>
                             <td colspan="2">
-                                @Html.TextBox("Remarks", null, new { @class = "form-control", @tabindex = "5" })
+                                @Html.TextBox("Remarks", null, new { @class = "form-control" })
                             </td>
                         </tr>
+
+
                     </table>
                     <hr />
 
@@ -83,29 +99,33 @@
                 }
 
 
-                <div class="jumbotron" style="padding:10px;">
+                <div class="details well" style=" border 1px solid black;">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="font-weight: bold;" class="col-lg-4">Site Name</td>
-                            <td style="font-weight: bold;" class="col-lg-4">Location</td>
-                            <td style="font-weight: bold;" class="col-lg-3">Site Engineer</td>
+                            <td style="font-size: 15px; font-weight: bold;">Site Name</td>
+                            <td style="font-size: 15px; font-weight: bold;">Location</td>
+                            <td style="font-size: 15px; font-weight: bold;">Site Engineer</td>
                             <td>&nbsp;</td>
                         </tr>
-
+                       
                         <tr>
                             <td>
-                                <input type="text" id="SiteName" class="form-control" tabindex="6" />
+                                <input type="text" id="SiteName" class="form-control" />
                             </td>
+
                             <td>
-                                <input type="text" id="SiteLocation" class="form-control" tabindex="7"/>
+                                <input type="text" id="SiteLocation" class="form-control" />
                             </td>
+
                             <td>
-                                @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteRName" , @tabindex = "8" })
+                                @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteRName" })
                             </td>
+
                             <td>
-                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" tabindex="9"/>
+                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style = "background-color: grey;border: none;"/>
                             </td>
                         </tr>
+
                         <tr>
                             <td><span class="error" id="SiteName_Error">Site name required</span></td>
                             <td><span class="error" id="SiteLocation_Error">Location required</span></td>

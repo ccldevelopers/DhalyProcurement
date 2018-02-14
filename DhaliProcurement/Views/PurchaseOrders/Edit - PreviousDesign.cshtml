@@ -162,67 +162,68 @@
 
                 <div class="details well" style=" border 1px solid black;">
                     <h4>Purchase Order Items</h4>
-                    <div class="jumbotron" style="padding:10px;">
-                        <table style="width: 100%;" class="table-responsive">
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Item</td>
-                                <td class="col-lg-2">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="UnitName" class="form-control" disabled="disabled" />
-                                    <input type="hidden" id="UnitId" value="" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Size</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="Size" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit Price</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><span class="error" id="ItemName_Error" style="padding-left:10px;">Item  required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Requisition Qty</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="RequisitionQty" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">PO Quantity</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="POQuantity1" name="POQuantity1" class="form-control" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Total Price</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
-                                </td>
-                                <td class="col-lg-1"></td>
-                                <td class="col-lg-2">
-                                    <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><span class="error" id="POQuantity_Error" style="padding-left:10px;">PO Quantity required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="font-size: 15px; font-weight: bold;">Item Name</td>
+                            <td style="font-size: 15px; font-weight: bold;">Unit</td>
+                            <td style="font-size: 15px; font-weight: bold;">Size</td>
+                            <td style="font-size: 15px; font-weight: bold;">Unit Price</td>
+                            <td style="font-size: 15px; font-weight: bold;">Requisition Qty</td>
+                            <td style="font-size: 15px; font-weight: bold;">PO Quantity</td>
+                            <td style="font-size: 15px; font-weight: bold;">Total Price</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                            </td>
+
+                            <td>
+                                <input type="text" id="UnitName" class="form-control" disabled="disabled" />
+                                <input type="hidden" id="UnitId" value="" />
+                            </td>
+
+                            <td>
+                                <input type="text" id="Size" class="form-control" disabled="disabled" />
+
+                            </td>
+
+                            <td>
+                                <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
+
+                            </td>
+                            <td>
+                                <input type="text" id="RequisitionQty" class="form-control" disabled="disabled" />
+
+                            </td>
+                            <td>
+                                <input type="text" id="POQuantity1" name="POQuantity1" class="form-control" />
+
+                            </td>
+                            <td>
+                                <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
+
+                            </td>
+                            <td>
+                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style = "background-color: grey;border: none;" />
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="error" id="ItemName_Error">Item name required</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><span class="error" id="POQuantity_Error">PO Quantity required</span></td>
+                            <td></td>
+
+                        </tr>
+
+                    </table>
+                    <br />
                     <table class="Resource-list table table-bordered" id="Item-list">
                         <tr class="bg-grey">
                             <th>Item Name</th>

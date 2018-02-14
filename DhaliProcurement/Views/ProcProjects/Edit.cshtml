@@ -158,72 +158,71 @@
 
                 <div class="details well" style=" border 1px solid black;">
                     <h4>Project Procurement Items</h4>
-                    <table style="width: 100%;">
-                        <tr>
-                            <td style="font-size: 15px; font-weight: bold;">Item Name</td>
-                            <td style="font-size: 15px; font-weight: bold;">Qty</td>
-                            <td style="font-size: 15px; font-weight: bold;">Unit</td>
-                            <td style="font-size: 15px; font-weight: bold;">Cost</td>
-                            <td style="font-size: 15px; font-weight: bold;">Remarks</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
-                                @*<span class="error">Item name required</span>*@
-                            </td>
-                            <td>
-                                <input type="text" id="Qty" class="form-control" />
-                                @*<span class="error">Valid quantity required</span>*@
-                            </td>
-                            <td>
-                                @Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })
-                                @*<span class="error">Unit required</span>*@
-                            </td>
-                            <td>
-                                <input type="text" id="Cost" class="form-control" />
-                                @*<span class="error">Valid rate required</span>*@
-                            </td>
-                            <td>
-                                <input type="text" id="ItemRemarks" class="form-control" />
-                                @*<span class="error">Item remarks required</span>*@
-                            </td>
-                            <td>
-                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
-                                @*<span class="error">required</span>*@
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><span class="error" id="ItemName_Error">Item name required</span></td>
-                            <td><span class="error" id="Quantity_Error">Quantity required</span></td>
-                            <td><span class="error" id="UnitName_Error">Unit required</span></td>
-                            <td><span class="error" id="Costing_Error">Costing required</span></td>
-                            <td></td>
-                        </tr>
-
-                    </table>
-                    <br />
-                    <table class="Resource-list table table-bordered" id="Item-list">
-                        <tr class="bg-grey">
-                            <th class="col-lg-2">Item Name</th>
-                            <th class="col-lg-2">Qty</th>
-                            <th class="col-lg-2">Unit</th>
-                            <th class="col-lg-2">Cost</th>
-                            <th class="col-lg-2">Remarks</th>
-                            <th class="col-lg-2"></th>
-                        </tr>
-
-                        <tfoot>
+                    <div class="jumbotron" style="padding:10px;">
+                        <table style="width: 100%;">
                             <tr>
-                                <td colspan="3" style="text-align:right;font-weight:bold;font-size:120%;">Total Cost</td>
-                                <td><input type="text" value="" id="totalCost" class="form-control" disabled="disabled" /></td>
-                                <td colspan="2"></td>
+                                <td style="font-weight: bold;" class="col-lg-4">Item Name</td>
+                                <td style="font-weight: bold;" class="col-lg-2">Qty</td>
+                                <td style="font-weight: bold;" class="col-lg-1">Unit</td>
+                                <td style="font-weight: bold;" class="col-lg-2">Cost</td>
+                                <td style="font-weight: bold;" class="col-lg-3">Remarks</td>
+                                <td>&nbsp;</td>
                             </tr>
-                        </tfoot>
-                    </table>
+                            <tr>
+                                <td>
+                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                    @*<span class="error">Item name required</span>*@
+                                </td>
+                                <td>
+                                    <input type="text" id="Qty" class="form-control" />
+                                    @*<span class="error">Valid quantity required</span>*@
+                                </td>
+                                <td>
+                                    @Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })
+                                    @*<span class="error">Unit required</span>*@
+                                </td>
+                                <td>
+                                    <input type="text" id="Cost" class="form-control" />
+                                    @*<span class="error">Valid rate required</span>*@
+                                </td>
+                                <td>
+                                    @*<input type="text" id="ItemRemarks" class="form-control" />*@
+                                    <textarea id="ItemRemarks" class="form-control" rows="1"></textarea>
+                                    @*<span class="error">Item remarks required</span>*@
+                                </td>
+                                <td>
+                                    <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
+                                    @*<span class="error">required</span>*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="error" id="ItemName_Error">Item name required</span></td>
+                                <td><span class="error" id="Quantity_Error">Quantity required</span></td>
+                                <td><span class="error" id="UnitName_Error">Unit required</span></td>
+                                <td><span class="error" id="Costing_Error">Cost required</span></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <br />
+                        <table class="Resource-list table table-bordered" id="Item-list">
+                            <tr class="bg-grey">
+                                <th class="col-lg-2">Item Name</th>
+                                <th class="col-lg-2">Qty</th>
+                                <th class="col-lg-2">Unit</th>
+                                <th class="col-lg-2">Cost</th>
+                                <th class="col-lg-2">Remarks</th>
+                                <th class="col-lg-2"></th>
+                            </tr>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" style="text-align:right;font-weight:bold;font-size:120%;">Total Cost</td>
+                                    <td><input type="text" value="" id="totalCost" class="form-control" disabled="disabled" /></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
     <div class="form-group">
@@ -535,8 +534,8 @@
                     }
                     else
                     {
-                        //alert(data.message);
-                        swal(data.message);
+                        alert(data.message);
+                        //swal(data.message);
                     }
 
 
@@ -674,8 +673,8 @@
             var name = $(this).find("td input[name=ItemName]").val();
             //alert(name);
             if (ItemName == name) {
-                //alert('This item already exists!');
-                swal('This item already exists!');
+                alert('This item already exists!');
+                //swal('This item already exists!');
                 isValidItem = false;
             }
 
@@ -850,4 +849,8 @@
         color: red;
         font-size: 90%;
     }
+        textarea {
+    resize: none;
+}
+
 </style>
