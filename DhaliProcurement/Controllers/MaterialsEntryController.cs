@@ -375,8 +375,8 @@ namespace DhaliProcurement.Controllers
                               join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
                               join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                               join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                              where requisitionDet.ItemId == itemId && site.Id == siteId
-                              select requisitionMas).Distinct();
+                              where requisitionDet.ItemId == itemId && site.Id == siteId && tenderDet.Proc_RequisitionDetId == requisitionDet.Id && tenderDet.Status=="A"
+                               select requisitionMas).Distinct();
 
             foreach (var x in requisition)
             {

@@ -47,7 +47,8 @@ namespace DhaliProcurement.Controllers
                                 select new { site, project }).Distinct().ToList();
 
             List<ProjectSite> sites = new List<ProjectSite>();
-            foreach (var i in procprojects) {
+            foreach (var i in procprojects)
+            {
                 //var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
                 var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.site.Id);
                 sites.Add(site);
@@ -355,123 +356,87 @@ namespace DhaliProcurement.Controllers
             var planList = db.Proc_RequisitionMas.Where(x => x.Rcode.Trim() == ReqNo.Trim()).ToList();
             if (planList.Count == 0)
             {
-                flag = false;
-                Proc_RequisitionMas master = new Proc_RequisitionMas();
 
-                //master.ProcProjectId = ProjectId;
-                var newProj = (from procProject in db.ProcProject
-                               join site in db.ProjectSite on procProject.ProjectSiteId equals SiteId
-                               join project in db.Project on site.ProjectId equals ProjectId
-                               where project.Id == ProjectId
-                               select procProject);
-
-                foreach (var i in newProj)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    master.ProcProjectId = i.Id;
+                    try
+                    {
+                        flag = false;
+                        Proc_RequisitionMas master = new Proc_RequisitionMas();
+                        var newProj = (from procProject in db.ProcProject
+                                       join site in db.ProjectSite on procProject.ProjectSiteId equals SiteId
+                                       join project in db.Project on site.ProjectId equals ProjectId
+                                       where project.Id == ProjectId
+                                       select procProject);
+
+                        foreach (var i in newProj)
+                        {
+                            master.ProcProjectId = i.Id;
+                        }
+
+                        master.ReqDate = RequisitionDate;
+                        master.Rcode = ReqNo;
+                        master.Remarks = remarks;
+                        master.Status = "N";
+
+                        db.Proc_RequisitionMas.Add(master);
+
+                        flag = db.SaveChanges() > 0;
+                        var getReqId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == ReqNo);
+                        RequisitionId = getReqId.Id;
+
+
+                        foreach (var item in RequisitionItems)
+                        {
+                            Proc_RequisitionDet detail = new Proc_RequisitionDet();
+                            detail.ItemId = item.ItemId;
+                            detail.Proc_RequisitionMasId = RequisitionId;
+                            detail.ReqQty = item.ReqQty;
+                            detail.CStockQty = item.CStockQty;
+                            detail.Brand = item.Brand;
+                            detail.Size = item.Size;
+                            detail.RequiredDate = item.RequiredDate;
+                            detail.Remarks = item.ItemRemarks;
+
+                            db.Proc_RequisitionDet.Add(detail);
+                            db.SaveChanges();
+                        }
+
+                        dbContextTransaction.Commit();
+
+                        if (flag == true)
+                        {
+                            result = new
+                            {
+                                flag = true,
+                                message = "Save Successful!"
+                            };
+                        }
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+
+                        result = new
+                        {
+                            flag = false,
+                            message = ex.Message
+                        };
+                    }
                 }
 
-                master.ReqDate = RequisitionDate;
-                master.Rcode = ReqNo;
-                master.Remarks = remarks;
-                master.Status = "N";
-
-                db.Proc_RequisitionMas.Add(master);
-
-                flag = db.SaveChanges() > 0;
-                var getReqId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == ReqNo);
-                RequisitionId = getReqId.Id;
-
-
-                foreach (var item in RequisitionItems)
-                {
-                    Proc_RequisitionDet detail = new Proc_RequisitionDet();
-                    detail.ItemId = item.ItemId;
-                    detail.Proc_RequisitionMasId = RequisitionId;
-                    detail.ReqQty = item.ReqQty;
-                    detail.CStockQty = item.CStockQty;
-                    detail.Brand = item.Brand;
-                    detail.Size = item.Size;
-                    detail.RequiredDate = item.RequiredDate;
-                    detail.Remarks = item.ItemRemarks;
-
-                    db.Proc_RequisitionDet.Add(detail);
-                    db.SaveChanges();
-                }
             }
-            //else
-            //{
-            //    var Proc_RequisitionMasId = db.Proc_RequisitionMas.Where(x => x.Rcode.Trim() == ReqNo.Trim()).SingleOrDefault();
-            //    var master = db.Proc_RequisitionMas.Find(Proc_RequisitionMasId.Id);
-            //    //var prevProj = (from procProject in db.ProcProject
-            //    //               join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-            //    //               join project in db.Project on site.ProjectId equals project.Id
-            //    //               where project.Id == ProjectId
-            //    //               select project).SingleOrDefault();
 
-            //    //master.ProcProjectId = prevProj.Id;
-            //    master.ReqDate = RequisitionDate;
-            //    master.Rcode = ReqNo;
-            //    master.Remarks = remarks;
-            //    //master.Status = "A";
-
-            //    db.Entry(master).State = EntityState.Modified;
-            //    //db.Proc_RequisitionMas.Add(master);
-
-            //    flag = db.SaveChanges() > 0;
-            //    var getReqId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == ReqNo);
-            //    RequisitionId = getReqId.Id;
-
-            //    foreach (var item in RequisitionItems)
-            //    {
-            //        var check = db.Proc_RequisitionDet.SingleOrDefault(x => x.ProcRequisitionMasId == RequisitionId && x.ItemId == item.ItemId);
-            //        if (check == null) {
-            //            Proc_RequisitionDet detail = new Proc_RequisitionDet();
-            //            detail.ItemId = item.ItemId;
-            //            detail.ProcRequisitionMasId = RequisitionId;
-            //            detail.ReqQty = item.ReqQty;
-            //            detail.CStockQty = item.CStockQty;
-            //            detail.Brand = item.Brand;
-            //            detail.Size = item.Size;
-            //            detail.RequiredDate = item.RequiredDate;
-            //            detail.Remarks = item.ItemRemarks;
-            //            db.Entry(detail).State = EntityState.Added;
-            //            //db.Proc_RequisitionDet.Add(detail);
-            //            db.SaveChanges();
-            //        }
-            //        else
-            //        {
-
-            //            var Proc_RequisitionDet_Id = db.Proc_RequisitionDet.SingleOrDefault(x => x.ProcRequisitionMasId == RequisitionId && x.ItemId == item.ItemId);
-            //            var getItem = db.Proc_RequisitionDet.Find(Proc_RequisitionDet_Id.Id);
-            //            getItem.CStockQty = item.CStockQty;
-            //            getItem.Brand = item.Brand;
-            //            getItem.Size = item.Size;
-            //            getItem.RequiredDate = item.RequiredDate;
-            //            getItem.Remarks = item.ItemRemarks;
-
-            //            db.Entry(getItem).State = EntityState.Modified;
-            //            db.SaveChanges();
-            //        }
-
-            //  }
-            //}
-
-
-            if (flag == true)
-            {
-                result = new
-                {
-                    flag = true,
-                    message = "Save Successful!"
-                };
-            }
 
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
 
-        public JsonResult EditRequisition(IEnumerable<VMRequisitionItem> RequisitionItems,int?[] DeleteItems, int ProjectId, int SiteId, DateTime RequisitionDate, string ReqNo, string remarks, int RequisitionMasId)
+        public JsonResult EditRequisition(IEnumerable<VMRequisitionItem> RequisitionItems, int?[] DeleteItems, int ProjectId, int SiteId, DateTime RequisitionDate, string ReqNo, string remarks, int RequisitionMasId)
         {
             var result = new
             {
@@ -481,7 +446,7 @@ namespace DhaliProcurement.Controllers
             var flag = false;
 
             //Delete requisition details item
-            if (DeleteItems!=null)
+            if (DeleteItems != null)
             {
                 foreach (var i in DeleteItems)
                 {
@@ -521,7 +486,7 @@ namespace DhaliProcurement.Controllers
                         detail.RequiredDate = item.RequiredDate;
                         detail.Remarks = item.ItemRemarks;
                         db.Entry(detail).State = EntityState.Added;
-                        flag =db.SaveChanges()>0;
+                        flag = db.SaveChanges() > 0;
                     }
                     else
                     {
@@ -559,52 +524,52 @@ namespace DhaliProcurement.Controllers
         {
 
             var RequisitionCount = (from requisitionMas in db.Proc_RequisitionMas
-                               join requisitionDet in db.Proc_RequisitionDet on requisitionMas.Id equals requisitionDet.Proc_RequisitionMasId
-                               join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId                              
-                               where requisitionMas.Id == ProcRequisitionMId
-                               select requisitionMas).Distinct().Count();
+                                    join requisitionDet in db.Proc_RequisitionDet on requisitionMas.Id equals requisitionDet.Proc_RequisitionMasId
+                                    join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId
+                                    where requisitionMas.Id == ProcRequisitionMId
+                                    select requisitionMas).Distinct().Count();
 
             if (RequisitionCount == 0)
             {
                 bool flag = false;
-            try
-            {
-                var itemsToDeletePlan = db.Proc_RequisitionDet.Where(x => x.Proc_RequisitionMasId == ProcRequisitionMId);
-                db.Proc_RequisitionDet.RemoveRange(itemsToDeletePlan);
-                db.SaveChanges();
-
-                var itemsToDeleteTask = db.Proc_RequisitionMas.Where(x => x.Id == ProcRequisitionMId);
-                db.Proc_RequisitionMas.RemoveRange(itemsToDeleteTask);
-
-                //var itemsToDeletePlan = db.Proc_RequisitionDet.Where(x => x.Proc_RequisitionMasId== ProcRequisitionMId);
-                //db.Proc_RequisitionDet.RemoveRange(itemsToDeletePlan);
-
-                flag = db.SaveChanges() > 0;
-            }
-            catch
-            {
-
-            }
-
-            if (flag)
-            {
-                var result = new
+                try
                 {
-                    flag = true,
-                    message = "Requisition deletion successful."
-                };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                    var itemsToDeletePlan = db.Proc_RequisitionDet.Where(x => x.Proc_RequisitionMasId == ProcRequisitionMId);
+                    db.Proc_RequisitionDet.RemoveRange(itemsToDeletePlan);
+                    db.SaveChanges();
 
-            }
-            else
-            {
-                var result = new
+                    var itemsToDeleteTask = db.Proc_RequisitionMas.Where(x => x.Id == ProcRequisitionMId);
+                    db.Proc_RequisitionMas.RemoveRange(itemsToDeleteTask);
+
+                    //var itemsToDeletePlan = db.Proc_RequisitionDet.Where(x => x.Proc_RequisitionMasId== ProcRequisitionMId);
+                    //db.Proc_RequisitionDet.RemoveRange(itemsToDeletePlan);
+
+                    flag = db.SaveChanges() > 0;
+                }
+                catch
                 {
-                    flag = false,
-                    message = "Requisition deletion failed!\nError Occured."
-                };
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
+
+                }
+
+                if (flag)
+                {
+                    var result = new
+                    {
+                        flag = true,
+                        message = "Requisition deletion successful."
+                    };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+
+                }
+                else
+                {
+                    var result = new
+                    {
+                        flag = false,
+                        message = "Requisition deletion failed!\nError Occured."
+                    };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
 
             }
             else
@@ -672,7 +637,7 @@ namespace DhaliProcurement.Controllers
 
             var master = db.Proc_RequisitionMas.Find(RequisitionMasId);
             master.Status = Status;
-            
+
             db.Entry(master).State = EntityState.Modified;
             flag = db.SaveChanges() > 0;
             if (flag)
@@ -777,7 +742,7 @@ namespace DhaliProcurement.Controllers
                     message = "Delete Failed! This item has been used in tender quotation!"
                 };
             }
-            
+
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

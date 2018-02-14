@@ -804,11 +804,6 @@
         }
         else if ($('.Resource-list tr').length < 2) {
             alert('Please Add Item to this requisition');
-            //swal({
-            //    //title: "Good job!",
-            //    text: "Please Add Item to this requisition!",
-            //    icon: "error",
-            //});
         }
         else {
             CreateSitePlanTask();
@@ -851,41 +846,11 @@
         var RequiredDate = document.getElementsByName("RequiredDate");
         var ItemRemarks = document.getElementsByName("ItemRemarks");
 
-        //alert('Test');
+
         var RequisitionItems = [];
-        //alert($('#RequisitionDetails tr').length - 1)
 
         var tableCounter = $('#RequisitionDetails tr').length - 1;
-        //alert('Length: ' + tableCounter);
 
-        //for (var i = 0; i < tableCounter; i++) {
-        //    console.log('CurrentStock: ' + RequiredDate[i].value);
-        //}
-        //for (var i = 0; i < tableCounter; i++) {
-        //    RequisitionItems.push({
-        //        ItemId: ItemId[i].value,
-        //        TotalRequired: TotalRequired[i].value,
-        //        TotalReceived: TotalReceived[i].value,
-        //        RemainingBalance: RemainingBalance[i].value,
-        //        CurrentStock: CurrentStock[i].value,
-        //        ReqQty: ReqQty[i].value,
-        //        Brand: Brand[i].value,
-        //        Size: Size[i].value,
-        //        ItemRemarks: ItemRemarks[i].value
-        //    });
-        //    console.log('---------->');
-        //    console.log('ItemId: ' + RequisitionItems[i].ItemId);
-        //    console.log('TotalRequired: ' + RequisitionItems[i].TotalRequired);
-        //    console.log('TotalReceived: ' + RequisitionItems[i].TotalReceived);
-        //    console.log('RemainingBalance: ' + RequisitionItems[i].RemainingBalance);
-        //    console.log('CurrentStock: ' + RequisitionItems[i].CurrentStock);
-        //    console.log('ReqQty: ' + RequisitionItems[i].ReqQty);
-        //    console.log('Brand: ' + RequisitionItems[i].Brand);
-        //    console.log('Size: ' + RequisitionItems[i].Size);
-        //    console.log('ItemRemarks: ' + RequisitionItems[i].ItemRemarks);
-        //    console.log('---------->');
-
-        //alert('Test');
         for (var i = 0; i < tableCounter; i++) {
             RequisitionItems.push({
                 ProcRequisitionDetId: ProcRequisitionDetId[i].value,
@@ -920,7 +885,7 @@
             RequisitionMasId: RequisitionMasId
         });
 
-        //alert('Test');
+
         $.ajax({
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -930,7 +895,7 @@
             success: function (result) {
                 console.log(result);
                 if (result.flag === true) {
-                    //swal("Record save successfully!");
+
                     alert("Record save successfully!");
 
                     $('#ProjectId').val("");
@@ -941,14 +906,6 @@
                     $('#ProjectManager').val("");
                     $('#ProjectRemarks').val("");
 
-                    //swal({
-                    //    title: "Success",
-                    //    text: "Record save successfully!",
-                    //    type: "success"
-                    //},
-                    //  function () {
-                    //      //window.location.href = '/MaterialRequisition/Index';
-                    //  });
 
                     window.location.replace("/MaterialRequisition/Index");
 
@@ -968,44 +925,6 @@
     }
 
 
-    //$('.deleteItem').click(function () {
-    //    var row = $(this).closest('tr');
-    //    var ItemId = row.find('input[name=ItemId]').val();
-    //    //alert('Item Id: ' + ItemId);
-    //    //onclick = "$(this).parent().parent().remove();"
-
-    //    var RequisitionMasId = $("#RequisitionMasId").val();
-
-    //    $.ajax({
-    //        url: "/MaterialRequisition/DeleteEditItem",
-    //        type: "post",
-    //        data: {
-    //            ProcRequisitionMId: RequisitionMasId,
-    //            ItemId: ItemId
-    //        },
-    //        dataType: "json",
-
-    //        success: function (flag) {
-    //            console.log(flag);
-
-    //            if (flag.flag == true) {
-    //                //window.location = "/MaterialRequisition/Index";
-    //                alert("Successfully deleted !");
-    //                //$(this).parent().parent().remove();
-    //            } else {
-    //                alert(flag.message);
-    //            }
-    //        },
-
-    //        error: function (xhr) {
-    //            alert('error');
-
-    //        }
-
-
-    //    });
-    //});
-
 
     $('#ApproveItem').click(function () {
         var Status = "A";
@@ -1024,9 +943,7 @@
         var RequiredDate = document.getElementsByName("RequiredDate");
         var ItemRemarks = document.getElementsByName("ItemRemarks");
 
-        //alert('Test');
         var RequisitionItems = [];
-        //alert($('#RequisitionDetails tr').length - 1)
 
         var tableCounter = $('#RequisitionDetails tr').length - 1;
 
@@ -1069,12 +986,6 @@
                 if (result.flag === true) {
                     alert("Record approved successfully!");
                     
-                    //swal({
-                    //    title: "Good job!",
-                    //    text: "Record approved successfully!",
-                    //    icon: "success",
-                    //    button: "Aww yiss!",
-                    //});
                     window.location.replace("/MaterialRequisition/Index");
                 }
                 else {
@@ -1093,90 +1004,9 @@
     var deleteList = [];
 
 
-    //$('#deletecheck').click(function () {
-    //    alert('Length: ' + deleteList.length);
-    //    for(var i = 0;i<deleteList.length;i++)
-    //    {
-    //        alert(deleteList[i]);
-    //    }
-    //});
-
-
-    //$('#RequisitionDetails').on('click', 'tr', function () {
-    //    var idx = table
-    //        .row(this)
-    //        .index();
-
-    //    alert('Index: ' + idx);
-    //    //table
-    //    //    .cell(idx, 0) // note that you could actually pass in 'this' as the row selector!
-    //    //    .data('Updated')
-    //    //    .draw();
-    //});
-
 
     $('.deleteRequisitionItem').click(function () {
-        var retVal = confirm("Do you want to delete this image ?");
-//        swal({
-//            title: "Are you sure?",
-//            text: "Once deleted, you will not be able to recover this file!",
-//            icon: "warning",
-//            buttons: true,
-//            dangerMode: true,
-//        })
-//.then((willDelete) => {
-//    if (willDelete) {
-//        var row = $(this).closest('tr');
-//        var itemDetId = $(this).closest('tr').find('td input[name=TaskId]').val();
-//        //alert(itemDetId);
-
-//        RequisitionDelete = JSON.stringify({
-//            RequisitionDetailId: itemDetId
-//        });
-
-//        $.ajax({
-//            contentType: 'application/json; charset=utf-8',
-//            dataType: 'json',
-//            type: 'POST',
-//            url: '/MaterialRequisition/DeleteRequisitionDetailItem',
-//            data: RequisitionDelete,
-//            success: function (result) {
-//                console.log(result);
-//                if (result.flag === true) {
-//                    //alert("Record Delete successfully!");
-//                    //window.location.replace("/MaterialRequisition/Edit?RequisitionMasId=" + requisitionId);
-
-//                    //var id = row.find('input[name=StatusImage]').val();
-//                    ////alert(id);
-//                    //alert(itemDetId);
-//                    swal("Poof! Your item has been deleted!", {
-//                        icon: "success",
-//                    });
-//                    deleteList[deleteCounter] = itemDetId;
-//                    deleteCounter++;
-//                    //$(this).parent().parent().remove();
-//                    row.remove();
-//                }
-//                else {
-//                    //alert(result.message);
-//                    swal("This item has been used!", {
-//                        icon: "error",
-//                    });
-//                }
-
-
-//            },
-//            failure: function (response) {
-//                alert('error');
-//            }
-//        });
-
-//    } else {
-//        swal("Your imaginary file is safe!");
-//    }
-//});
-
-        if (retVal == true) {
+        //if (retVal == true) {
             var row = $(this).closest('tr');
             var itemDetId = $(this).closest('tr').find('td input[name=TaskId]').val();
             //alert(itemDetId);
@@ -1194,15 +1024,8 @@
                 success: function (result) {
                     console.log(result);
                     if (result.flag === true) {
-                        //alert("Record Delete successfully!");
-                        //window.location.replace("/MaterialRequisition/Edit?RequisitionMasId=" + requisitionId);
-
-                        //var id = row.find('input[name=StatusImage]').val();
-                        ////alert(id);
-                        //alert(itemDetId);
                         deleteList[deleteCounter] = itemDetId;
                         deleteCounter++;
-                        //$(this).parent().parent().remove();
                         row.remove();
                     }
                     else {
@@ -1216,52 +1039,9 @@
                 }
             });
 
-
-
-        }
-        else {
-            return false;
-        }
-
-        //window.confirm("Do you want  to delete the image!");
-
     });
 
-    //function RemoveTask(RequisitionDetailId) {
-    //    //RequisitionDetailId.preventDefault();
-    //    alert('clcked');
 
-    //    deleteList[deleteCounter] = RequisitionDetailId;
-    //    deleteCounter++;
-
-    //    var requisitionId = $("#RequisitionMasId").val();
-    //    //alert(requisitionId);
-    //    RequisitionDelete = JSON.stringify({
-    //        RequisitionDetailId: RequisitionDetailId
-    //    });
-
-    //    $.ajax({
-    //        contentType: 'application/json; charset=utf-8',
-    //        dataType: 'json',
-    //        type: 'POST',
-    //        url: '/MaterialRequisition/DeleteRequisitionDetailItem',
-    //        data: RequisitionDelete,
-    //        success: function (result) {
-    //            console.log(result);
-    //            if (result.flag === true) {
-    //                alert("Record Delete successfully!");
-    //                window.location.replace("/MaterialRequisition/Edit?RequisitionMasId=" + requisitionId);
-    //            }
-    //            else {
-    //                alert(result.message);
-    //            }
-
-    //        },
-    //        failure: function (response) {
-    //            alert('error');
-    //        }
-    //    });
-    //}
 
     function RebindDatePicker() {
         $('.datepicker').datepicker("destroy");
@@ -1271,23 +1051,12 @@
             autoclose: true,
             todayBtn: true,
         });
-        // jquery validator bug fix using moment
-        //$.validator.methods.date = function (value, element) {
-        //    return this.optional(element) || moment(value, "DD/MM/YYYY", true).isValid();
-        //}
 
     }
 </script>
 
 
 <style>
-    /*.scrolling {
-        width: 100%;
-        height: 350px;
-        /*border: 13px solid #bed5cd;
-        overflow-x: scroll;
-        overflow-y: scroll;
-    }*/
     span.error {
         display: block;
         /*visibility: hidden;*/

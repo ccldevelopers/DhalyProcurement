@@ -337,7 +337,6 @@
         });
 
         $(document).ready(function () {
-            //$(".datepicker").datepicker({ dateFormat: 'dd/mm/yy', changeYear: true });
             RebindDatePicker();
 
             $('#SiteId').attr("disabled", "true");
@@ -360,7 +359,6 @@
             });
 
             TenderDetailId  = @ViewBag.TenderDetPrimaryKey;
-            //alert(TenderDetailId);
             var Id = @ViewBag.TenderId;
             $.ajax({
                 url: '/TenderQuotation/getEditTender/',
@@ -368,20 +366,18 @@
                 dataType: 'json',
                 TYPE: 'POST',
                 success: function (data) {
-                    //console.log(data);
                     if(data.flag){
                         @*var userRole = '@(Roles.IsUserInRole("Management") ? "true" : "false")';*@
                         var userRole =  '@(User.IsInRole("Management") ? "true" : "false")';
-                        //alert(userRole);
+
                         if(userRole.trim()=="true"){
-                            //alert("Management");
+
                             for (var i = 0; i < data.List.length; i++) {
 
-                                //alert('TenderDetailId: '+data.List[i].TenderDetailId);
+
                                 if(data.List[i].Status=="A"){
                                     counter++;
-                                    //cnTaskRow++;
-                                    //alert('TQDate: '+data.List[i].TQDate);
+
                                     var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
                                        +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                        + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;">' + data.List[i].ProjectName + '<label></td>'
@@ -410,8 +406,6 @@
                                      +'</tr>');
                                    
                                     $('#RequisitionDetails').append(row);
-                                    //$("input[name='StartDate']").addClass('datepicker').datepicker();
-                                    //$("input[name='EndDate']").addClass('datepicker').datepicker();
                                     RebindDatePicker()
                                 }
                                 else{
@@ -446,13 +440,11 @@
                             }
                         }
                         else{
-                            //alert("Operator");
                             for (var i = 0; i < data.List.length; i++) {
 
                                 if(data.List[i].Status=="A"){
                                     counter++;
-                                    //cnTaskRow++;
-                                    //alert('Status: '+data.List[i].Status);
+
                                     var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
                                        +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
                                        + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;">' + data.List[i].ProjectName + '<label></td>'
@@ -479,8 +471,6 @@
                                      +'</tr>');
 
                                     $('#RequisitionDetails').append(row);
-                                    //$("input[name='StartDate']").addClass('datepicker').datepicker();
-                                    //$("input[name='EndDate']").addClass('datepicker').datepicker();
                                     RebindDatePicker()
                                 }
                                 else{
@@ -543,7 +533,7 @@
                         var TQPrice = row.find('input[name=TQPrice]').val();
                         var TotalPrice = row.find('input[name=TotalPrice]').val();
 
-                        
+
                         $('#ModalProjectId').val(ProjectId);
                         $('#ModalSiteId').val(SiteId);
                         $('#ModalRequisition').val(RCode);
@@ -558,17 +548,23 @@
                         $('#ModalUnitPrice').val(TQPrice);
                         $('#ModalTotal').val(TotalPrice);
 
+
+                        $('#ModalSiteId').attr("disabled", "true");
+                        $('#ModalRequisition').attr("disabled", "true");
+                        $('#ModalItemName').attr("disabled", "true");
+                        $('#ModalQty').attr("disabled", "true");
+                        $('#ModalUnitName').attr("disabled", "true");
+                        $('#ModalTotal').attr("disabled", "true");
                     });
        
 
 
                     $('.deleteDetailTask').click(function (e) {
                         e.preventDefault();
-                        var retVal = confirm("Do you want to delete this Item ?");
-                        if (retVal == true) {
+                        //var retVal = confirm("Do you want to delete this Item ?");
+                        //if (retVal == true) {
                             var row = $(this).closest('tr');
                             var itemDetId = $(this).closest('tr').find('td input[name=TenderDetailId]').val();
-                            //alert(itemDetId);
 
                             RequisitionDelete = JSON.stringify({
                                 TenderDetailId: itemDetId
@@ -598,10 +594,10 @@
                                 }
                             });
 
-                        }
-                        else {
-                            return false;
-                        }
+                        //}
+                        //else {
+                        //    return false;
+                        //}
                         
                     });
 
@@ -671,8 +667,22 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    //$('#SiteId').removeAttr("disabled");
                     var listOfSites = data.Sites.length;
+
+                    $('#ModalSiteId').removeAttr("disabled");
+                    //$('#ModalSiteId').empty();
+                    $('#ModalSiteId').empty();
+                    $('#ModalRequisition').empty();
+                    $('#ModalItemName').empty();
+                    $('#ModalUnit').val("");
+                    $('#ModalUnitName').val("");
+                    $('#ModalQty').val("");
+                    $('#ModalVendor').val("");
+                    $('#ModalQtnNo').val("");
+                    $('#ModalQtnDate').val("");
+                    $('#ModalUnitPrice').val("");
+                    $('#ModalTotal').val("");
+
 
                     var sites = "<select id='ModalSiteId'>";
                     sites = sites + '<option value="">--Select--</option>';
@@ -692,7 +702,6 @@
         $("#ModalSiteId").change(function () {
             var SiteId = $('#ModalSiteId option:selected ').val();
             var ProjectId = $('#ModalProjectId option:selected').val();
-            //alert(ProjectId);
 
             $.ajax({
                 type: "post",
@@ -701,9 +710,7 @@
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
-                    //$('#SiteEngineer').val(data.siteEngineer);
-                    //$('#RCode').removeAttr("disabled");
-
+                    $('#ModalRequisition').removeAttr("disabled");
                     var listOfitems = data.Items.length;
                     var items = "<select id='ModalRequisition'>";
                     items = items + '<option value="">--Select--</option>';
@@ -722,7 +729,7 @@
             var Rcode = $('#ModalRequisition  option:selected').text();
             var SiteId = $('#ModalSiteId  option:selected').val();
             var ProjectId = $('#ModalProjectId option:selected').val();
-            //alert(ProjectId);
+
 
             $.ajax({
                 type: "post",
@@ -731,13 +738,9 @@
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
-                    //$('#SiteEngineer').val(data.siteEngineer);
-                    //$('#ItemName').removeAttr("disabled");
-                    //$('#ModalProc_RequisitionDetId').val(data.Proc_RequisitionDetId);
-                    //alert('Requisition ID' + data.Proc_RequisitionDetId);
-                    //alert($('#Proc_RequisitionDetId').val());
                     var listOfitems = data.Items.length;
-                    //alert('List: ' + listOfitems);
+
+                    $('#ModalItemName').removeAttr("disabled");
                     var items = "<select id='ModalItemName'>";
                     items = items + '<option value="">--Select--</option>';
                     for (var i = 0; i < listOfitems; i++) {
@@ -765,9 +768,7 @@
                     $('#ModalUnitName').val(data.UnitName);
                     $('#ModalQty').val(data.Qty);
 
-                    //alert('data.Proc_RequisitionDetId' + data.Proc_RequisitionDetId);
                     $('#ModalProc_RequisitionDetId').val(data.Proc_RequisitionDetId);
-                    //alert('data.Proc_RequisitionDetId after' + $('#Proc_RequisitionDetId').val());
                 }
 
             });
@@ -786,6 +787,19 @@
                 success: function (data) {
                     $('#SiteId').removeAttr("disabled");
                     var listOfSites = data.Sites.length;
+
+                    $('#SiteId').empty();
+                    $('#RCode').empty();
+                    $('#ItemName').empty();
+                    $('#UnitId').val("");
+                    $('#UnitName').val("");
+                    $('#ModalQty').val("");
+                    $('#VendorId').val("");
+                    $('#Qty').val("");
+                    $('#TQNo').val("");
+                    $('#TQDate').val("");
+                    $('#TQPrice').val("");
+                    $('#TotalPrice').val("");
 
                     var sites = "<select id='sites'>";
                     sites = sites + '<option value="">--Select--</option>';
@@ -806,7 +820,6 @@
         $("#SiteId").change(function () {
             var SiteId = $('#SiteId').val();
             var ProjectId = $('#ProjectId option:selected').val();
-            //alert(ProjectId);
 
             $.ajax({
                 type: "post",
@@ -815,7 +828,6 @@
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
-                    //$('#SiteEngineer').val(data.siteEngineer);
                     $('#RCode').removeAttr("disabled");
 
                     var listOfitems = data.Items.length;
@@ -836,7 +848,6 @@
             var Rcode = $('#RCode  option:selected').text();
             var SiteId = $('#SiteId  option:selected').val();
             var ProjectId = $('#ProjectId option:selected').val();
-            //alert(ProjectId);
 
             $.ajax({
                 type: "post",
@@ -845,13 +856,9 @@
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
-                    //$('#SiteEngineer').val(data.siteEngineer);
                     $('#ItemName').removeAttr("disabled");
-                    //$('#Proc_RequisitionDetId').val(data.Proc_RequisitionDetId);
-                    //alert('Requisition ID' + data.Proc_RequisitionDetId);
-                    //alert($('#Proc_RequisitionDetId').val());
                     var listOfitems = data.Items.length;
-                    //alert('List: ' + listOfitems);
+
                     var items = "<select id='ItemName'>";
                     items = items + '<option value="">--Select--</option>';
                     for (var i = 0; i < listOfitems; i++) {
@@ -866,9 +873,7 @@
         });
 
         $("#ItemName").change(function () {
-            //alert('Test');
             var ItemId = $('#ItemName option:selected').val();
-            //alert('ItemId'+ItemId);
             var Rcode = $('#RCode  option:selected').text();
       
             $.ajax({
@@ -882,9 +887,7 @@
                     $('#UnitName').val(data.UnitName);
                     $('#Qty').val(data.Qty);
 
-                    //alert('data.Proc_RequisitionDetId'+ data.Proc_RequisitionDetId);
                     $('#Proc_RequisitionDetId').val(data.Proc_RequisitionDetId);
-                    //alert('data.Proc_RequisitionDetId after'+$('#Proc_RequisitionDetId').val());
                 }
 
             });
@@ -894,10 +897,8 @@
         $(document).on({
             'change': function () {
                 var price = $(this).val();
-                //alert('Unit Price :' + price);
                 var quantity = $('#Qty').val();
                 var totalPrice = price * quantity;
-                //$('#TotalPrice').val(totalPrice);
                 if (isNaN(totalPrice)) {
                     alert('Unit Price must be a numeric value!!')
                     $('#TQPrice').val("");
@@ -917,36 +918,25 @@
 
             var ProjectId = $('#ProjectId option:selected').val();
             var ProjectName = $('#ProjectId option:selected').text();
-            //alert(ProjectId);
             var SiteId = $('#SiteId option:selected').val();
             var SiteName = $('#SiteId option:selected').text();
-            //alert(SiteId);
-            //var Qty = $('#Qty').val();
             var RCode = $('#RCode option:selected').val();
             var RCodeName = $('#RCode option:selected').text();
             var ItemId = $('#ItemName option:selected').val();
             var ItemName = $('#ItemName option:selected').text();
             var Proc_RequisitionDetId = $('#Proc_RequisitionDetId').val();
-            //alert('ProcRequisitionDetId: ' + Proc_RequisitionDetId);
-
             var Qty = $('#Qty').val();
             var UnitId = $('#UnitId').val();
             var UnitName = $('#UnitName').val();
-            //alert(Unit);
-            //alert(UnitId);
             var VendorId = $('#VendorId option:selected').val();
-            //alert('Vendor Id: ' + VendorId);
             var VendorName = $('#VendorId option:selected').text();
             var TQNo = $('#TQNo').val();
             var TQDate = $('#TQDate').val();
             var TQPrice = $('#TQPrice').val();
-            //alert(ReqQty);
             var TotalPrice = $('#TotalPrice').val();
-            //alert('TotalPrice: ' + TotalPrice);
             var Status = 'N';
-            @*var NewDetailId = @ViewBag.TenderDetPrimaryKey;*@
             TenderDetailId++;
-             //alert(TenderDetailId);
+
 
 
             if (ProjectName.trim() == "" || ProjectName.trim() == "Select Project") {
@@ -1032,7 +1022,6 @@
                 $('#ItemName').val("");
                 $('#Qty').val("");
                 $('#UnitName').val("");
-                //$('#VendorId').val("");
                 $('#TQNo').val("");
                 $('#TQDate').val("");
                 $('#TQPrice').val("");
@@ -1055,7 +1044,6 @@
                     var SiteName = row.find('input[name=SiteName]').val();
                     var RCode = row.find('input[name=ReqCode]').val();
                     var itemId = row.find('input[name=ItemId]').val();
-                    //var ItemUnit = row.find('input[name=ItemUnit]').val();
                     var Qty = row.find('input[name=Qty]').val();
                     var UnitId = row.find('input[name=UnitId]').val();
                     var UnitName = row.find('input[name=UnitName]').val();
@@ -1065,7 +1053,7 @@
                     var TQPrice = row.find('input[name=TQPrice]').val();
                     var TotalPrice = row.find('input[name=TotalPrice]').val();
 
-                    //alert(UnitId);
+
 
                     $('#ModalProjectId').val(ProjectId);
                     $('#ModalSiteId').val(SiteId);
@@ -1112,24 +1100,17 @@
                 else{
                     $(this).closest('tr').find("td:eq(11) input.Status").val('N');
                 }
-
-                //var t=  $(this).closest('tr').find("td:eq(11) input.Status").val();
-                //alert($(this).closest('tr').find("td:eq(7) input.Status").val()+" :"+t);
             });
 
 
             //==========Master Form==========
 
             var TenderId = $("#TenderId").val();
-            //alert('Tender Master id:'+TenderId);
             var TNo = $("#TNo").val();
-            //alert('TNo: '+TNo);
             var TDate = $("#TDate").val();
-            //alert('TDate: ' + TDate);
             var Specs = $("#Specs").val();
-            //alert('Specs: ' + Specs);
             var TenderRemarks = $("#TenderRemarks").val();
-            //alert('TenderRemarks: ' + TenderRemarks);
+
 
 
             //===========Detail Form===========
@@ -1141,17 +1122,12 @@
             var TQDate = document.getElementsByName("TQDate");
             var TQPrice = document.getElementsByName("TQPrice");
             var Status = document.getElementsByName("Status");
-            //var Status ='N';
 
-            //alert('Test');
             var TenderItems = [];
-            //alert($('#RequisitionDetails tr').length - 1)
+
 
             var tableCounter = $('#RequisitionDetails tr').length - 1;
-            //alert('Length: ' + tableCounter);
-            //for (var i = 0; i < tableCounter; i++) {
-            //    alert(VendorId[i].value);
-            //}
+
             for (var i = 0; i < tableCounter; i++) {
                 TenderItems.push({
                     TenderDetailId:TenderDetailId[i].value,
@@ -1162,7 +1138,6 @@
                     TQDate: TQDate[i].value,
                     TQPrice: TQPrice[i].value,
                     Status: Status[i].value
-                    //Status: Status
                 });
                 console.log('---------->');
                 console.log('RCode: ' + TenderItems[i].RCode);
@@ -1186,7 +1161,6 @@
                 TenderRemarks: TenderRemarks
             });
 
-            //alert('Test');
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -1202,9 +1176,6 @@
                         $('#TDate').val("");
                         $('#Specs').val("");
                         $('#TenderRemarks').val("");
-                        //$('#SiteEngineer').val("");
-                        //$('#ProjectManager').val("");
-                        //$('#ProjectRemarks').val("");
 
                         window.location.replace("/TenderQuotation/Index");
                     }
@@ -1225,12 +1196,7 @@
             var isApproved ="A";
             var TenderMasId = $("#TenderId").val();
             var approveCounter =0;
-            //var val = [];
-            //$(':checkbox:checked').each(function (i) {
-            //    //val[i] = $(this).closest('tr').find("td:eq(1) input.TenderCheck").val();
-            //    //$(this).closest('tr').find("td:eq(1) input.taskname").css("color", "black");
-            //    alert($(this).closest('tr').find("td:eq(1) input.RCode").val());
-            //});
+
 
             $(':checkbox').each(function (i) {
                 if($(this).is(':checked') ){
@@ -1241,8 +1207,7 @@
                     $(this).closest('tr').find("td:eq(11) input.Status").val('N');
                 }
 
-                //var t=  $(this).closest('tr').find("td:eq(11) input.Status").val();
-                //alert($(this).closest('tr').find("td:eq(7) input.Status").val()+" :"+t);
+
             });
 
             if(approveCounter==0)
@@ -1250,7 +1215,6 @@
                 alert('Please select atleast one item');
             }
             else{
-                //alert('Test');
                 var TenderDetailId = document.getElementsByName("TenderDetailId");
                 var RCode = document.getElementsByName("ReqCode");
 
@@ -1262,13 +1226,10 @@
                 var Status = document.getElementsByName("Status");
 
                 var TenderItems = [];
-                //alert($('#RequisitionDetails tr').length - 1)
+
 
                 var tableCounter = $('#RequisitionDetails tr').length - 1;
-                //alert('Length: ' + tableCounter);
-                //for (var i = 0; i < tableCounter; i++) {
-                //    alert(VendorId[i].value);
-                //}
+
                 for (var i = 0; i < tableCounter; i++) {
                     TenderItems.push({
                         TenderDetailId:TenderDetailId,
@@ -1278,8 +1239,7 @@
                         TQNo: TQNo[i].value,
                         TQDate: TQDate[i].value,
                         TQPrice: TQPrice[i].value,
-                        Status: Status[i].value
-                        //Status: Status
+                        Status: Status[i].value                      
                     });
                     console.log('---------->');
                     console.log('RCode: ' + TenderItems[i].RCode);
@@ -1324,36 +1284,6 @@
 
         });
 
-        //function RemoveTask(TenderDetailId){
-        //    var TenderId = $("#TenderId").val();
-        //    TaskDelete = JSON.stringify({
-        //        TenderDetailId: TenderDetailId
-        //    });
-
-        //    $.ajax({
-        //        contentType: 'application/json; charset=utf-8',
-        //        dataType: 'json',
-        //        type: 'POST',
-        //        url: '/TenderQuotation/DeleteTenderDetailItem',
-        //        data: TaskDelete,
-        //        success: function (result) {
-        //            console.log(result);
-        //            if (result.flag === true) {
-        //                alert("Record Delete successfully!");
-        //                window.location.replace("/TenderQuotation/Edit?TenderId="+TenderId);
-        //            }
-        //            else {
-        //                alert(result.message);
-        //            }
-
-        //        },
-        //        failure: function (response) {
-        //            alert('error');
-        //        }
-        //    });
-        //}
-
-
 
 
 
@@ -1365,10 +1295,6 @@
                 autoclose: true,
                 todayBtn: true,
             });
-            // jquery validator bug fix using moment
-            //$.validator.methods.date = function (value, element) {
-            //    return this.optional(element) || moment(value, "DD/MM/YYYY", true).isValid();
-            //}
 
         }
     </script>
@@ -1377,7 +1303,6 @@
     <style>
         span.error {
             display: block;
-            /*visibility: hidden;*/
             color: red;
             font-size: 90%;
         }
@@ -1385,7 +1310,6 @@
        .scrolling {
             width: 100%;
             height: 350px;
-            /*border: 13px solid #bed5cd;*/
             overflow-x: scroll;
             overflow-y: scroll;
         }

@@ -344,6 +344,20 @@
                 $('#SiteId').removeAttr("disabled");
                 var listOfSites = data.Sites.length;
 
+                $('#SiteId').empty();
+                $('#RCode').empty();
+                $('#ItemName').empty();
+                $('#UnitId').val("");
+                $('#UnitName').val("");
+                $('#ModalQty').val("");
+                $('#VendorId').val("");
+                $('#Qty').val("");
+                $('#TQNo').val("");
+                $('#TQDate').val("");
+                $('#TQPrice').val("");
+                $('#TotalPrice').val("");
+
+
                 var sites = "<select id='sites'>";
                 sites = sites + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfSites; i++) {
@@ -623,6 +637,7 @@
                 //var ItemUnit = row.find('input[name=ItemUnit]').val();
                 var Qty = row.find('input[name=Qty]').val();
                 var UnitId = row.find('input[name=UnitId]').val();
+                var UnitName = row.find('input[name=UnitName]').val();
                 var Vendor = row.find('input[name=Vendor]').val();
                 var TQNo = row.find('input[name=TQNo]').val();
                 var TQDate = row.find('input[name=TQDate]').val();
@@ -637,12 +652,20 @@
                 $('#ModalItemName').val(itemId);
                 $('#ModalQty').val(Qty);
                 $('#ModalUnit').val(UnitId);
+                $('#ModalUnitName').val(UnitName);
                 $('#ModalVendor').val(Vendor);
                 $('#ModalQtnNo').val(TQNo);
                 $('#ModalQtnDate').val(TQDate);
                 $('#ModalUnitPrice').val(TQPrice);
                 $('#ModalTotal').val(TotalPrice);
 
+
+                $('#ModalSiteId').attr("disabled", "true");
+                $('#ModalRequisition').attr("disabled", "true");
+                $('#ModalItemName').attr("disabled", "true");
+                $('#ModalQty').attr("disabled", "true");
+                $('#ModalUnitName').attr("disabled", "true");
+                $('#ModalTotal').attr("disabled", "true");
             });
 
         }
@@ -657,6 +680,7 @@
         var ModalSiteId = $('#ModalSiteId option:selected').val();
         var ModalSiteName = $('#ModalSiteId option:selected').text();
         var ModalRequisition = $('#ModalRequisition option:selected').val();
+        var ModalRCodeName = $('#ModalRequisition option:selected').text();
         var ModalItemId = $('#ModalItemName option:selected').val();
         var ModalItemName = $('#ModalItemName option:selected').text();
         var ModalQty = $('#ModalQty').val();
@@ -671,12 +695,13 @@
         var ModalTotal = $('#ModalTotal').val();
 
         //alert(ModalSiteName);
-
+        
         selRow.find('input[name=ProjectId]').val(ModalProjectId);
         selRow.find('input[name=ProjectName]').val(ModalProjectName);
         selRow.find('input[name=SiteId]').val(ModalSiteId);
         selRow.find('input[name=SiteName]').val(ModalSiteName);
         selRow.find('input[name=RCode]').val(ModalRequisition);
+        selRow.find('input[name=RCodeName]').val(ModalRCodeName);
         selRow.find('input[name=ItemId]').val(ModalItemId);
         selRow.find('input[name=ItemName]').val(ModalItemName);
         selRow.find('input[name=Qty]').val(ModalQty);
@@ -708,7 +733,18 @@
             success: function (data) {
                 //$('#SiteId').removeAttr("disabled");
                 var listOfSites = data.Sites.length;
-
+                $('#ModalSiteId').removeAttr("disabled");
+                $('#ModalSiteId').empty();
+                $('#ModalRequisition').empty();
+                $('#ModalItemName').empty();
+                $('#ModalUnit').val("");
+                $('#ModalUnitName').val("");
+                $('#ModalQty').val("");
+                $('#ModalVendor').val("");
+                $('#ModalQtnNo').val("");
+                $('#ModalQtnDate').val("");
+                $('#ModalUnitPrice').val("");
+                $('#ModalTotal').val("");
                 var sites = "<select id='ModalSiteId'>";
                 sites = sites + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfSites; i++) {
@@ -738,7 +774,7 @@
             success: function (data) {
                 //$('#SiteEngineer').val(data.siteEngineer);
                 //$('#RCode').removeAttr("disabled");
-
+                $('#ModalRequisition').removeAttr("disabled");
                 var listOfitems = data.Items.length;
                 var items = "<select id='ModalRequisition'>";
                 items = items + '<option value="">--Select--</option>';
@@ -754,7 +790,7 @@
     });
 
     $("#ModalRequisition").change(function () {
-        var Rcode = $('#ModalRequisition  option:selected').val();
+        var Rcode = $('#ModalRequisition  option:selected').text();
         var SiteId = $('#ModalSiteId  option:selected').val();
         var ProjectId = $('#ModalProjectId option:selected').val();
         //alert(ProjectId);
@@ -773,6 +809,8 @@
                 //alert($('#Proc_RequisitionDetId').val());
                 var listOfitems = data.Items.length;
                 //alert('List: ' + listOfitems);
+                $('#ModalItemName').removeAttr("disabled");
+
                 var items = "<select id='ModalItemName'>";
                 items = items + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfitems; i++) {
@@ -788,7 +826,7 @@
 
     $("#ModalItemName").change(function () {
         var ItemId = $('#ModalItemName option:selected').val();
-        var Rcode = $('#ModalRequisition  option:selected').val();
+        var Rcode = $('#ModalRequisition  option:selected').text();
         $.ajax({
             type: "post",
             url: "/TenderQuotation/GetUnit",
@@ -807,6 +845,29 @@
 
         });
     });
+
+    $(document).on({
+        'change': function () {
+            var price = $("#ModalUnitPrice").val();
+            //var row = $(this).closest('tr');
+
+            //alert('Unit Price :' + price);
+            var quantity = $('#ModalQty').val();
+            //alert('quantity :' + quantity);
+            var totalPrice = price * quantity;
+
+            if (isNaN(totalPrice)) {
+                alert('Unit Price must be a numeric value!!')
+                //$('#TQPrice').val("");
+                //$('#TotalPrice').val("");
+            }
+            else {
+                $("#ModalTotal").val(totalPrice);
+            }
+
+
+        }
+    }, 'input[name=ModalUnitPrice]');
 
     $('#SaveItem').click(function (e) {
         //alert('Length:' + $('.Resource-list tr').length)

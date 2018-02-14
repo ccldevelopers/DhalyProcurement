@@ -786,12 +786,43 @@
         });
     });
 
+    $('#TenderId').change(function () {
+        var id = $('#TenderId option:selected').val();
+        var SiteId = $('#SiteId').val();
+        $.ajax({
+            url: "/PurchaseOrders/GetVendorId",
+            type: "post",
+            data: {
+                TenderId: id,
+                SiteId: SiteId
+            },
+            dataType: "json",
+            success: function (data) {
+                $('#VendorId').removeAttr("disabled");
+                var listOfSites = data.Vendors.length;
+                var sites = "<select id='sites'>";
+                sites = sites + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfSites; i++) {
+                    sites = sites + '<option value=' + data.Vendors[i].Value + '>' + data.Vendors[i].Text + '</option>';
+                }
+                sites = sites + '</select>';
+                $('#VendorId').html(sites);
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+        });
+    });
+
+
+
     $("#VendorId").change(function () {
         var VendorId = $('#VendorId').val();
+        var Tenderid = $('#TenderId option:selected').val();
         $.ajax({
             type: "post",
             url: "/PurchaseOrders/GetVendorContactPerson",
-            data: { VendorId },
+            data: { VendorId, Tenderid },
             datatype: "json",
             traditional: true,
             success: function (data) {
@@ -841,33 +872,7 @@
     });
 
 
-    $('#TenderId').change(function () {
-        var id = $('#TenderId option:selected').val();
-        var SiteId = $('#SiteId').val();
-        $.ajax({
-            url: "/PurchaseOrders/GetVendorId",
-            type: "post",
-            data: {
-                TenderId: id,
-                SiteId: SiteId
-            },
-            dataType: "json",
-            success: function (data) {
-                $('#VendorId').removeAttr("disabled");
-                var listOfSites = data.Vendors.length;
-                var sites = "<select id='sites'>";
-                sites = sites + '<option value="">--Select--</option>';
-                for (var i = 0; i < listOfSites; i++) {
-                    sites = sites + '<option value=' + data.Vendors[i].Value + '>' + data.Vendors[i].Text + '</option>';
-                }
-                sites = sites + '</select>';
-                $('#VendorId').html(sites);
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
-    });
+
 
 </script>
 

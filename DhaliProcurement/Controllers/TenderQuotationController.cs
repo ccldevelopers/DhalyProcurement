@@ -226,23 +226,38 @@ namespace DhaliProcurement.Controllers
                          join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
                          join reqItem in db.Item on requisitionDet.ItemId equals reqItem.Id
                          where requisitionMas.Rcode == Rcode
-                         select reqItem).ToList().Distinct();
+                         select reqItem).Distinct().ToList();
 
-            foreach (var x in items)
+            if (items.Count != 0)
             {
-                var itemName = db.Item.SingleOrDefault(m => m.Id == x.Id);
-                ItemList.Add(new SelectListItem { Text = itemName.Name, Value = x.Id.ToString() });
+                foreach (var x in items)
+                {
+                    var itemName = db.Item.SingleOrDefault(m => m.Id == x.Id);
+                    ItemList.Add(new SelectListItem { Text = itemName.Name, Value = x.Id.ToString() });
+                }
+
+                var ReqmasterId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == Rcode);
+                var PRequisitionDetId = db.Proc_RequisitionDet.FirstOrDefault(x => x.Proc_RequisitionMasId == ReqmasterId.Id);
+
+                var result = new
+                {
+                    Items = ItemList,
+                    Proc_RequisitionDetId = PRequisitionDetId.Id
+                };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new
+                {
+                    flag = false,
+                    message = "error !"
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
 
-            var ReqmasterId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == Rcode);
-            var PRequisitionDetId = db.Proc_RequisitionDet.FirstOrDefault(x => x.Proc_RequisitionMasId == ReqmasterId.Id);
 
-            var result = new
-            {
-                Items = ItemList,
-                Proc_RequisitionDetId = PRequisitionDetId.Id
-            };
-            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
 

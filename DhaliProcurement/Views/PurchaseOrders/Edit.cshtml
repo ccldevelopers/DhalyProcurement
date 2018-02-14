@@ -468,9 +468,10 @@
             }
         });
 
+        var PurchaseOrderDetId =0;
         //Add item to list if valid
         if (isValidItem) {
-            var newRow = jQuery('<tr><td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName1"/></td>'
+            var newRow = jQuery('<tr><td><input value="' + PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName1"/></td>'
                 +'<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + UnitName + '" readonly="true" type="text" name="UnitName"/></td>'
               +'<td><input class="form-control" value="' + Size + '" readonly="true" type="text" name="Size"' +
               '"/></td><td><input class="form-control UnitPriceNew" value="' + UnitPrice + '"  readonly="true" type="text" name="UnitPrice"/></td>'
@@ -640,8 +641,8 @@
 
                 $('.deleteDetailTask').click(function (e) {
                     e.preventDefault();
-                    var retVal = confirm("Do you want to delete this Item ?");
-                    if (retVal == true) {
+                    //var retVal = confirm("Do you want to delete this Item ?");
+                    //if (retVal == true) {
                         var row = $(this).closest('tr');
                         var itemDetId = $(this).closest('tr').find('td input[name=ItemId]').val();
                         var ProcPurchaseMasterId= @ViewBag.ProcPurchaseMasterId;
@@ -677,10 +678,10 @@
                             }
                         });
 
-                    }
-                    else {
-                        return false;
-                    }
+                    //}
+                    //else {
+                    //    return false;
+                    //}
 
                 });
 

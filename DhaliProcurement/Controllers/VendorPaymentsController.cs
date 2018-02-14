@@ -647,7 +647,7 @@ namespace DhaliProcurement.Controllers
                                join purDet in db.Proc_PurchaseOrderDet on metEntry.Proc_PurchaseOrderDetId equals purDet.Id
                                join items in db.Item on purDet.ItemId equals items.Id
                                where purDet.ItemId == itemId
-                               select new { metEntry }).Distinct().SingleOrDefault();
+                               select new { metEntry }).Distinct().FirstOrDefault();
 
        
             foreach (var x in challanData.Distinct())

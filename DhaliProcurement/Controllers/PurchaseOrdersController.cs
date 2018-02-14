@@ -191,7 +191,7 @@ namespace DhaliProcurement.Controllers
                          join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                          join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
                          join item in db.Item on procProjectItem.ItemId equals item.Id
-                         where tenderDet.VendorId == vendorAndTenderId.VendorId && requisitionDet.ItemId == item.Id
+                         where tenderDet.VendorId == vendorAndTenderId.VendorId && requisitionDet.ItemId == item.Id && tenderMas.Id == vendorAndTenderId.Proc_TenderMasId
                          select item).Distinct().ToList();
 
             List<SelectListItem> itemList = new List<SelectListItem>();
@@ -437,7 +437,7 @@ namespace DhaliProcurement.Controllers
 
 
         [HttpPost]
-        public JsonResult GetVendorContactPerson(int VendorId)
+        public JsonResult GetVendorContactPerson(int VendorId, int Tenderid)
         {
             var vendorContactPerson = db.Vendor.SingleOrDefault(x => x.Id == VendorId);
             var vContactPerson = NullHelper.ObjectToString(vendorContactPerson.ContactPerson);
@@ -449,7 +449,7 @@ namespace DhaliProcurement.Controllers
                          join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                          join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
                          join item in db.Item on procProjectItem.ItemId equals item.Id
-                         where tenderDet.VendorId == VendorId && requisitionDet.ItemId == item.Id && tenderDet.Status=="A"
+                         where tenderDet.VendorId == VendorId && requisitionDet.ItemId == item.Id && tenderDet.Status=="A" && tenderMas.Id == Tenderid
                          select item).Distinct().ToList();
             List<SelectListItem> itemList = new List<SelectListItem>();
             foreach (var x in items)

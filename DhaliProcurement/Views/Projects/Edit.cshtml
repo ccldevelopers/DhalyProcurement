@@ -386,22 +386,7 @@
          }
 
          $('.editSite').click(function () {
-             //var row = $(this).closest('tr');
-             //selRow = $(this).closest('tr');
 
-             //var TaskId = row.find('input[name=TaskId]').val();
-             //var SiteName = row.find('input[name=SiteName]').val();
-             //var Location = row.find('input[name=SiteLocation]').val();
-             //var SiteEngineer = row.find('input[name=SiteEngineer]').val();
-             //var SiteEngineerId = row.find('input[name=SiteEngineerId]').val();
-             ////alert(SiteEngineer);
-
-             //$('#ModalTaskId').val(TaskId);
-             //$('#ModalSite').val(SiteName);
-             //$('#ModalLocation').val(Location);
-             //$('#modalSiteEng').val(SiteEngineerId);
-            
-             //$('#ModalSiteEngineer').val(SiteEngineerId).change();
              row = $(this).closest('tr');
              selRow = $(this).closest('tr');
              editModalItem();
@@ -409,8 +394,8 @@
 
          $('.deleteDetailTask').click(function (e) {
              e.preventDefault();
-             var retVal = confirm("Do you want to delete this Item ?");
-             if (retVal == true) {
+             //var retVal = confirm("Do you want to delete this Item ?");
+             //if (retVal == true) {
                  var row = $(this).closest('tr');
                  var itemDetId = $(this).closest('tr').find('td input[name=ProjectSiteId]').val();
                  //alert(itemDetId);
@@ -443,10 +428,10 @@
                      }
                  });
 
-             }
-             else {
-                 return false;
-             }
+             //}
+             //else {
+             //    return false;
+             //}
                         
          });
 
