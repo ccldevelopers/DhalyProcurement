@@ -157,7 +157,7 @@
                                 <td style="font-weight: bold;" class="col-lg-1">Unit Price</td>
                                 <td class="col-lg-2">
                                     <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
-                                </td>  
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -191,39 +191,40 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><span class="error" id="POQuantity_Error"  style="padding-left:10px;">PO Quantity required</span></td>
+                                <td><span class="error" id="POQuantity_Error" style="padding-left:10px;">PO Quantity required</span></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
                         </table>
-                    </div>
+                        <br />
 
-                    <table class="Resource-list table table-bordered" id="Item-list">
-                        <tr class="bg-grey">
-                            <th>Item Name</th>
-                            <th>Unit</th>
-                            <th>Size</th>
-                            <th>Unit Price</th>
-                            <th> Requisition Qty</th>
-                            <th>PO Quantity</th>
-                            <th>Total Price</th>
-                            <th></th>
-                        </tr>
-                        <tfoot>
-                            <tr>
-                                @*<td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>*@
-                                <td colspan="6" style="text-align:right;"><b>Total Cost</b></td>
-                                <td><input type="text" value="" id="totalCost" class="form-control" disabled="disabled" /></td>
-                                <td></td>
+                        <table class="Resource-list table table-bordered" id="Item-list">
+                            <tr class="bg-grey">
+                                <th>Item Name</th>
+                                <th>Unit</th>
+                                <th>Size</th>
+                                <th>Unit Price</th>
+                                <th> Requisition Qty</th>
+                                <th>PO Quantity</th>
+                                <th>Total Price</th>
+                                <th></th>
                             </tr>
-                        </tfoot>
-                    </table>
+                            <tfoot>
+                                <tr>
+                                    @*<td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>*@
+                                    <td colspan="6" style="text-align:right;"><b>Total Cost</b></td>
+                                    <td><input type="text" value="" id="totalCost" class="form-control" disabled="disabled" /></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -374,8 +375,8 @@
 
         var UnitPrice = $('#UnitPrice').val();
         var RequisitionQty = $('#RequisitionQty').val();
-       
-	   //alert('UnitPrice ' + UnitPrice);
+
+        //alert('UnitPrice ' + UnitPrice);
         var POQuantity = $('#POQuantity1').val();
         //alert('POQuantity ' + POQuantity);
         var TotalPrice = $('#TotalPrice1').val();

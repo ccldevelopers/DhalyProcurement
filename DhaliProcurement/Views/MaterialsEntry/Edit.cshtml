@@ -4,7 +4,6 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -23,34 +22,32 @@
 
                     <table class="table">
                         @*<tr>
-                            <td>ProcProjectId</td>
-                            <td>
-                                <input type="text" value="@Model.proc_MaterialEntryMas.ProcProjectId" class="form-control" disabled="disabled" />
-                            </td>
-                            <td>Entry Date</td>
-                            <td>
-                                <input type="text" value="@NullHelper.DateToString(Model.proc_MaterialEntryMas.EDate)" class="form-control" disabled="disabled" />
+                                <td>ProcProjectId</td>
+                                <td>
+                                    <input type="text" value="@Model.proc_MaterialEntryMas.ProcProjectId" class="form-control" disabled="disabled" />
+                                </td>
+                                <td>Entry Date</td>
+                                <td>
+                                    <input type="text" value="@NullHelper.DateToString(Model.proc_MaterialEntryMas.EDate)" class="form-control" disabled="disabled" />
 
-                            </td>
-                        </tr>*@
+                                </td>
+                            </tr>*@
                         <tr>
                             <td>Project Name</td>
                             <td>
-                                <input type="hidden" value="@Model.proc_MaterialEntryMas.ProcProjectId" class="form-control" disabled="disabled" id="ProcProjectId"/>
-                                <input type="text" value="@ViewBag.ProjectName" class="form-control" disabled="disabled" id="ProjectName"/>
-                                <input type="hidden" value="@ViewBag.ProjectId" class="form-control" disabled="disabled"  id="ProjectId"/>
+                                <input type="hidden" value="@Model.proc_MaterialEntryMas.ProcProjectId" class="form-control" disabled="disabled" id="ProcProjectId" />
+                                <input type="text" value="@ViewBag.ProjectName" class="form-control" disabled="disabled" id="ProjectName" />
+                                <input type="hidden" value="@ViewBag.ProjectId" class="form-control" disabled="disabled" id="ProjectId" />
                                 @*@Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2", @style = "width: 500px !important" })*@
                             </td>
                         </tr>
                         <tr>
                             <td>Site Name</td>
                             <td>
-                                <input type="text" value="@ViewBag.SiteName" class="form-control" disabled="disabled" id="SiteName"/>
-                                <input type="hidden" value="@ViewBag.SiteId" class="form-control" disabled="disabled" id="SiteId"/>
+                                <input type="text" value="@ViewBag.SiteName" class="form-control" disabled="disabled" id="SiteName" />
+                                <input type="hidden" value="@ViewBag.SiteId" class="form-control" disabled="disabled" id="SiteId" />
                                 @*@Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @id = "SiteId", @class = "form-control select2", @style = "width: 500px !important" })*@
-
                             </td>
-
                         </tr>
                         <tr>
                             <td class="col col-lg-1">Entry Date</td>
@@ -66,7 +63,6 @@
 
                     <div class="details well" style=" border 1px solid black;">
                         <h4>Materials Entry Items</h4>
-
                         <div class="jumbotron" style="padding:10px;">
                             <table style="width: 100%;" class="table-responsive">
                                 <tr>
@@ -181,36 +177,34 @@
                                     </td>
                                 </tr>
                             </table>
-                        </div>
-                        <div class="table-responsive scrolling">
-                            <table class="Resource-list table table-bordered scrolling" id="RequisitionDetails">
-                                <tr class="bg-grey">
-                                    <th>Sl. No.</th>
-                                    <th>Required Material</th>
-                                    <th>Unit</th>
-                                    <th>Req. No.</th>
-                                    <th>PO No.</th>
-                                    <th>Vendor Name</th>
-                                    <th>Total Material</th>
-                                    <th>Previous Received Qty</th>
-                                    <th>Remaining Qty</th>
-                                    <th>Challan No.</th>
-                                    <th>Challan Date</th>
-                                    <th>Material Entry(Qty)</th>
-                                    <th>Unit Price</th>
-                                    <th>Cost</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </table>
+                            <br />
+                            <div class="table-responsive scrolling">
+                                <table class="Resource-list table table-bordered scrolling" id="RequisitionDetails">
+                                    <tr class="bg-grey">
+                                        <th>Sl. No.</th>
+                                        <th>Required Material</th>
+                                        <th>Unit</th>
+                                        <th>Req. No.</th>
+                                        <th>PO No.</th>
+                                        <th>Vendor Name</th>
+                                        <th>Total Material</th>
+                                        <th>Previous Received Qty</th>
+                                        <th>Remaining Qty</th>
+                                        <th>Challan No.</th>
+                                        <th>Challan Date</th>
+                                        <th>Material Entry(Qty)</th>
+                                        <th>Unit Price</th>
+                                        <th>Cost</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 }
             </div>
 
-
-
         </div>
-
 
     </div>
     <div class="form-group">
@@ -219,7 +213,6 @@
             <button type="button" id="SaveItem" class="btn btn-success" @*style = "background-color: grey;border: none;"*@><i class="icon-floppy-disk position-left"></i>Update</button>
         </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
@@ -233,20 +226,18 @@
                 <div class="modal-body">
                     <div class="panel-body">
                         @Html.AntiForgeryToken()
-
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
                             <div class="form-group">
                                 @Html.Label("Item Name", htmlAttributes: new
-                       {
-                           @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
+                           {
+                               @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
                                     @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
@@ -263,8 +254,8 @@
                             </div>
                             <div class="form-group">
                                 @Html.Label("PO No", htmlAttributes: new
-                       {
-                           @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
+                           {
+                               @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
                                     @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
                                 </div>
@@ -333,7 +324,6 @@
                                     @Html.TextBox("ModalCost", null, new { @class = "form-control", @disabled = "disabled" })
                                 </div>
                             </div>
-
                             <div class="modal-footer">
                                 <div class="col-md-offset-2 col-md-10">
                                     <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
@@ -346,8 +336,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     <script>
@@ -412,11 +400,11 @@
                                + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                                +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
                                +'</td></tr>');
-                               //+'<td">'+
-                               //         '<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'+
-                               //         ' <input type="checkbox"  />'+
-                               //         ' <button   type="button"  onclick="AddNewRowAfter(this);"   class="btn  text-success-600 btn-flat btn-icon btn-rounded "><i class=" icon-plus-circle2"></i></button></td>'
-                             //+'</tr>');
+                            //+'<td">'+
+                            //         '<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'+
+                            //         ' <input type="checkbox"  />'+
+                            //         ' <button   type="button"  onclick="AddNewRowAfter(this);"   class="btn  text-success-600 btn-flat btn-icon btn-rounded "><i class=" icon-plus-circle2"></i></button></td>'
+                            //+'</tr>');
 
                             $('#RequisitionDetails').append(row);
                             RebindDatePicker();
@@ -468,38 +456,38 @@
                         e.preventDefault();
                         //var retVal = confirm("Do you want to delete this Item ?");
                         //if (retVal == true) {
-                            var row = $(this).closest('tr');
-                            var itemDetId = $(this).closest('tr').find('td input[name=TenderDetailId]').val();
-                            @*var ProcPurchaseMasterId= @ViewBag.ProcPurchaseMasterId;*@
-                            //alert(itemDetId);
+                        var row = $(this).closest('tr');
+                        var itemDetId = $(this).closest('tr').find('td input[name=TenderDetailId]').val();
+                        @*var ProcPurchaseMasterId= @ViewBag.ProcPurchaseMasterId;*@
+                        //alert(itemDetId);
 
-                            EntryDelete = JSON.stringify({
-                                EntryDetailId: itemDetId
-                            });
+                        EntryDelete = JSON.stringify({
+                            EntryDetailId: itemDetId
+                        });
 
-                            $.ajax({
-                                contentType: 'application/json; charset=utf-8',
-                                dataType: 'json',
-                                type: 'POST',
-                                url: '/MaterialsEntry/DeleteEntryDetailItem',
-                                data: EntryDelete,
-                                success: function (result) {
-                                    console.log(result);
-                                    if (result.flag === true) {
-                                        deleteList[deleteCounter] = itemDetId;
-                                        deleteCounter++;
-                                        row.remove();
-                                    }
-                                    else {
-                                        alert(result.message);
-                                    }
-
-
-                                },
-                                failure: function (response) {
-                                    alert('error');
+                        $.ajax({
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            type: 'POST',
+                            url: '/MaterialsEntry/DeleteEntryDetailItem',
+                            data: EntryDelete,
+                            success: function (result) {
+                                console.log(result);
+                                if (result.flag === true) {
+                                    deleteList[deleteCounter] = itemDetId;
+                                    deleteCounter++;
+                                    row.remove();
                                 }
-                            });
+                                else {
+                                    alert(result.message);
+                                }
+
+
+                            },
+                            failure: function (response) {
+                                alert('error');
+                            }
+                        });
 
                         //}
                         //else {
@@ -856,7 +844,7 @@
                     $('#PONo1').html(items);
 
 
-                }            
+                }
 
             });
         })
@@ -1027,7 +1015,7 @@
                     + '</td><input value="' + Status + '" type="hidden" name="Status"/> <td> '
                     + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                     +'<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
-                    //+ '<td> <input type="button" class="btn btn-danger btn-xs" value="Delete" onclick="$(this).parent().parent().remove();" /></td></tr>');
+                //+ '<td> <input type="button" class="btn btn-danger btn-xs" value="Delete" onclick="$(this).parent().parent().remove();" /></td></tr>');
 
                 jQuery('table.Resource-list').append(newRow);
 
@@ -1249,7 +1237,6 @@
 
         }
     </script>
-
     <style>
         span.error {
             display: block;

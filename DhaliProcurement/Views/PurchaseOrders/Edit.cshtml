@@ -3,7 +3,6 @@
     ViewBag.Title = "Edit Purchase Order";
 }
 
-
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -21,50 +20,40 @@
                 {
 
                     <table class="table">
-
                         <tr>
                             <td>PO No</td>
                             <td>
-                                <input type="text" value="@ViewBag.PONo" class="form-control" id="PONo"/>
+                                <input type="text" value="@ViewBag.PONo" class="form-control" id="PONo" />
                                 <input type="hidden" value="@ViewBag.PONoId" id="PONoId" />
                             </td>
                             <td>PO Date</td>
                             <td>
-
                                 <input type="text" value="@ViewBag.PODate" class="form-control datepicker" id="PODate" />
                             </td>
                         </tr>
 
-
-
                         <tr>
                             <td>Project</td>
                             <td>
-
-                                <input type="text" value="@ViewBag.ProjectName" class="form-control datepicker" disabled="disabled" id="ProjectName"/>
+                                <input type="text" value="@ViewBag.ProjectName" class="form-control datepicker" disabled="disabled" id="ProjectName" />
                                 <input type="hidden" value="@ViewBag.ProjectId" id="ProjectId" />
                             </td>
-
                         </tr>
                         <tr>
                             <td>Site Name</td>
                             <td>
-                                <input type="text" value="@ViewBag.SiteName" class="form-control datepicker" disabled="disabled" id="SiteName"/>
+                                <input type="text" value="@ViewBag.SiteName" class="form-control datepicker" disabled="disabled" id="SiteName" />
                                 <input type="hidden" value="@ViewBag.SiteId" id="SiteId" />
                             </td>
                         </tr>
 
-
-
                         <tr>
                             <td>Address</td>
                             <td>
-                               
-                                <input type="text" value="@ViewBag.PurchaseAddress" class="form-control datepicker" disabled="disabled" id="PurchaseAddress"/>
 
+                                <input type="text" value="@ViewBag.PurchaseAddress" class="form-control datepicker" disabled="disabled" id="PurchaseAddress" />
                             </td>
                         </tr>
-
 
                         <tr>
                             <td>Vendor</td>
@@ -73,7 +62,6 @@
                                 @Html.ValidationMessage("VendorId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
-
                         <tr>
                             <td>Tender No</td>
                             <td>
@@ -82,196 +70,173 @@
                             </td>
                         </tr>
 
-
                         <tr>
                             <td>Attention</td>
                             <td>
-
                                 <input type="text" value="@ViewBag.VendorAttention" class="form-control" id="VendorAttention" />
                             </td>
-
                             <td>To</td>
                             <td>
-
-                                <input type="text" value="@ViewBag.AttnManager" class="form-control" id="AttnManager"/>
+                                <input type="text" value="@ViewBag.AttnManager" class="form-control" id="AttnManager" />
                             </td>
                         </tr>
-
 
                         <tr>
                             <td>Cell</td>
                             <td>
-
-                                <input type="text" value="@ViewBag.AttnCell" class="form-control" id="AttnCell"/>
+                                <input type="text" value="@ViewBag.AttnCell" class="form-control" id="AttnCell" />
                             </td>
-
                             <td>Email</td>
                             <td>
-
                                 <input type="text" value="@ViewBag.Email" class="form-control" id="Email" />
                             </td>
                         </tr>
 
-
-
                         <tr>
                             <td>Subject</td>
                             <td>
-
                                 <input type="text" value="@ViewBag.Subject" class="form-control" id="Subject" />
                             </td>
-
                             <td>Lead Time</td>
                             <td>
-
-                                <input type="text" value="@ViewBag.LeadTime" class="form-control" id="LeadTime"/>
+                                <input type="text" value="@ViewBag.LeadTime" class="form-control" id="LeadTime" />
                             </td>
                         </tr>
-
-
 
                         <tr>
                             <td>Content</td>
                             <td>
-
-                                <input type="text" value="@ViewBag.Content" class="form-control" id="Content"/>
+                                <input type="text" value="@ViewBag.Content" class="form-control" id="Content" />
                             </td>
                         </tr>
-
-
 
                         <tr>
                             <td>Receive Concern Person</td>
                             <td>
-                             
+
                                 <input type="text" value="@ViewBag.RcvConcernPerson" class="form-control" id="RcvConcernPerson" />
                             </td>
-
                             <td>Cell</td>
                             <td>
-
-                                <input type="text" value="@ViewBag.RcvConcernPersonCell" class="form-control" id="RcvConcernPersonCell"/>
+                                <input type="text" value="@ViewBag.RcvConcernPersonCell" class="form-control" id="RcvConcernPersonCell" />
                             </td>
                         </tr>
-
                     </table>
                     <hr />
 
-                @*}*@
+                    @*}*@
 
 
-                <div class="details well" style=" border 1px solid black;">
-                    <h4>Purchase Order Items</h4>
-                    <div class="jumbotron" style="padding:10px;">
-                        <table style="width: 100%;" class="table-responsive">
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Item</td>
-                                <td class="col-lg-2">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="UnitName" class="form-control" disabled="disabled" />
-                                    <input type="hidden" id="UnitId" value="" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Size</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="Size" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Unit Price</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><span class="error" id="ItemName_Error" style="padding-left:10px;">Item  required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;" class="col-lg-1">Requisition Qty</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="RequisitionQty" class="form-control" disabled="disabled" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">PO Quantity</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="POQuantity1" name="POQuantity1" class="form-control" />
-                                </td>
-                                <td style="font-weight: bold;" class="col-lg-1">Total Price</td>
-                                <td class="col-lg-2">
-                                    <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
-                                </td>
-                                <td class="col-lg-1"></td>
-                                <td class="col-lg-2">
-                                    <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><span class="error" id="POQuantity_Error" style="padding-left:10px;">PO Quantity required</span></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </table>
+                    <div class="details well" style=" border 1px solid black;">
+                        <h4>Purchase Order Items</h4>
+                        <div class="jumbotron" style="padding:10px;">
+                            <table style="width: 100%;" class="table-responsive">
+                                <tr>
+                                    <td style="font-weight: bold;" class="col-lg-1">Item</td>
+                                    <td class="col-lg-2">
+                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                    </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">Unit</td>
+                                    <td class="col-lg-2">
+                                        <input type="text" id="UnitName" class="form-control" disabled="disabled" />
+                                        <input type="hidden" id="UnitId" value="" />
+                                    </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">Size</td>
+                                    <td class="col-lg-2">
+                                        <input type="text" id="Size" class="form-control" disabled="disabled" />
+                                    </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">Unit Price</td>
+                                    <td class="col-lg-2">
+                                        <input type="text" id="UnitPrice" class="form-control" disabled="disabled" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span class="error" id="ItemName_Error" style="padding-left:10px;">Item  required</span></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;" class="col-lg-1">Requisition Qty</td>
+                                    <td class="col-lg-2">
+                                        <input type="text" id="RequisitionQty" class="form-control" disabled="disabled" />
+                                    </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">PO Quantity</td>
+                                    <td class="col-lg-2">
+                                        <input type="text" id="POQuantity1" name="POQuantity1" class="form-control" />
+                                    </td>
+                                    <td style="font-weight: bold;" class="col-lg-1">Total Price</td>
+                                    <td class="col-lg-2">
+                                        <input type="text" id="TotalPrice1" class="form-control" disabled="disabled" />
+                                    </td>
+                                    <td class="col-lg-1"></td>
+                                    <td class="col-lg-2">
+                                        <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><span class="error" id="POQuantity_Error" style="padding-left:10px;">PO Quantity required</span></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <br />
+                            <table class="Resource-list table table-bordered" id="Item-list">
+                                <tr class="bg-grey">
+                                    <th>Item Name</th>
+                                    <th>Unit</th>
+                                    <th>Size</th>
+                                    <th>Unit Price</th>
+                                    <th> Requisition Qty</th>
+                                    <th>PO Quantity</th>
+                                    <th>Total Price</th>
+                                    <th></th>
+                                </tr>
+                                <tfoot>
+                                    <tr>
+                                        @*<td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>*@
+                                        <td colspan="6" style="text-align:right;"><b>Total Cost</b></td>
+                                        <td><input type="text" value="" id="totalCost" class="form-control" disabled="disabled" /></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
-                    <table class="Resource-list table table-bordered" id="Item-list">
-                        <tr class="bg-grey">
-                            <th>Item Name</th>
-                            <th>Unit</th>
-                            <th>Size</th>
-                            <th>Unit Price</th>
-                            <th> Requisition Qty</th>
-                            <th>PO Quantity</th>
-                            <th>Total Price</th>
-                            <th></th>
-                        </tr>
-
-                        <tfoot>
-                            <tr>
-                                @*<td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>*@
-                                <td colspan="6" style="text-align:right;"><b>Total Cost</b></td>
-                                <td><input type="text" value="" id="totalCost" class="form-control" disabled="disabled" /></td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
 
 
-                <div class="form-group">
-                    <div class="col-md-12" style="text-align:center;">
-                        <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>  Update</button>
-                        <button type="button" id="GenReport" class="btn btn-primary"><i class="icon-add position-left"></i>  Generate Report</button>
+                    <div class="form-group">
+                        <div class="col-md-12" style="text-align:center;">
+                            <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>  Update</button>
+                            <button type="button" id="GenReport" class="btn btn-primary"><i class="icon-add position-left"></i>  Generate Report</button>
+                        </div>
                     </div>
-                </div>
 
 
 
                 }
-
             </div>
         </div>
     </div>
     @*<div class="form-group">
-        <div class="col-md-12" style="text-align:center;">
-            <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>  Update</button>
-        </div>
-    </div>*@
+            <div class="col-md-12" style="text-align:center;">
+                <button type="button" id="SaveItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>  Update</button>
+            </div>
+        </div>*@
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
@@ -285,7 +250,6 @@
             <div class="modal-body">
                 <div class="panel-body">
                     @Html.AntiForgeryToken()
-
                     <div class="form-horizontal">
                         <div class="form-group">
                             <input type="hidden" id="ProjectId" value="" />
@@ -298,7 +262,6 @@
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                             </div>
                         </div>
-
                         <div class="form-group">
                             @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
@@ -339,10 +302,9 @@
                             @Html.Label("Total Price", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.TextBox("ModalTotalPrice", null, new { @class = "form-control", @disabled = "disabled" , @name = "ModalTotalPrice" })
+                                @Html.TextBox("ModalTotalPrice", null, new { @class = "form-control", @disabled = "disabled", @name = "ModalTotalPrice" })
                             </div>
                         </div>
-
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
@@ -355,7 +317,6 @@
         </div>
     </div>
 </div>
-
 <script>
     var counter = 0; //counter for the serial
     var deleteCounter = 0;
@@ -374,16 +335,16 @@
     }, 'input[name=POQuantity1]');
 
 
-     $('#detailForm').on({
-            'change': function () {
-                var price = $('#ModalUnitPrice').val();
-                alert('Unit Price :' + price);
-                var quantity = $('#ModalPOQuantity').val();
-                var totalPrice = price * quantity;
-                //alert('ttl'+totalPrice);
-                $('#ModalTotalPrice').val(totalPrice);
-            }
-        }, 'input[name=ModalTotalPrice]');
+    $('#detailForm').on({
+        'change': function () {
+            var price = $('#ModalUnitPrice').val();
+            alert('Unit Price :' + price);
+            var quantity = $('#ModalPOQuantity').val();
+            var totalPrice = price * quantity;
+            //alert('ttl'+totalPrice);
+            $('#ModalTotalPrice').val(totalPrice);
+        }
+    }, 'input[name=ModalTotalPrice]');
 
 
     $(document).on({
@@ -423,23 +384,23 @@
         var ItemId = $('#ItemName option:selected').val();
         //alert('Item ' + ItemId);
         var RequisitionQty = $('#RequisitionQty').val();
-      
+
         var ItemName = $('#ItemName option:selected').text();
         //alert('Item ' + ItemName);
         var UnitName = $('#UnitName').val();
-       // alert('nameee ' + UnitName);
+        // alert('nameee ' + UnitName);
 
         var UnitId = $('#UnitId').val();
-       // alert('uiddddddd ' + UnitId);
+        // alert('uiddddddd ' + UnitId);
         var Size = $('#Size').val();
-      //  alert('size ' + Size);
+        //  alert('size ' + Size);
 
         var UnitPrice = $('#UnitPrice').val();
-      //  alert('UnitPrice ' + UnitPrice);
+        //  alert('UnitPrice ' + UnitPrice);
         var POQuantity = $('#POQuantity1').val();
-      //  alert('POQuantity ' + POQuantity);
+        //  alert('POQuantity ' + POQuantity);
         var TotalPrice = $('#TotalPrice1').val();
-     //   alert('TotalPrice ' + TotalPrice);
+        //   alert('TotalPrice ' + TotalPrice);
         //new
         var isValidItem = true;
 
@@ -497,7 +458,7 @@
             //$('#TotalPrice').val("");
 
 
-            
+
 
         }
 
@@ -521,7 +482,7 @@
         }
     });
 
-    
+
 
 
 
@@ -574,7 +535,7 @@
         var TenderMasId = @ViewBag.TenderMasId;
         //alert('TenderMasId '+TenderMasId);
 
-      //  debugger;
+        //  debugger;
         ResourceDetails = JSON.stringify({
 
             PurchaseMasId: PurchaseMasId,
@@ -643,40 +604,40 @@
                     e.preventDefault();
                     //var retVal = confirm("Do you want to delete this Item ?");
                     //if (retVal == true) {
-                        var row = $(this).closest('tr');
-                        var itemDetId = $(this).closest('tr').find('td input[name=ItemId]').val();
-                        var ProcPurchaseMasterId= @ViewBag.ProcPurchaseMasterId;
-                        //alert(itemDetId);
+                    var row = $(this).closest('tr');
+                    var itemDetId = $(this).closest('tr').find('td input[name=ItemId]').val();
+                    var ProcPurchaseMasterId= @ViewBag.ProcPurchaseMasterId;
+                    //alert(itemDetId);
 
-                        PurchaseDelete = JSON.stringify({
-                            PurchaseItemId: itemDetId,
-                            ProcPurchaseMasterId:ProcPurchaseMasterId
-                        });
+                    PurchaseDelete = JSON.stringify({
+                        PurchaseItemId: itemDetId,
+                        ProcPurchaseMasterId:ProcPurchaseMasterId
+                    });
 
-                        $.ajax({
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'json',
-                            type: 'POST',
-                            url: '/PurchaseOrders/DeleteDetailItem',
-                            data: PurchaseDelete,
-                            success: function (result) {
-                                console.log(result);
-                                if (result.flag === true) {
-                                    deleteList[deleteCounter] = itemDetId;
-                                    deleteCounter++;
-                                    row.remove();
-                                    totalItemCost();
-                                }
-                                else {
-                                    alert(result.message);
-                                }
-
-
-                            },
-                            failure: function (response) {
-                                alert('error');
+                    $.ajax({
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: 'POST',
+                        url: '/PurchaseOrders/DeleteDetailItem',
+                        data: PurchaseDelete,
+                        success: function (result) {
+                            console.log(result);
+                            if (result.flag === true) {
+                                deleteList[deleteCounter] = itemDetId;
+                                deleteCounter++;
+                                row.remove();
+                                totalItemCost();
                             }
-                        });
+                            else {
+                                alert(result.message);
+                            }
+
+
+                        },
+                        failure: function (response) {
+                            alert('error');
+                        }
+                    });
 
                     //}
                     //else {
@@ -693,7 +654,7 @@
 
         //end selected items here
 
-        
+
 
 
     });
@@ -710,7 +671,7 @@
         var ModalUnitPrice = $('#ModalUnitPrice').val();
         var ModalRequisitionQty = $('#ModalRequisitionQty').val();
         var ModalPOQuantity = $('#ModalPOQuantity').val();
-       
+
 
         var ModalTotalPrice = ModalUnitPrice *ModalPOQuantity;
 
@@ -745,9 +706,9 @@
             alert('PO Date required!');
             $('#PODate').focus();
         }
-            else if ($('.Resource-list tr').length < 3) {
-                alert('Please Add Item to this order');
-            }
+        else if ($('.Resource-list tr').length < 3) {
+            alert('Please Add Item to this order');
+        }
         else {
             //alert('All Validation Donne...');
             EditPurchaseOrder();
@@ -763,9 +724,9 @@
         var PODate = $("#PODate").val();
         //alert('PODate: ' + PODate);
         //var ProjectId = $("#ProjectId").val();
-       // alert('ProjectId: ' + ProjectId);
+        // alert('ProjectId: ' + ProjectId);
         //var SiteId = $("#SiteId").val();
-       // alert('SiteId: ' + SiteId);
+        // alert('SiteId: ' + SiteId);
         //var PurchaseAddress = $("#PurchaseAddress").val();
         //alert('PurchaseAddress: ' + PurchaseAddress);
         var VendorId = $("#VendorId option:selected").val();
@@ -795,7 +756,7 @@
         @*var ProcPurchaseDetId= @ViewBag.ProcPurchaseDetId;*@
 
 
-     //   debugger;
+        //   debugger;
         //===========Detail Form===========
         var ItemId = document.getElementsByName("ItemId");
         var ItemName = document.getElementsByName("ItemName1");
@@ -807,7 +768,7 @@
         //alert('ItemId ' + ItemId);
         var PurchaseOrderDetId = document.getElementsByName("PurchaseOrderDetId");
         var UnitId = document.getElementsByName("UnitId");
-      //  alert('UnitId ' + UnitId);
+        //  alert('UnitId ' + UnitId);
 
         var UnitName = document.getElementsByName("UnitName");
         //alert('UnitName ' + UnitName);
@@ -826,7 +787,7 @@
         var AddedDetItems = [];
 
         var tableCounter = $('#Item-list tr').length - 1;
-     //   alert('Length: ' + tableCounter);
+        //   alert('Length: ' + tableCounter);
 
         for (var i = 0; i < tableCounter-1; i++) {
             AddedDetItems.push({
@@ -877,7 +838,7 @@
             RcvConcernPersonCell: RcvConcernPersonCell,
             POTotalAmt: POTotalAmt,
             ProcPurchaseMasterId:ProcPurchaseMasterId,
-          //ProcPurchaseDetId:ProcPurchaseDetId
+            //ProcPurchaseDetId:ProcPurchaseDetId
         });
         //  debugger;
         $.ajax({
@@ -988,7 +949,7 @@
             url: '/PurchaseOrders/DeletePurchaseDetailItem',
             data: TaskDelete,
             success: function (result) {
-               // alert('test 2')
+                // alert('test 2')
                 console.log(result);
                 if (result.flag === true) {
                     alert("Record Delete successfully!");
@@ -1012,9 +973,9 @@
 
     //11 feb 18
     $('#GenReport').click(function (e) {
-       
+
         GenerateReportPurchaseOrder();
-        
+
     });
 
 
@@ -1024,30 +985,30 @@
         //alert('ProjectId: '+ProjectId);
         var SiteId = $("#SiteId").val();
         //alert('SiteId: '+SiteId);
-      
+
         var VendorId = $("#VendorId").val();
         //alert('VendorId: '+VendorId);
-      
+
         var PONoId = $("#PONoId").val();
         //alert('PONoId: '+PONoId);
-      
+
         //PurchaseReport = JSON.stringify({
         //    ProjectId: ProjectId,
         //    SiteId:SiteId,
         //    VendorId:VendorId,
         //    PONoId:PONoId
-           
+
         //});
-        
+
         //alert('/Report/PurchaseOrderReportGet/?ProjectId=' + ProjectId + '&SiteId='+ SiteId +'&PONo= '+ PONoId +'&VendorId= ' + VendorId);
 
         window.open('/Report/PurchaseOrderReportGet/?ProjectId=' + ProjectId + '&SiteId='+ SiteId +'&PONo='+ PONoId +'&VendorId=' + VendorId , '_blank');
 
         //debugger;
-        
-        
+
+
         //$.ajax({
-            
+
         //    contentType: 'application/json; charset=utf-8',
         //    dataType: 'json',
         //    type: 'POST',
@@ -1080,25 +1041,21 @@
 
 </script>
 
-
-
 @section Scripts {
-
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Plugins/select2/select2.min.js"></script>
     <script>
-      $(".select2").select2();
-      //$(".datepicker").datepicker();
-      $('.datepicker').datepicker({
-          format: 'dd/mm/yyyy',
-          todayHighlight: true,
-          todayBtn: true,
-          autoclose: true
-      });
+        $(".select2").select2();
+        //$(".datepicker").datepicker();
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            todayBtn: true,
+            autoclose: true
+        });
 
     </script>
 }
-
 <style>
     /*.scrolling {
         width: 100%;

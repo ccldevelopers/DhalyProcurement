@@ -3,7 +3,6 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -12,170 +11,169 @@
                 <h5 class="panel-title"><i class="icon-stack-plus position-left"></i>Vendor Payment</h5><hr />
                 <div class="heading-elements">
                     <ul class="icons-list">
-                        <li><a data-action="collapse"></a></li>                      
+                        <li><a data-action="collapse"></a></li>
                     </ul>
                 </div>
             </div>
             <div class="panel-body">
-              
-                    <table class="table">
-                        <tr>
-                            <td class="col-lg-2">Party Name</td>
-                            <td  class="col-lg-6">                            
-                                @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2"})                             
-                            </td>
-                            <td>Payment Date</td>
-                            <td>
-                                @Html.TextBox("PayDate", null, new { @class = "form-control datepicker" })
-                            </td>
-                        
-                       </tr>                                        
 
-                    </table>
+                <table class="table">
+                    <tr>
+                        <td class="col-lg-2">Party Name</td>
+                        <td class="col-lg-6">
+                            @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2" })
+                        </td>
+                        <td>Payment Date</td>
+                        <td>
+                            @Html.TextBox("PayDate", null, new { @class = "form-control datepicker" })
+                        </td>
 
-                    <hr />
-                    <br />
-                    <div class="details well" style=" border 1px solid black;">
-                        <h4>Items Payment</h4>
-                        <div class="jumbotron" style="padding:10px;">
-                            <table style="width: 100%;" class="table-responsive">
-                                <tr>
-                                    @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
-                                    <td style="font-weight: bold;" class="col-lg-1">Project</td>
-                                    <td  class="col-lg-3">
-                                        @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId"})
-                                        <input type="hidden" value="" id="ProjectId" />
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Site</td>
-                                    <td  class="col-lg-3">
-                                        @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId"})
-                                        <input type="hidden" value="" id="SiteId" />
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Req. No.</td>
-                                    <td  class="col-lg-3">
-                                        @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo"})
-                                        <input type="hidden" value="" id="ReqNo" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><span class="error" id="ProjectId_Error" style="padding-left:10px;">Project Required</span></td>
-                                    <td></td>
-                                    <td><span class="error" id="SiteId_Error" style="padding-left:10px;">Site Required</span></td>
-                                    <td></td>
-                                    <td><span class="error" id="Req_Error" style="padding-left:10px;"> Req. No. Required</span></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold;"  class="col-lg-1">PO No.</td>
-                                    <td  class="col-lg-3">
-                                        @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
-                                        <input type="hidden" value="" id="PONo" />
+                    </tr>
+                </table>
+                <hr />
+                <br />
+                <div class="details well" style=" border 1px solid black;">
+                    <h4>Items Payment</h4>
+                    <div class="jumbotron" style="padding:10px;">
+                        <table style="width: 100%;" class="table-responsive">
+                            <tr>
+                                @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
+                                <td style="font-weight: bold;" class="col-lg-1">Project</td>
+                                <td class="col-lg-3">
+                                    @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
+                                    <input type="hidden" value="" id="ProjectId" />
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Site</td>
+                                <td class="col-lg-3">
+                                    @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
+                                    <input type="hidden" value="" id="SiteId" />
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
+                                <td class="col-lg-3">
+                                    @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
+                                    <input type="hidden" value="" id="ReqNo" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><span class="error" id="ProjectId_Error" style="padding-left:10px;">Project Required</span></td>
+                                <td></td>
+                                <td><span class="error" id="SiteId_Error" style="padding-left:10px;">Site Required</span></td>
+                                <td></td>
+                                <td><span class="error" id="Req_Error" style="padding-left:10px;"> Req. No. Required</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
+                                <td class="col-lg-3">
+                                    @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
+                                    <input type="hidden" value="" id="PONo" />
 
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Item</td>
-                                    <td  class="col-lg-3">
-                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Req. Qty Material</td>
-                                    <td  class="col-lg-3">
-                                        <input type="text" id="ReqQty" class="form-control" disabled="disabled"  />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><span class="error" id="PO_Error" style="padding-left:10px;">PO Required</span></td>
-                                    <td></td>
-                                    <td><span class="error" id="ItemId_Error" style="padding-left:10px;">Item Required</span></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Unit</td>
-                                    <td  class="col-lg-3">
-                                        <input type="text" id="UnitName" class="form-control" disabled="disabled"/>
-                                        <input type="hidden" value="" id="UnitId" />
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Challan No</td>
-                                    <td  class="col-lg-3">
-                                        @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo"})
-                                        <input type="hidden" value="" id="Proc_MaterialEntryDetId" />
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Bill No.</td>
-                                    <td  class="col-lg-3">
-                                        <input type="text" id="BillNo" class="form-control"/>
-                                    </td>
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Item</td>
+                                <td class="col-lg-3">
+                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Req. Qty Material</td>
+                                <td class="col-lg-3">
+                                    <input type="text" id="ReqQty" class="form-control" disabled="disabled" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><span class="error" id="PO_Error" style="padding-left:10px;">PO Required</span></td>
+                                <td></td>
+                                <td><span class="error" id="ItemId_Error" style="padding-left:10px;">Item Required</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;" class="col-lg-1">Unit</td>
+                                <td class="col-lg-3">
+                                    <input type="text" id="UnitName" class="form-control" disabled="disabled" />
+                                    <input type="hidden" value="" id="UnitId" />
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Challan No</td>
+                                <td class="col-lg-3">
+                                    @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo" })
+                                    <input type="hidden" value="" id="Proc_MaterialEntryDetId" />
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Bill No.</td>
+                                <td class="col-lg-3">
+                                    <input type="text" id="BillNo" class="form-control" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="error" id="Challan_Error" style="padding-left:10px;">Challan No. Required</span></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr>
+
+                                <td style="font-weight: bold;" class="col-lg-1">Challan Amount(tk)</td>
+                                <td class="col-lg-3">
+
+                                    <input type="text" id="TotalAmount" class="form-control" disabled="disabled" />
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Payment</td>
+                                <td class="col-lg-3">
+                                    <input type="text" id="Payment" class="form-control" />
+                                </td>
+                                <td style="font-weight: bold;" class="col-lg-1">Remarks</td>
+                                <td class="col-lg-3">
+                                    <input type="text" id="Remarks" class="form-control" />
+                                    @*<input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />*@
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="error" id="Payment_Error" style="padding-left:10px;">Payment Required</span></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="pull-right" style="padding-right:10px;"><input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" /></td>
+                            </tr>
+
+                        </table>
+                        <br />
+                        <div class="table-responsive scrolling">
+                            <table class="Resource-list table table-bordered" id="PaymentDetails">
+                                <tr class="bg-grey">
+                                    @*<th>Sl. No.</th>*@
+                                    <th>Project Name</th>
+                                    <th>Site</th>
+                                    <th>Req. No.</th>
+                                    <th>PO No.</th>
+                                    <th>Item Name</th>
+                                    <th>Req. Qty Material</th>
+                                    <th>Unit</th>
+                                    <th>Challan No</th>
+                                    <th>Bill No.</th>
+                                    <th>Challan Amount(tk)</th>
+                                    <th>Payment</th>
+                                    <th>Remarks</th>
+                                    <th>&nbsp;</th>
 
                                 </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><span class="error" id="Challan_Error" style="padding-left:10px;">Challan No. Required</span></td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                                <tr>                               
-                         
-                                    <td style="font-weight: bold;"  class="col-lg-1">Challan Amount(tk)</td>
-                                    <td  class="col-lg-3">
-
-                                        <input type="text" id="TotalAmount" class="form-control" disabled="disabled" />
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Payment</td>
-                                    <td  class="col-lg-3">
-                                        <input type="text" id="Payment" class="form-control" />
-                                    </td>
-                                    <td style="font-weight: bold;"  class="col-lg-1">Remarks</td>
-                                    <td  class="col-lg-3">
-                                        <input type="text" id="Remarks" class="form-control" />
-                                        @*<input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />*@
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><span class="error" id="Payment_Error" style="padding-left:10px;">Payment Required</span></td>
-                                    <td></td>
-                                    <td></td>
-
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="pull-right" style="padding-right:10px;"><input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" /></td>
-                                </tr>
-
                             </table>
-                     </div>
-
-                            <div class="table-responsive scrolling">
-                                <table class="Resource-list table table-bordered" id="PaymentDetails">
-                                    <tr class="bg-grey">
-                                        @*<th>Sl. No.</th>*@
-                                        <th>Project Name</th>
-                                        <th>Site</th>
-                                        <th>Req. No.</th>
-                                        <th>PO No.</th>
-                                        <th>Item Name</th>
-                                        <th>Req. Qty Material</th>
-                                        <th>Unit</th>
-                                        <th>Challan No</th>
-                                        <th>Bill No.</th>
-                                        <th>Challan Amount(tk)</th>
-                                        <th>Payment</th>
-                                        <th>Remarks</th>
-                                        <th>&nbsp;</th>
-
-                                    </tr>
-                                </table>
-                            </div>
                         </div>
-            
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -186,7 +184,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -201,7 +198,6 @@
             <div class="modal-body">
                 <div class="panel-body">
                     @Html.AntiForgeryToken()
-
                     <div class="form-horizontal">
                         <div class="form-group">
                             <input type="hidden" id="ProjectId" value="" />
@@ -214,7 +210,6 @@
                                 @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
                             </div>
                         </div>
-
                         <div class="form-group">
                             @Html.Label("Site Name", htmlAttributes: new
                        {
@@ -296,7 +291,6 @@
                                 @Html.TextBox("ModalRemarks", null, new { @class = "form-control" })
                             </div>
                         </div>
-
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
@@ -309,7 +303,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     var counter = 0;
@@ -339,7 +332,7 @@
 
     $('#VendorId').change(function () {
         var id = $('#VendorId option:selected').val();
-        
+
         $.ajax({
             url: "/VendorPayments/GetProjects",
             type: "post",
@@ -402,7 +395,7 @@
                 }
             });
         }
-       
+
     });
 
 
@@ -478,8 +471,8 @@
 
     $("#PONo").change(function () {
         var PONo = $('#PONo option:selected').val();
-       // alert('PONo ' + PONo);
-       
+        // alert('PONo ' + PONo);
+
         $.ajax({
             type: "post",
             url: "/VendorPayments/GetItems",
@@ -524,7 +517,7 @@
                 $('#UnitName').val(data.UnitName);
                 $('#ReqQty').val(data.RemQty);
                 $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
-                
+
 
                 var listOfitems = data.ChallanNo.length;
                 var items = "<select id='ChallanNo'>";
@@ -546,12 +539,12 @@
 
 
     $("#ChallanNo").change(function () {
-      //  var ItemId = $('#ItemName option:selected').val();
-       var ChallanNo = $('#ChallanNo option:selected').val();
-      //  var ProjectId = $('#ProjectId option:selected').val();
-      //  var SiteId = $('#SiteId option:selected').val();
+        //  var ItemId = $('#ItemName option:selected').val();
+        var ChallanNo = $('#ChallanNo option:selected').val();
+        //  var ProjectId = $('#ProjectId option:selected').val();
+        //  var SiteId = $('#SiteId option:selected').val();
 
-       
+
         $.ajax({
             type: "post",
             url: "/VendorPayments/GetTotalAmt",
@@ -559,11 +552,11 @@
             datatype: "json",
             traditional: true,
             success: function (data) {
-               // $('#ChallanNo').removeAttr("disabled");
-              //  $('#UnitId').val(data.UnitId);
-              //  $('#UnitName').val(data.UnitName);
-              //  $('#ReqQty').val(data.RemQty);
-               // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
+                // $('#ChallanNo').removeAttr("disabled");
+                //  $('#UnitId').val(data.UnitId);
+                //  $('#UnitName').val(data.UnitName);
+                //  $('#ReqQty').val(data.RemQty);
+                // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
                 $('#TotalAmount').val(data.totalAmt);
             }
 
@@ -619,7 +612,7 @@
     //        success: function (data) {
     //            $('#VendorName').val(data.vendorName);
     //            $('#VendorId').val(data.VendorId);
-    //            $('#TotalMaterial').val(data.TotalMaterial);                
+    //            $('#TotalMaterial').val(data.TotalMaterial);
     //            $('#RemainingQty').val(data.RemainingQty);
     //            $('#UnitPrice').val(data.UnitPrice);
     //            var previousRemaining = data.TotalMaterial - data.RemainingQty;
@@ -652,26 +645,26 @@
         var ProjectName = $('#ProjectId option:selected').text();
 
         //alert('ProjectID: ' + ProjectId);
-       
-        
+
+
         var SiteId = $('#SiteId option:selected').val();
         var SiteName = $('#SiteId option:selected').text();
 
-    //    alert('SiteId: ' + SiteId);
-       
+        //    alert('SiteId: ' + SiteId);
+
         var ReqNo = $('#ReqNo option:selected').val();
         var ReqNoName = $('#ReqNo option:selected').text();
 
-     //   alert('ReqNo: ' + ReqNo);
+        //   alert('ReqNo: ' + ReqNo);
 
         var PONo = $('#PONo option:selected').val();
         var PONoName = $('#PONo option:selected').text();
 
-      //  alert('PONo: ' + PONo);
+        //  alert('PONo: ' + PONo);
 
         var ItemId = $('#ItemName option:selected').val();
         var ItemName = $('#ItemName option:selected').text();
-        
+
         var ReqQty = $('#ReqQty').val();
         var UnitId = $('#UnitId').val();
         var UnitName = $('#UnitName').val();
@@ -683,7 +676,7 @@
         var TotalAmount = $('#TotalAmount').val();
         var Payment = $('#Payment').val();
         var Remarks = $('#Remarks').val();
-     
+
 
 
         if ($('#ProjectId').val().trim() == '') {
@@ -766,14 +759,14 @@
 
             jQuery('table.Resource-list').append(newRow);
 
-            
+
             $('#ReqQty').val("");
             //$('#UnitId').val("");
             $('#BillNo').val("");
             $('#TotalAmount').val("");
             $('#Payment').val("");
             $('#Remarks').val("");
-         
+
             //$('#ReqNo').attr("disabled", true);
             ////$('#ItemName').attr("disabled", true);
 
@@ -1094,24 +1087,24 @@
     function CreateVendorPayment() {
         //==========Master Form==========
         var VendorId = $('#VendorId').val();
-       // alert('VendorId ' + VendorId);
+        // alert('VendorId ' + VendorId);
         var PayDate = $('#PayDate').val();
 
         //===========Detail Form===========
-        
+
         var Proc_MaterialEntryDetId = $('#Proc_MaterialEntryDetId').val();
 
         var ProjectId = document.getElementsByName("ProjectId");
-        var SiteId = document.getElementsByName("SiteId");    
+        var SiteId = document.getElementsByName("SiteId");
         var ReqNo = document.getElementsByName("ReqNo");
-        var PONo = document.getElementsByName("PONo");   
+        var PONo = document.getElementsByName("PONo");
         var ItemId = document.getElementsByName("ItemId");
         var ReqQty = document.getElementsByName("ReqQty");
         var UnitId = document.getElementsByName("UnitId");
         var ChallanNo = document.getElementsByName("ChallanNo");
         var BillNo = document.getElementsByName("BillNo");
         var Payment = document.getElementsByName("Payment");
-        var Remarks = document.getElementsByName("Remarks");     
+        var Remarks = document.getElementsByName("Remarks");
 
         var PaymentItems = [];
         //alert($('#RequisitionDetails tr').length - 1)
@@ -1153,7 +1146,7 @@
         PaymentDetails = JSON.stringify({
             PaymentItems: PaymentItems,
             VendorId: VendorId,
-            PayDate: PayDate          
+            PayDate: PayDate
         });
 
         //alert('Success!!!');
@@ -1194,7 +1187,6 @@
 
 
 </script>
-
 <style>
     span.error {
         display: block;

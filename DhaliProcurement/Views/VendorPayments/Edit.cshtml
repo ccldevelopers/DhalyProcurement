@@ -4,7 +4,6 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
     <div class="col-md-12">
         <!-- Basic layout-->
@@ -18,23 +17,19 @@
                 </div>
             </div>
             <div class="panel-body">
-
                 <table class="table">
                     <tr>
                         <td class="col-lg-2">Party Name</td>
-                        <td  class="col-lg-6"> 
-                            @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2" ,@disabled= "disabled" })
+                        <td class="col-lg-6">
+                            @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2", @disabled = "disabled" })
                             <input type="hidden" value="@ViewBag.vPayId" id="VendorMasId" />
-                         </td>
+                        </td>
                         <td>Payment Date</td>
                         <td>
                             @Html.TextBox("PayDate", NullHelper.DateToString(Model.proc_vPaymentMas.VPDate), new { @class = "form-control datepicker" })
                         </td>
-
                     </tr>
-
                 </table>
-
                 <hr />
                 <br />
                 <div class="details well" style=" border 1px solid black;">
@@ -153,30 +148,29 @@
                             </tr>
 
                         </table>
-                    </div>
-                    <div class="table-responsive scrolling">
-                        <table class="Resource-list table table-bordered" id="PaymentDetails">
-                            <tr class="bg-grey">
-                                @*<th>Sl. No.</th>*@
-                                <th>Project Name</th>
-                                <th>Site</th>
-                                <th>Req. No.</th>
-                                <th>PO No.</th>
-                                <th>Item Name</th>
-                                <th>Req. Qty Material</th>
-                                <th>Unit</th>
-                                <th>Challan No</th>
-                                <th>Bill No.</th>
-                                <th>Total Amount(tk)</th>
-                                <th>Payment</th>
-                                <th>Remarks</th>
-                                <th>&nbsp;</th>
-
-                            </tr>
-                        </table>
+                        <br />
+                        <div class="table-responsive scrolling">
+                            <table class="Resource-list table table-bordered" id="PaymentDetails">
+                                <tr class="bg-grey">
+                                    @*<th>Sl. No.</th>*@
+                                    <th>Project Name</th>
+                                    <th>Site</th>
+                                    <th>Req. No.</th>
+                                    <th>PO No.</th>
+                                    <th>Item Name</th>
+                                    <th>Req. Qty Material</th>
+                                    <th>Unit</th>
+                                    <th>Challan No</th>
+                                    <th>Bill No.</th>
+                                    <th>Total Amount(tk)</th>
+                                    <th>Payment</th>
+                                    <th>Remarks</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -187,7 +181,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -202,7 +195,6 @@
             <div class="modal-body">
                 <div class="panel-body">
                     @Html.AntiForgeryToken()
-
                     <div class="form-horizontal">
                         <div class="form-group">
                             <input type="hidden" id="ProjectId" value="" />
@@ -215,7 +207,6 @@
                                 @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
                             </div>
                         </div>
-
                         <div class="form-group">
                             @Html.Label("Site Name", htmlAttributes: new
                        {
@@ -297,7 +288,6 @@
                                 @Html.TextBox("ModalRemarks", null, new { @class = "form-control" })
                             </div>
                         </div>
-
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
@@ -310,9 +300,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 
@@ -383,7 +370,7 @@
                     //console.log("Payment "+data.List[i].Payment);
                     //console.log("Remarks "+ data.List[i].Remarks);
                     // data.List[i].Proc_VendorPaymentDetId
-                    //console.log("VP "+data.List[i].Proc_VendorPaymentDetId);         
+                    //console.log("VP "+data.List[i].Proc_VendorPaymentDetId);
 
                     var newRow = jQuery('<tr>'
                           + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId" class="form-control" style="width:50px;"/><input class="form-control" value="' + data.List[i].ProjectName + '" readonly="true" type="text" name="ProjectName"  style="width:90px;"/></td>'
@@ -409,7 +396,7 @@
 
                 //  alert('vp2');
 
-             
+
                 $('.editSite').click(function () {
                     var row = $(this).closest('tr');
                     selRow = $(this).closest('tr');
@@ -455,36 +442,36 @@
                     e.preventDefault();
                     //var retVal = confirm("Do you want to delete this Item ?");
                     //if (retVal == true) {
-                        var row = $(this).closest('tr');
-                        var itemDetId = $(this).closest('tr').find('td input[name=Proc_VendorPaymentDetId]').val();  
-                        //alert(itemDetId);
-                        VendorDelete = JSON.stringify({
-                            VendorDetailId: itemDetId
-                        });
+                    var row = $(this).closest('tr');
+                    var itemDetId = $(this).closest('tr').find('td input[name=Proc_VendorPaymentDetId]').val();
+                    //alert(itemDetId);
+                    VendorDelete = JSON.stringify({
+                        VendorDetailId: itemDetId
+                    });
 
-                        $.ajax({
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'json',
-                            type: 'POST',
-                            url: '/VendorPayments/DeleteVendorPaymentDetails',
-                            data: VendorDelete,
-                            success: function (result) {
-                                console.log(result);
-                                if (result.flag === true) {
-                                    deleteList[deleteCounter] = itemDetId;
-                                    deleteCounter++;
-                                    row.remove();
-                                }
-                                else {
-                                    alert(result.message);
-                                }
-
-
-                            },
-                            failure: function (response) {
-                                alert('error');
+                    $.ajax({
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: 'POST',
+                        url: '/VendorPayments/DeleteVendorPaymentDetails',
+                        data: VendorDelete,
+                        success: function (result) {
+                            console.log(result);
+                            if (result.flag === true) {
+                                deleteList[deleteCounter] = itemDetId;
+                                deleteCounter++;
+                                row.remove();
                             }
-                        });
+                            else {
+                                alert(result.message);
+                            }
+
+
+                        },
+                        failure: function (response) {
+                            alert('error');
+                        }
+                    });
 
                     //}
                     //else {
@@ -805,7 +792,7 @@
 
 
     $("#ReqNo").change(function () {
-          var SiteId = $('#SiteId  option:selected').val();
+        var SiteId = $('#SiteId  option:selected').val();
 
         var ReqNo = $('#ReqNo option:selected').val();
         var vendorId =  $('#VendorId').val();
@@ -816,7 +803,7 @@
             data: { ReqNo: ReqNo
                 , vendorId:vendorId,
                 SiteId :SiteId
-                },
+            },
             datatype: "json",
             traditional: true,
             success: function (data) {
@@ -946,14 +933,14 @@
 
     //add new row
 
-    
+
     $("#ChallanNo").change(function () {
         //  var ItemId = $('#ItemName option:selected').val();
         var ChallanNo = $('#ChallanNo option:selected').val();
         //  var ProjectId = $('#ProjectId option:selected').val();
         //  var SiteId = $('#SiteId option:selected').val();
 
-       
+
         $.ajax({
             type: "post",
             url: "/VendorPayments/GetTotalAmt",
@@ -1017,7 +1004,7 @@
         var Remarks = $('#Remarks').val();
         var Proc_MaterialEntryDetId= $('#Proc_MaterialEntryDetId').val();
         //   alert('Proc_MaterialEntryDetId '+Proc_MaterialEntryDetId);
-        
+
         if ($('#ProjectId').val().trim() == '') {
             $('#ProjectId_Error').show();
             isAllValid = false;
@@ -1291,7 +1278,6 @@
 
 </script>
 
-
 <style>
     span.error {
         display: block;
@@ -1299,4 +1285,3 @@
         font-size: 90%;
     }
 </style>
-
