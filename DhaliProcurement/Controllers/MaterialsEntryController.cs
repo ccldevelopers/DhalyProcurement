@@ -942,79 +942,98 @@ namespace DhaliProcurement.Controllers
 
                 }
             }
-            var master = db.Proc_MaterialEntryMas.Find(EntryMasId);
-            master.EDate = DateTime.ParseExact(EDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-            //master.EDate = EDate;
-            db.Entry(master).State = EntityState.Modified;
-            flag = db.SaveChanges() > 0;
-            //var TenderMasId = master.Id;
 
-            if (flag)
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                foreach (var item in EntryItems)
+                try
                 {
-                    var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId && x.ChallanNo == item.ChallanNo);
-                    //var check = data.SingleOrDefault(x=>x.ChallanNo==item.ChallanNo && x.Proc_PurchaseOrderDet.ItemId==item.ItemId);
+                    var master = db.Proc_MaterialEntryMas.Find(EntryMasId);
+                    master.EDate = DateTime.ParseExact(EDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                    //master.EDate = EDate;
+                    db.Entry(master).State = EntityState.Modified;
+                    flag = db.SaveChanges() > 0;
+                    //var TenderMasId = master.Id;
 
-                    if (check == null)
+                    if (flag)
                     {
-                        Proc_MaterialEntryDet detail = new Proc_MaterialEntryDet();
-                        detail.Proc_MaterialEntryMasId = EntryMasId;
-                        detail.ChallanNo = item.ChallanNo;
-                        if (item.ChallanDate == null)
+                        foreach (var item in EntryItems)
                         {
-                            detail.ChallanDate = null;
-                        }
-                        else
-                        {
-                            detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-                        }
-                        //detail.ChallanDate = item.ChallanDate;
-                        detail.EntryQty = item.EntryQty;
-                        detail.Status = item.Status;
+                            var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId && x.ChallanNo == item.ChallanNo);
+                            //var check = data.SingleOrDefault(x=>x.ChallanNo==item.ChallanNo && x.Proc_PurchaseOrderDet.ItemId==item.ItemId);
 
-                        var PurchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.PONo == item.PONo);
-                        var PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(y => y.Proc_PurchaseOrderMasId == PurchaseOrderMasId.Id && y.ItemId == item.ItemId);
+                            if (check == null)
+                            {
+                                Proc_MaterialEntryDet detail = new Proc_MaterialEntryDet();
+                                detail.Proc_MaterialEntryMasId = EntryMasId;
+                                detail.ChallanNo = item.ChallanNo;
+                                if (item.ChallanDate == null)
+                                {
+                                    detail.ChallanDate = null;
+                                }
+                                else
+                                {
+                                    detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                                }
+                                //detail.ChallanDate = item.ChallanDate;
+                                detail.EntryQty = item.EntryQty;
+                                detail.Status = item.Status;
 
-                        detail.Proc_PurchaseOrderDetId = PurchaseOrderDetId.Id;
-                        db.Entry(detail).State = EntityState.Added;
-                        db.SaveChanges();
+                                var PurchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.PONo == item.PONo);
+                                var PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(y => y.Proc_PurchaseOrderMasId == PurchaseOrderMasId.Id && y.ItemId == item.ItemId);
+
+                                detail.Proc_PurchaseOrderDetId = PurchaseOrderDetId.Id;
+                                db.Entry(detail).State = EntityState.Added;
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+
+                                var Proc_EntryDet_Id = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId);
+                                var getItem = db.Proc_MaterialEntryDet.Find(Proc_EntryDet_Id.Id);
+                                //var getItem = db.Proc_MaterialEntryDet.Find(item.);
+
+                                getItem.ChallanNo = item.ChallanNo;
+                                if (item.ChallanDate == null)
+                                {
+                                    getItem.ChallanDate = null;
+                                }
+                                else
+                                {
+                                    getItem.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                                }
+                                //getItem.ChallanDate = item.ChallanDate;
+                                getItem.EntryQty = item.EntryQty;
+                                getItem.Status = item.Status;
+
+                                db.Entry(getItem).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+
+                        }
                     }
-                    else
+
+                    dbContextTransaction.Commit();
+
+                    if (flag == true)
                     {
-
-                        var Proc_EntryDet_Id = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId);
-                        var getItem = db.Proc_MaterialEntryDet.Find(Proc_EntryDet_Id.Id);
-
-                        getItem.ChallanNo = item.ChallanNo;
-                        if (item.ChallanDate == null)
+                        result = new
                         {
-                            getItem.ChallanDate = null;
-                        }
-                        else
-                        {
-                            getItem.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-                        }
-                        //getItem.ChallanDate = item.ChallanDate;
-                        getItem.EntryQty = item.EntryQty;
-                        getItem.Status = item.Status;
-
-                        db.Entry(getItem).State = EntityState.Modified;
-                        db.SaveChanges();
+                            flag = true,
+                            message = "Save Successful!"
+                        };
                     }
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
 
+                    result = new
+                    {
+                        flag = false,
+                        message = ex.Message
+                    };
                 }
             }
-
-            if (flag == true)
-            {
-                result = new
-                {
-                    flag = true,
-                    message = "Save Successful!"
-                };
-            }
-
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

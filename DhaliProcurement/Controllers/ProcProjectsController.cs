@@ -206,7 +206,7 @@ namespace DhaliProcurement.Controllers
                     };
                 }
             }
-                return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -284,97 +284,103 @@ namespace DhaliProcurement.Controllers
 
             if (existProcProject.Count != 0)
             {
-
-                var flag = false;
-                var checkdata = db.ProcProject.Where(x => x.Id == ProcProjectId && x.ProjectSiteId == ProjectSiteId).SingleOrDefault();
-
-                if (checkdata != null)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    checkdata.Id = ProcProjectId;
-                    checkdata.ProjectSiteId = ProjectSiteId;
-                    checkdata.BOQDate = BOQDate;
-                    checkdata.NOADate = NOADate;
-                    checkdata.BOQNo = BOQNo;
-                    checkdata.NOANo = NOANo;
-                    checkdata.Status = ProjectStatus;
-                    //if (ProjectRemarks == null)
-                    //{
-                    //    checkdata.Remarks = "";
-                    //}
-                    //else
-                    //{
-                    // checkdata.Remarks = ProjectRemarks;
-                    //}
-
-                    checkdata.Remarks = ProjectRemarks;
-                    checkdata.ProjectType = ProjectType;
-
-                    db.Entry(checkdata).State = EntityState.Modified;
-
-                    flag = db.SaveChanges() > 0;
-                    if (flag == true)
+                    try
                     {
-                        if (ResourceDetails != null)
+                        var flag = false;
+                        var checkdata = db.ProcProject.Where(x => x.Id == ProcProjectId && x.ProjectSiteId == ProjectSiteId).SingleOrDefault();
+
+                        if (checkdata != null)
                         {
-                            try
+                            checkdata.Id = ProcProjectId;
+                            checkdata.ProjectSiteId = ProjectSiteId;
+                            checkdata.BOQDate = BOQDate;
+                            checkdata.NOADate = NOADate;
+                            checkdata.BOQNo = BOQNo;
+                            checkdata.NOANo = NOANo;
+                            checkdata.Status = ProjectStatus;
+                            //if (ProjectRemarks == null)
+                            //{
+                            //    checkdata.Remarks = "";
+                            //}
+                            //else
+                            //{
+                            // checkdata.Remarks = ProjectRemarks;
+                            //}
+
+                            checkdata.Remarks = ProjectRemarks;
+                            checkdata.ProjectType = ProjectType;
+
+                            db.Entry(checkdata).State = EntityState.Modified;
+
+                            flag = db.SaveChanges() > 0;
+                            if (flag == true)
                             {
-                                foreach (var item in ResourceDetails)
+                                if (ResourceDetails != null)
                                 {
-                                    ProcProjectItem procProjectItem = new ProcProjectItem();
-                                    procProjectItem.ProcProjectId = item.ProcProjectId;
-                                    //  procProjectItem.ProjectSiteId = item.ProjectSiteId;
-                                    procProjectItem.ItemId = item.ItemISLNO;
-                                    procProjectItem.UnitId = item.UnitUSLNO;
-                                    procProjectItem.PQuantity = item.PQuantity;
-                                    procProjectItem.PCost = item.PCost;
-                                    procProjectItem.Remarks = item.Remarks;
-                                    //db.ProcProjectItem.Add(procProjectItem);
-
-                                    var checkingProjectItems = db.ProcProjectItem.FirstOrDefault(x => x.ProcProjectId == item.ProcProjectId /*&& x.ProjectSiteId == item.ProjectSiteId*/ && x.ItemId == item.ItemISLNO);
-
-                                    flag = false;
-                                    if (checkingProjectItems == null)
+                                    foreach (var item in ResourceDetails)
                                     {
-                                        db.Entry(procProjectItem).State = EntityState.Added;
-                                    }
-                                    else
-                                    {
-                                        procProjectItem = db.ProcProjectItem.Find(checkingProjectItems.Id);
+                                        ProcProjectItem procProjectItem = new ProcProjectItem();
+                                        procProjectItem.ProcProjectId = item.ProcProjectId;
+                                        //  procProjectItem.ProjectSiteId = item.ProjectSiteId;
+                                        procProjectItem.ItemId = item.ItemISLNO;
+                                        procProjectItem.UnitId = item.UnitUSLNO;
                                         procProjectItem.PQuantity = item.PQuantity;
                                         procProjectItem.PCost = item.PCost;
-                                        procProjectItem.PCost = item.PCost;
                                         procProjectItem.Remarks = item.Remarks;
-                                        procProjectItem.UnitId = item.UnitUSLNO;
-                                        db.Entry(procProjectItem).State = EntityState.Modified;
+                                        //db.ProcProjectItem.Add(procProjectItem);
+
+                                        var checkingProjectItems = db.ProcProjectItem.FirstOrDefault(x => x.ProcProjectId == item.ProcProjectId /*&& x.ProjectSiteId == item.ProjectSiteId*/ && x.ItemId == item.ItemISLNO);
+
+                                        flag = false;
+                                        if (checkingProjectItems == null)
+                                        {
+                                            db.Entry(procProjectItem).State = EntityState.Added;
+                                        }
+                                        else
+                                        {
+                                            procProjectItem = db.ProcProjectItem.Find(checkingProjectItems.Id);
+                                            procProjectItem.PQuantity = item.PQuantity;
+                                            procProjectItem.PCost = item.PCost;
+                                            procProjectItem.PCost = item.PCost;
+                                            procProjectItem.Remarks = item.Remarks;
+                                            procProjectItem.UnitId = item.UnitUSLNO;
+                                            db.Entry(procProjectItem).State = EntityState.Modified;
+                                        }
+
+                                        //db.Entry(procProjectItem).State = procProjectItem.ProjectId == item.ProjectId && procProjectItem.ProjectSiteId==item.ProjectSiteId ?
+                                        //                            EntityState.Added :
+                                        //                            EntityState.Modified;
+                                        db.SaveChanges();
                                     }
+                                    dbContextTransaction.Commit();
+                                    result = new
+                                    {
+                                        flag = true,
+                                        message = "Edit saving successful !"
+                                    };
 
-                                    //db.Entry(procProjectItem).State = procProjectItem.ProjectId == item.ProjectId && procProjectItem.ProjectSiteId==item.ProjectSiteId ?
-                                    //                            EntityState.Added :
-                                    //                            EntityState.Modified;
-                                    db.SaveChanges();
+                                    return Json(result, JsonRequestBehavior.AllowGet);
                                 }
-
-                                result = new
-                                {
-                                    flag = true,
-                                    message = "Edit saving successful !"
-                                };
-
-                                return Json(result, JsonRequestBehavior.AllowGet);
-                            }
-                            catch (Exception ex)
-                            {
 
                             }
                         }
                     }
-                }
-                //   }
-                //catch (Exception ex)
-                //{
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
 
-                //}
-                return Json(result, JsonRequestBehavior.AllowGet);
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
+                    }
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
@@ -700,7 +706,7 @@ namespace DhaliProcurement.Controllers
         [HttpPost]
         public ActionResult DeleteDetailItem(int ProcProjectItemId, int Projectid, int ProjectSiteId)
         {
-           
+
             var result = new
             {
                 flag = false,
@@ -711,7 +717,7 @@ namespace DhaliProcurement.Controllers
                          join procProjectItems in db.ProcProjectItem on procProject.Id equals procProjectItems.ProcProjectId
                          join requisitioMas in db.Proc_RequisitionMas on procProject.Id equals requisitioMas.ProcProjectId
                          join requisitionDet in db.Proc_RequisitionDet on requisitioMas.Id equals requisitionDet.Proc_RequisitionMasId
-                         where requisitionDet.ItemId == ProcProjectItemId && procProject.ProjectSiteId== ProjectSiteId
+                         where requisitionDet.ItemId == ProcProjectItemId && procProject.ProjectSiteId == ProjectSiteId
                          select procProjectItems).Distinct().ToList();
 
             if (check.Count == 0)

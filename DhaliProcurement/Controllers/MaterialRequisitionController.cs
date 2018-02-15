@@ -457,63 +457,81 @@ namespace DhaliProcurement.Controllers
                 }
             }
 
-
-            //=======================
-
-            var master = db.Proc_RequisitionMas.Find(RequisitionMasId);
-            master.ReqDate = RequisitionDate;
-            master.Rcode = ReqNo;
-            master.Remarks = remarks;
-            master.Status = "N";
-            db.Entry(master).State = EntityState.Modified;
-            flag = db.SaveChanges() > 0;
-
-            if (flag)
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                foreach (var item in RequisitionItems)
+                try
                 {
-                    //var check = db.Proc_RequisitionDet.SingleOrDefault(x => x.Proc_RequisitionMasId == RequisitionMasId && x.ItemId == item.ItemId);
-                    var check = db.Proc_RequisitionDet.SingleOrDefault(x => x.Id == item.ProcRequisitionDetId);
-                    if (check == null)
+                    //=======================
+
+                    var master = db.Proc_RequisitionMas.Find(RequisitionMasId);
+                    master.ReqDate = RequisitionDate;
+                    master.Rcode = ReqNo;
+                    master.Remarks = remarks;
+                    master.Status = "N";
+                    db.Entry(master).State = EntityState.Modified;
+                    flag = db.SaveChanges() > 0;
+
+                    if (flag)
                     {
-                        Proc_RequisitionDet detail = new Proc_RequisitionDet();
-                        detail.ItemId = item.ItemId;
-                        detail.Proc_RequisitionMasId = RequisitionMasId;
-                        detail.ReqQty = item.ReqQty;
-                        detail.CStockQty = item.CStockQty;
-                        detail.Brand = item.Brand;
-                        detail.Size = item.Size;
-                        detail.RequiredDate = item.RequiredDate;
-                        detail.Remarks = item.ItemRemarks;
-                        db.Entry(detail).State = EntityState.Added;
-                        flag = db.SaveChanges() > 0;
+                        foreach (var item in RequisitionItems)
+                        {
+                            //var check = db.Proc_RequisitionDet.SingleOrDefault(x => x.Proc_RequisitionMasId == RequisitionMasId && x.ItemId == item.ItemId);
+                            var check = db.Proc_RequisitionDet.SingleOrDefault(x => x.Id == item.ProcRequisitionDetId);
+                            if (check == null)
+                            {
+                                Proc_RequisitionDet detail = new Proc_RequisitionDet();
+                                detail.ItemId = item.ItemId;
+                                detail.Proc_RequisitionMasId = RequisitionMasId;
+                                detail.ReqQty = item.ReqQty;
+                                detail.CStockQty = item.CStockQty;
+                                detail.Brand = item.Brand;
+                                detail.Size = item.Size;
+                                detail.RequiredDate = item.RequiredDate;
+                                detail.Remarks = item.ItemRemarks;
+                                db.Entry(detail).State = EntityState.Added;
+                                flag = db.SaveChanges() > 0;
+                            }
+                            else
+                            {
+
+                                //var Proc_RequisitionDet_Id = db.Proc_RequisitionDet.SingleOrDefault(x => x.Proc_RequisitionMasId == RequisitionMasId && x.ItemId == item.ItemId);
+                                var getItem = db.Proc_RequisitionDet.Find(item.ProcRequisitionDetId);
+                                getItem.ItemId = item.ItemId;
+                                getItem.CStockQty = item.CStockQty;
+                                getItem.ReqQty = item.ReqQty;
+                                getItem.Brand = item.Brand;
+                                getItem.Size = item.Size;
+                                getItem.RequiredDate = item.RequiredDate;
+                                getItem.Remarks = item.ItemRemarks;
+
+                                db.Entry(getItem).State = EntityState.Modified;
+                                flag = db.SaveChanges() > 0;
+                            }
+
+                        }
                     }
-                    else
+
+                    dbContextTransaction.Commit();
+                    if (flag == true)
                     {
-
-                        //var Proc_RequisitionDet_Id = db.Proc_RequisitionDet.SingleOrDefault(x => x.Proc_RequisitionMasId == RequisitionMasId && x.ItemId == item.ItemId);
-                        var getItem = db.Proc_RequisitionDet.Find(item.ProcRequisitionDetId);
-                        getItem.ItemId = item.ItemId;
-                        getItem.CStockQty = item.CStockQty;
-                        getItem.ReqQty = item.ReqQty;
-                        getItem.Brand = item.Brand;
-                        getItem.Size = item.Size;
-                        getItem.RequiredDate = item.RequiredDate;
-                        getItem.Remarks = item.ItemRemarks;
-
-                        db.Entry(getItem).State = EntityState.Modified;
-                        flag = db.SaveChanges() > 0;
+                        result = new
+                        {
+                            flag = true,
+                            message = "Save Successful!"
+                        };
                     }
-
                 }
-            }
-            if (flag == true)
-            {
-                result = new
+                catch (Exception ex)
                 {
-                    flag = true,
-                    message = "Save Successful!"
-                };
+                    dbContextTransaction.Rollback();
+                    result = new
+                    {
+
+                        flag = false,
+                        message = "Saving failed! Error occurred."
+                        //message = ex.Message
+                    };
+                }
             }
 
 

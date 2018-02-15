@@ -105,11 +105,11 @@
 
                         @Html.ActionLink(" ", "Edit", new { purchaseOrderId = item.Id, tenderMasId = item.Proc_TenderMasId }, new { @class = "btn btn-xs text-info  icon-pencil4", @title = "Edit Purchase Order" })
                         @Html.ActionLink(" ", "Details", new { purchaseOrderId = item.Id, tenderMasId = item.Proc_TenderMasId }, new { @class = "btn btn-xs text-info  icon-file-text2" })
-                        <a class="btn btn-xs text-danger icon-cross2" title="Delete" href="javascript:deleteFunction(@item.Id)"></a>
-                        @*@if (User.IsInRole("Management"))
+                        @*<a class="btn btn-xs text-danger icon-cross2" title="Delete" href="javascript:deleteFunction(@item.Id)"></a>*@
+                        @if (User.IsInRole("Management"))
                             {
                                 <a class="btn btn-xs text-danger icon-cross2" title="Delete" href="javascript:deleteFunction(@item.Id)"></a>
-                            }*@
+                            }
 
                     </td>
                 </tr>

@@ -721,9 +721,12 @@ namespace DhaliProcurement.Controllers
                 }
             }
 
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
 
-
-            var master = db.Proc_PurchaseOrderMas.Find(ProcPurchaseMasterId);
+                    var master = db.Proc_PurchaseOrderMas.Find(ProcPurchaseMasterId);
             master.Proc_TenderMasId = TenderId;
             master.PONo = PONo;
             master.PODate = PODate;
@@ -770,7 +773,9 @@ namespace DhaliProcurement.Controllers
 
                 }
             }
-            if (flag == true)
+
+                    dbContextTransaction.Commit();
+                    if (flag == true)
             {
                 result = new
                 {
@@ -778,7 +783,18 @@ namespace DhaliProcurement.Controllers
                     message = "Save Successful!"
                 };
             }
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
 
+                    result = new
+                    {
+                        flag = false,
+                        message = ex.Message
+                    };
+                }
+            }
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

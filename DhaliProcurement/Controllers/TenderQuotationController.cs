@@ -585,85 +585,102 @@ namespace DhaliProcurement.Controllers
                 }
             }
 
-
-
-            var flag = false;
-            var master = db.Proc_TenderMas.Find(TenderId);
-            master.TNo = TNo;
-            master.TDate = DateTime.ParseExact(TDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-            master.Specs = Specs;
-            master.Remarks = TenderRemarks;
-            master.isApproved = "N";
-            db.Entry(master).State = EntityState.Modified;
-            flag = db.SaveChanges() > 0;
-            var TenderMasId = master.Id;
-
-            if (flag)
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                foreach (var item in TenderItems)
+                try
                 {
-                    //var check = db.Proc_TenderDet.FirstOrDefault(x => x.Proc_TenderMasId == TenderMasId && x.Proc_RequisitionDetId == item.Proc_RequisitionDetId && x.VendorId == item.VendorId);
 
-                    var check = db.Proc_TenderDet.SingleOrDefault(x => x.Id == item.TenderDetailId);
+                    var flag = false;
+                    var master = db.Proc_TenderMas.Find(TenderId);
+                    master.TNo = TNo;
+                    master.TDate = DateTime.ParseExact(TDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                    master.Specs = Specs;
+                    master.Remarks = TenderRemarks;
+                    master.isApproved = "N";
+                    db.Entry(master).State = EntityState.Modified;
+                    flag = db.SaveChanges() > 0;
+                    var TenderMasId = master.Id;
 
-                    if (check == null)
+                    if (flag)
                     {
-                        Proc_TenderDet detail = new Proc_TenderDet();
-                        detail.Proc_TenderMasId = TenderMasId;
-                        detail.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
-                        detail.VendorId = item.VendorId;
-                        if (item.TQDate == null)
+                        foreach (var item in TenderItems)
                         {
-                            detail.TQDate = null;
+                            //var check = db.Proc_TenderDet.FirstOrDefault(x => x.Proc_TenderMasId == TenderMasId && x.Proc_RequisitionDetId == item.Proc_RequisitionDetId && x.VendorId == item.VendorId);
+
+                            var check = db.Proc_TenderDet.SingleOrDefault(x => x.Id == item.TenderDetailId);
+
+                            if (check == null)
+                            {
+                                Proc_TenderDet detail = new Proc_TenderDet();
+                                detail.Proc_TenderMasId = TenderMasId;
+                                detail.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
+                                detail.VendorId = item.VendorId;
+                                if (item.TQDate == null)
+                                {
+                                    detail.TQDate = null;
+                                }
+                                else
+                                {
+                                    detail.TQDate = DateTime.ParseExact(item.TQDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                                }
+                                //detail.TQDate = item.TQDate;
+                                detail.TQNo = item.TQNo;
+                                detail.TQPrice = item.TQPrice;
+                                detail.Status = item.Status;
+                                db.Entry(detail).State = EntityState.Added;
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+
+                                //var Proc_TenderDet_Id = db.Proc_TenderDet.FirstOrDefault(x => x.Proc_RequisitionDetId == item.Proc_RequisitionDetId && x.Proc_TenderMasId == TenderMasId);
+                                //var getItem = db.Proc_TenderDet.Find(Proc_TenderDet_Id.Id);
+                                var getItem = db.Proc_TenderDet.Find(item.TenderDetailId);
+                                if (item.TQDate == null)
+                                {
+                                    getItem.TQDate = null;
+                                }
+                                else
+                                {
+                                    getItem.TQDate = DateTime.ParseExact(item.TQDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                                }
+                                //getItem.TQDate = item.TQDate;
+                                getItem.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
+                                getItem.VendorId = item.VendorId;
+                                getItem.TQNo = item.TQNo;
+                                getItem.TQPrice = item.TQPrice;
+                                getItem.Status = item.Status;
+
+                                db.Entry(getItem).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+
                         }
-                        else
-                        {
-                            detail.TQDate = DateTime.ParseExact(item.TQDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-                        }
-                        //detail.TQDate = item.TQDate;
-                        detail.TQNo = item.TQNo;
-                        detail.TQPrice = item.TQPrice;
-                        detail.Status = item.Status;
-                        db.Entry(detail).State = EntityState.Added;
-                        db.SaveChanges();
                     }
-                    else
+
+                    dbContextTransaction.Commit();
+
+                    if (flag == true)
                     {
-
-                        //var Proc_TenderDet_Id = db.Proc_TenderDet.FirstOrDefault(x => x.Proc_RequisitionDetId == item.Proc_RequisitionDetId && x.Proc_TenderMasId == TenderMasId);
-                        //var getItem = db.Proc_TenderDet.Find(Proc_TenderDet_Id.Id);
-                        var getItem = db.Proc_TenderDet.Find(item.TenderDetailId);
-                        if (item.TQDate == null)
+                        result = new
                         {
-                            getItem.TQDate = null;
-                        }
-                        else
-                        {
-                            getItem.TQDate = DateTime.ParseExact(item.TQDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
-                        }
-                        //getItem.TQDate = item.TQDate;
-                        getItem.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
-                        getItem.VendorId = item.VendorId;
-                        getItem.TQNo = item.TQNo;
-                        getItem.TQPrice = item.TQPrice;
-                        getItem.Status = item.Status;
-
-                        db.Entry(getItem).State = EntityState.Modified;
-                        db.SaveChanges();
+                            flag = true,
+                            message = "Save Successful!"
+                        };
                     }
 
                 }
-            }
-            if (flag == true)
-            {
-                result = new
+                catch (Exception ex)
                 {
-                    flag = true,
-                    message = "Save Successful!"
-                };
+                    dbContextTransaction.Rollback();
+
+                    result = new
+                    {
+                        flag = false,
+                        message = ex.Message
+                    };
+                }
             }
-
-
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

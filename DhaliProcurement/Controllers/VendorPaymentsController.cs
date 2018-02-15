@@ -783,7 +783,12 @@ namespace DhaliProcurement.Controllers
                 }
             }
 
-            var flag = false;
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    var flag = false;
             var master = db.Proc_VendorPaymentMas.Find(VendorMasId);
             master.VendorId = VendorId;
             master.VPDate = PayDate;
@@ -813,7 +818,6 @@ namespace DhaliProcurement.Controllers
 
                         var Proc_VendorPayDet = db.Proc_VendorPaymentDet.FirstOrDefault(x => x.Id == item.Proc_VendorPaymentDetId);
                         var getItem = db.Proc_VendorPaymentDet.Find(Proc_VendorPayDet.Id);
-
                         getItem.PayAmt = item.Payment;
                         getItem.Proc_MaterialEntryDetId = item.Proc_MaterialEntryDetId;
                         getItem.Remarks = item.Remarks;
@@ -824,7 +828,8 @@ namespace DhaliProcurement.Controllers
 
                 }
             }
-            if (flag == true)
+                    dbContextTransaction.Commit();
+                    if (flag == true)
             {
                 result = new
                 {
@@ -833,7 +838,18 @@ namespace DhaliProcurement.Controllers
                 };
             }
 
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
 
+                    result = new
+                    {
+                        flag = false,
+                        message = ex.Message
+                    };
+                }
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -989,8 +1005,11 @@ namespace DhaliProcurement.Controllers
                     vm.PONo = db.Proc_PurchaseOrderMas.SingleOrDefault(x => x.PONo == requisitionId.purMas.PONo).Id;
                     vm.PONoName = requisitionId.purMas.PONo;
 
-                    vm.ChallanNo = db.Proc_MaterialEntryDet.SingleOrDefault(x => x.ChallanNo == requisitionId.metEntryDet.ChallanNo).Id;
-                    vm.ChallanNoName = requisitionId.metEntryDet.ChallanNo;
+                    //vm.ChallanNo = db.Proc_MaterialEntryDet.SingleOrDefault(x => x.ChallanNo == requisitionId.metEntryDet.ChallanNo).Id;
+                    var challan = db.Proc_MaterialEntryDet.SingleOrDefault(x => x.Id == i.Proc_MaterialEntryDetId);
+                    vm.ChallanNo = challan.Id;
+                    vm.ChallanNoName = challan.ChallanNo;
+                    //vm.ChallanNoName = requisitionId.metEntryDet.ChallanNo;
 
                     var getUnitPrice = (from vendorPayMas in db.Proc_VendorPaymentMas
                                         join vendorPayDet in db.Proc_VendorPaymentDet on vendorPayMas.Id equals vendorPayDet.Proc_VendorPaymentMasId
