@@ -336,8 +336,6 @@ namespace DhaliProcurement.ReportDataset {
             
             private global::System.Data.DataColumn columnPODate;
             
-            private global::System.Data.DataColumn columnTenderDetId;
-            
             private global::System.Data.DataColumn columnUnitPrice;
             
             private global::System.Data.DataColumn columnQty;
@@ -467,14 +465,6 @@ namespace DhaliProcurement.ReportDataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TenderDetIdColumn {
-                get {
-                    return this.columnTenderDetId;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn UnitPriceColumn {
                 get {
                     return this.columnUnitPrice;
@@ -534,7 +524,7 @@ namespace DhaliProcurement.ReportDataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public MasterTableRow AddMasterTableRow(int ProjectId, int SiteId, string ProjectName, string SiteName, int ItemId, string ItemName, int VendorId, string VendorName, int PurchasePOId, string PONo, System.DateTime PODate, int TenderDetId, decimal UnitPrice, decimal Qty, decimal TotalAmount) {
+            public MasterTableRow AddMasterTableRow(int ProjectId, int SiteId, string ProjectName, string SiteName, int ItemId, string ItemName, int VendorId, string VendorName, int PurchasePOId, string PONo, System.DateTime PODate, decimal UnitPrice, decimal Qty, decimal TotalAmount) {
                 MasterTableRow rowMasterTableRow = ((MasterTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ProjectId,
@@ -548,7 +538,6 @@ namespace DhaliProcurement.ReportDataset {
                         PurchasePOId,
                         PONo,
                         PODate,
-                        TenderDetId,
                         UnitPrice,
                         Qty,
                         TotalAmount};
@@ -585,7 +574,6 @@ namespace DhaliProcurement.ReportDataset {
                 this.columnPurchasePOId = base.Columns["PurchasePOId"];
                 this.columnPONo = base.Columns["PONo"];
                 this.columnPODate = base.Columns["PODate"];
-                this.columnTenderDetId = base.Columns["TenderDetId"];
                 this.columnUnitPrice = base.Columns["UnitPrice"];
                 this.columnQty = base.Columns["Qty"];
                 this.columnTotalAmount = base.Columns["TotalAmount"];
@@ -616,8 +604,6 @@ namespace DhaliProcurement.ReportDataset {
                 base.Columns.Add(this.columnPONo);
                 this.columnPODate = new global::System.Data.DataColumn("PODate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPODate);
-                this.columnTenderDetId = new global::System.Data.DataColumn("TenderDetId", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTenderDetId);
                 this.columnUnitPrice = new global::System.Data.DataColumn("UnitPrice", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUnitPrice);
                 this.columnQty = new global::System.Data.DataColumn("Qty", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -1259,22 +1245,6 @@ namespace DhaliProcurement.ReportDataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int TenderDetId {
-                get {
-                    try {
-                        return ((int)(this[this.tableMasterTable.TenderDetIdColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TenderDetId\' in table \'MasterTable\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableMasterTable.TenderDetIdColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal UnitPrice {
                 get {
                     try {
@@ -1451,18 +1421,6 @@ namespace DhaliProcurement.ReportDataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPODateNull() {
                 this[this.tableMasterTable.PODateColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTenderDetIdNull() {
-                return this.IsNull(this.tableMasterTable.TenderDetIdColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTenderDetIdNull() {
-                this[this.tableMasterTable.TenderDetIdColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

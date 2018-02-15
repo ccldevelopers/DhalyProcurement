@@ -778,7 +778,6 @@
     $("#SiteId").change(function () {
         var SiteId = $('#SiteId  option:selected').val();
         var ProjectId = $('#ProjectId option:selected').val();
-        //alert(ProjectId);
         var vendorId =  $('#VendorId').val();
 
         $.ajax({
@@ -807,11 +806,9 @@
 
     $("#ReqNo").change(function () {
           var SiteId = $('#SiteId  option:selected').val();
-        //  var ProjectId = $('#ProjectId option:selected').val();
+
         var ReqNo = $('#ReqNo option:selected').val();
         var vendorId =  $('#VendorId').val();
-        //alert('ReqNo ' + ReqNo);
-        //alert(ProjectId);
 
         $.ajax({
             type: "post",

@@ -974,6 +974,87 @@ namespace DhaliProcurement.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+		
+		
+		
+				
+		
+        //VendorPayment Item wise report
+
+        //Report
+        [HttpPost]
+        public JsonResult GetVendorPaymentItemWiseReport(int SiteId)
+        {
+            List<SelectListItem> itemList = new List<SelectListItem>();
+
+            var getItems = (from purDet in db.Proc_PurchaseOrderDet
+                            join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
+                            join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                            join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                            join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                            join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                            join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                            join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+                            join items in db.Item on purDet.ItemId equals items.Id
+                            where projSite.Id == SiteId && tenderDet.Status == "A"
+                            select items.Id                         
+                            ).Distinct().ToList();
+
+
+
+
+            foreach (var x in getItems.Distinct())
+            {
+                var name = db.Item.SingleOrDefault(m => m.Id == x);
+
+                itemList.Add(new SelectListItem { Text = name.Name, Value = x.ToString() });
+            }
+
+            var result = new
+            {
+
+                ItemLists = itemList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+        [HttpPost]
+        public JsonResult GetVendorItemWise(int? ProjectId, int? SiteId, int ItemId)
+        {
+            List<SelectListItem> vendorList = new List<SelectListItem>();
+
+            var getVendors = (from purMas in db.Proc_PurchaseOrderMas
+                              join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                              join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                              join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                              join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                              join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                              join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+                              join items in db.Item on reqDet.ItemId equals items.Id
+                              where items.Id==ItemId
+                              select purMas
+                      ).ToList();
+
+            foreach (var x in getVendors.Distinct())
+            {
+
+                var name = db.Vendor.SingleOrDefault(m => m.Id == x.VendorId);
+              //  itemList.Add(new SelectListItem { Text = name.Name, Value = x.ToString() });
+                vendorList.Add(new SelectListItem { Text = name.Name, Value = x.VendorId.ToString() });
+            }
+
+            var result = new
+            {
+                VendorLists = vendorList.Distinct()
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+		
 
 
 

@@ -40,6 +40,16 @@
                                 </div>
                             </div>
 
+
+
+                            <div class="form-group">
+                                @Html.Label("Item", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.DropDownList("ItemId", new SelectList(string.Empty, "Value", "Text"), "--Select--", new { @class = "form-control select2", @Id = "ItemId" })
+
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 @Html.Label("Vendor", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-4">
@@ -48,13 +58,6 @@
                             </div>
 
 
-                            <div class="form-group">
-                                @Html.Label("PO No", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.DropDownList("PONo", new SelectList(string.Empty, "Value", "Text"), "--Select--", new { @class = "form-control select2", @Id = "PONo" })
-
-                                </div>
-                            </div>
 
 
 
@@ -155,27 +158,26 @@
         });
 
 
-
-
+       
         $('#SiteId').change(function () {
             var id = $('#SiteId option:selected').val();
             $.ajax({
-                url: "/PurchaseOrders/GetVendorReport",
+                url: "/PurchaseOrders/GetVendorPaymentItemWiseReport",
                 type: "post",
                 data: {
-                    SiteId: id
+                    SiteId: id                   
                 },
                 dataType: "json",
                 success: function (data) {
                     //  $('#VendorId').removeAttr("disabled");
-                    var listOfSites = data.VendorList.length;
+                    var listOfSites = data.ItemLists.length;
                     var sites = "<select id='sites'>";
                     sites = sites + '<option value="">--Select--</option>';
                     for (var i = 0; i < listOfSites; i++) {
-                        sites = sites + '<option value=' + data.VendorList[i].Value + '>' + data.VendorList[i].Text + '</option>';
+                        sites = sites + '<option value=' + data.ItemLists[i].Value + '>' + data.ItemLists[i].Text + '</option>';
                     }
                     sites = sites + '</select>';
-                    $('#VendorId').html(sites);
+                    $('#ItemId').html(sites);
                 },
                 error: function (xhr) {
                     alert('error');
@@ -186,29 +188,29 @@
 
 
 
-        $('#VendorId').change(function () {
-            var id = $('#VendorId option:selected').val();
+        $('#ItemId').change(function () {
+            var itemId = $('#ItemId option:selected').val();
             var siteId = $('#ProjectId option:selected').val();
             var projId = $('#SiteId option:selected').val();
             $.ajax({
-                url: "/PurchaseOrders/GetPOReport",
+                url: "/PurchaseOrders/GetVendorItemWise",
                 type: "post",
                 data: {
-                    VendorId: id,
+                    ItemId: itemId,
                     ProjectId: projId,
                     SiteId: siteId
                 },
                 dataType: "json",
                 success: function (data) {
                     //  $('#VendorId').removeAttr("disabled");
-                    var listOfSites = data.POList.length;
+                    var listOfSites = data.VendorLists.length;
                     var sites = "<select id='sites'>";
                     sites = sites + '<option value="">--Select--</option>';
                     for (var i = 0; i < listOfSites; i++) {
-                        sites = sites + '<option value=' + data.POList[i].Value + '>' + data.POList[i].Text + '</option>';
+                        sites = sites + '<option value=' + data.VendorLists[i].Value + '>' + data.VendorLists[i].Text + '</option>';
                     }
                     sites = sites + '</select>';
-                    $('#PONo').html(sites);
+                    $('#VendorId').html(sites);
                 },
                 error: function (xhr) {
                     alert('error');
