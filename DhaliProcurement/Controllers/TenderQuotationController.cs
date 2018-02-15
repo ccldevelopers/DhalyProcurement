@@ -301,54 +301,72 @@ namespace DhaliProcurement.Controllers
             var tenderList = db.Proc_TenderMas.Where(x => x.TNo.Trim() == TNo.Trim()).ToList();
             if (tenderList.Count == 0)
             {
-                flag = false;
-                Proc_TenderMas master = new Proc_TenderMas();
-
-                master.TNo = TNo;
-                master.TDate = TenderDate;
-                master.Specs = Specs;
-                master.Remarks = Remarks;
-                master.isApproved = "N";
-                db.Proc_TenderMas.Add(master);
-
-                flag = db.SaveChanges() > 0;
-                //var getReqId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == ReqNo);
-                var TenderMasterId = master.Id;
-
-                foreach (var item in TenderItems)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    Proc_TenderDet detail = new Proc_TenderDet();
-                    detail.Proc_TenderMasId = TenderMasterId;
-                    detail.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
-                    detail.VendorId = item.VendorId;
-                    //detail.TQDate = item.TQDate;
-                    if (item.TQDate == null)
+                    try
                     {
-                        detail.TQDate = null;
-                    }
-                    else
-                    {
-                        //detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
-                        detail.TQDate = DateTime.ParseExact(item.TQDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
-                    }
-                    detail.TQNo = item.TQNo;
-                    detail.TQPrice = item.TQPrice;
-                    detail.Status = item.Status;
+                        flag = false;
+                        Proc_TenderMas master = new Proc_TenderMas();
 
-                    db.Proc_TenderDet.Add(detail);
-                    db.SaveChanges();
+                        master.TNo = TNo;
+                        master.TDate = TenderDate;
+                        master.Specs = Specs;
+                        master.Remarks = Remarks;
+                        master.isApproved = "N";
+                        db.Proc_TenderMas.Add(master);
+
+                        flag = db.SaveChanges() > 0;
+                        //var getReqId = db.Proc_RequisitionMas.SingleOrDefault(x => x.Rcode == ReqNo);
+                        var TenderMasterId = master.Id;
+
+                        foreach (var item in TenderItems)
+                        {
+                            Proc_TenderDet detail = new Proc_TenderDet();
+                            detail.Proc_TenderMasId = TenderMasterId;
+                            detail.Proc_RequisitionDetId = item.Proc_RequisitionDetId;
+                            detail.VendorId = item.VendorId;
+                            //detail.TQDate = item.TQDate;
+                            if (item.TQDate == null)
+                            {
+                                detail.TQDate = null;
+                            }
+                            else
+                            {
+                                //detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
+                                detail.TQDate = DateTime.ParseExact(item.TQDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
+                            }
+                            detail.TQNo = item.TQNo;
+                            detail.TQPrice = item.TQPrice;
+                            detail.Status = item.Status;
+
+                            db.Proc_TenderDet.Add(detail);
+                            db.SaveChanges();
+                        }
+
+                        dbContextTransaction.Commit();
+
+                        if (flag == true)
+                        {
+                            result = new
+                            {
+                                flag = true,
+                                message = "Save Successful!"
+                            };
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
+
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
+                    }
                 }
             }
-
-            if (flag == true)
-            {
-                result = new
-                {
-                    flag = true,
-                    message = "Save Successful!"
-                };
-            }
-
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -502,7 +520,7 @@ namespace DhaliProcurement.Controllers
                     vm.VendorId = i.VendorId;
                     vm.VendorName = db.Vendor.SingleOrDefault(x => x.Id == i.VendorId).Name;
 
-                    if(i.TQNo=="null" || i.TQNo == "")
+                    if (i.TQNo == "null" || i.TQNo == "")
                     {
                         vm.TQNo = "";
                     }
@@ -510,7 +528,7 @@ namespace DhaliProcurement.Controllers
                     {
                         vm.TQNo = i.TQNo;
                     }
-                  
+
 
                     if (i.TQDate == null)
                     {
@@ -585,8 +603,8 @@ namespace DhaliProcurement.Controllers
                 foreach (var item in TenderItems)
                 {
                     //var check = db.Proc_TenderDet.FirstOrDefault(x => x.Proc_TenderMasId == TenderMasId && x.Proc_RequisitionDetId == item.Proc_RequisitionDetId && x.VendorId == item.VendorId);
-                  
-                    var check = db.Proc_TenderDet.SingleOrDefault(x => x.Id==item.TenderDetailId);
+
+                    var check = db.Proc_TenderDet.SingleOrDefault(x => x.Id == item.TenderDetailId);
 
                     if (check == null)
                     {
@@ -677,7 +695,8 @@ namespace DhaliProcurement.Controllers
             //return View(data);
         }
 
-        public JsonResult ApproveTender(IEnumerable<VMTenderItem> TenderItems, int TenderMasId, string isApproved) {
+        public JsonResult ApproveTender(IEnumerable<VMTenderItem> TenderItems, int TenderMasId, string isApproved)
+        {
             var flag = false;
             var result = new
             {
@@ -810,11 +829,11 @@ namespace DhaliProcurement.Controllers
             };
 
             var check = (from purchaseMas in db.Proc_PurchaseOrderMas
-                               join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
-                               join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                               join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                               where tenderDet.Id == TenderDetailId && tenderDet.VendorId == purchaseMas.VendorId
-                               select tenderDet).Distinct().ToList();
+                         join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                         join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                         join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                         where tenderDet.Id == TenderDetailId && tenderDet.VendorId == purchaseMas.VendorId
+                         select tenderDet).Distinct().ToList();
 
             if (check.Count == 0)
             {
@@ -837,7 +856,7 @@ namespace DhaliProcurement.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-    
-        
+
+
     }
 }
