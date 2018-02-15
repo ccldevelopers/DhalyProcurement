@@ -13,7 +13,7 @@ namespace DhaliProcurement.Models
         [Required]
         public int ProjectId { get; set; }
         [Required]
-        [StringLength(100)]
+        [StringLength(256)]
         public string Name { get; set; }
 
         [StringLength(100)]

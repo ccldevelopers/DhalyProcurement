@@ -136,69 +136,76 @@ namespace DhaliProcurement.Controllers
                 Project project = new Project();
                 ProjectResource projectResource = new ProjectResource();
 
-                try
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    project.Name = ProjectName;
-                    project.StartDate = StartDate;
-                    project.EndDate = EndDate;
-                    project.Remarks = Remarks;
-                    //projectResource.ProjectId = project.Id;
-                    projectResource.CompanyResourceId = RName;
-
-                    db.Project.Add(project);
-                    db.ProjectResource.Add(projectResource);
-                    db.SaveChanges();
-
-                    var projectId = project.Id;
-
-                    ViewBag.ProjectId = projectId;
-
-                    //ProjectSite projectSite = new ProjectSite();
-                    //ProjectSiteResource projectSiteResource = new ProjectSiteResource();
-
-                    //projectSite.ProjectId = project.Id;
-                    // projectSite.Name = SiteName;
-                    //projectSite.Location = SiteLocation;
-                    //projectSiteResource.ProjectSiteId = projectSite.Id;
-
-                    //db.ProjectSite.Add(projectSite);
-                    //db.ProjectSiteResource.Add(projectSiteResource);
-                    //db.SaveChanges();
-
-
-
-                    if (SiteResourceDetails != null)
+                    try
                     {
-                        foreach (var item in SiteResourceDetails)
+                        project.Name = ProjectName;
+                        project.StartDate = StartDate;
+                        project.EndDate = EndDate;
+                        project.Remarks = Remarks;
+                        //projectResource.ProjectId = project.Id;
+                        projectResource.CompanyResourceId = RName;
+
+                        db.Project.Add(project);
+                        db.ProjectResource.Add(projectResource);
+                        db.SaveChanges();
+
+                        var projectId = project.Id;
+
+                        ViewBag.ProjectId = projectId;
+
+                        //ProjectSite projectSite = new ProjectSite();
+                        //ProjectSiteResource projectSiteResource = new ProjectSiteResource();
+
+                        //projectSite.ProjectId = project.Id;
+                        // projectSite.Name = SiteName;
+                        //projectSite.Location = SiteLocation;
+                        //projectSiteResource.ProjectSiteId = projectSite.Id;
+
+                        //db.ProjectSite.Add(projectSite);
+                        //db.ProjectSiteResource.Add(projectSiteResource);
+                        //db.SaveChanges();
+
+
+
+                        if (SiteResourceDetails != null)
                         {
-                            ProjectSite projectSite = new ProjectSite();
-                            ProjectSiteResource projectSiteResource = new ProjectSiteResource();
+                            foreach (var item in SiteResourceDetails)
+                            {
+                                ProjectSite projectSite = new ProjectSite();
+                                ProjectSiteResource projectSiteResource = new ProjectSiteResource();
 
-                            projectSite.ProjectId = projectId;
-                            projectSite.Name = item.SiteName;
-                            projectSite.Location = item.SiteLocation;
+                                projectSite.ProjectId = projectId;
+                                projectSite.Name = item.SiteName;
+                                projectSite.Location = item.SiteLocation;
 
-                            projectSiteResource.CompanyResourceId = item.SiteEngineerId;
+                                projectSiteResource.CompanyResourceId = item.SiteEngineerId;
 
-                            db.ProjectSite.Add(projectSite);
-                            db.ProjectSiteResource.Add(projectSiteResource);
-                            db.SaveChanges();
+                                db.ProjectSite.Add(projectSite);
+                                db.ProjectSiteResource.Add(projectSiteResource);
+                                db.SaveChanges();
+                            }
                         }
+                        dbContextTransaction.Commit();
+                        //end
+                        result = new
+                        {
+                            flag = true,
+                            message = "Project saving successful!"
+                        };
                     }
-                    //end
-                    result = new
+                    catch(Exception ex)
                     {
-                        flag = true,
-                        message = "Project saving successful!"
-                    };
-                }
-                catch
-                {
-                    result = new
-                    {
-                        flag = false,
-                        message = "Saving failed! Error occurred."
-                    };
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
+
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
+                    }
                 }
             }
 
@@ -237,13 +244,14 @@ namespace DhaliProcurement.Controllers
                     //{
                     //    var deleteResource = siteresource.Find(m.);
                     //}
-                /*    var deleteResource = db.ProjectSiteResource.Find(siteresource)*/;
+                    /*    var deleteResource = db.ProjectSiteResource.Find(siteresource)*/
+                    ;
                     db.ProjectSiteResource.Remove(siteresource);
                     db.SaveChanges();
                     //var delteItem = db.Proc_MaterialEntryDet.SingleOrDefault(x => x.ItemId == i && x.Proc_PurchaseOrderMasId == ProcPurchaseMasterId);
                     var entryDetId = db.ProjectSite.Find(i);
                     db.ProjectSite.Remove(entryDetId);
-                    flag = db.SaveChanges()>0;
+                    flag = db.SaveChanges() > 0;
 
                 }
             }
@@ -576,11 +584,11 @@ namespace DhaliProcurement.Controllers
             if (projSiteList.Count == 0)
             {
 
-                    result = new
-                    {
-                        flag = true,
-                        message = "Delete successful !!"
-                    };
+                result = new
+                {
+                    flag = true,
+                    message = "Delete successful !!"
+                };
 
             }
             else

@@ -199,9 +199,9 @@
     <Compile Include="Controllers\UnitsController.cs" />
     <Compile Include="Controllers\VendorPaymentsController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
-    <Compile Include="Migrations\201801161528304_16jan.cs" />
-    <Compile Include="Migrations\201801161528304_16jan.Designer.cs">
-      <DependentUpon>201801161528304_16jan.cs</DependentUpon>
+    <Compile Include="Migrations\201802150454244_15Feb_2018.cs" />
+    <Compile Include="Migrations\201802150454244_15Feb_2018.Designer.cs">
+      <DependentUpon>201802150454244_15Feb_2018.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ReportDataset\MaterialRequisitionDetail.Designer.cs">
@@ -1734,9 +1734,6 @@
     <Content Include="Scripts\pickers\pickadate\translations\NAMING.md" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801161528304_16jan.resx">
-      <DependentUpon>201801161528304_16jan.cs</DependentUpon>
-    </EmbeddedResource>
     <Content Include="Reports\MaterialRequisition.rpt" />
     <Content Include="Reports\ProjectInformationCosting.rpt" />
     <Content Include="Reports\MaterialRequisitionSummary.rpt" />
@@ -1752,6 +1749,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802150454244_15Feb_2018.resx">
+      <DependentUpon>201802150454244_15Feb_2018.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

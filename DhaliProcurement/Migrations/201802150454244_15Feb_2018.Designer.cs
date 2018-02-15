@@ -7,13 +7,13 @@ namespace DhaliProcurement.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class _16jan : IMigrationMetadata
+    public sealed partial class _15Feb_2018 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_16jan));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_15Feb_2018));
         
         string IMigrationMetadata.Id
         {
-            get { return "201801161528304_16jan"; }
+            get { return "201802150454244_15Feb_2018"; }
         }
         
         string IMigrationMetadata.Source

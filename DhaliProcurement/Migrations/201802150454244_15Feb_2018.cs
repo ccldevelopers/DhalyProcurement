@@ -3,7 +3,7 @@ namespace DhaliProcurement.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _16jan : DbMigration
+    public partial class _15Feb_2018 : DbMigration
     {
         public override void Up()
         {
@@ -97,7 +97,7 @@ namespace DhaliProcurement.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         ProjectId = c.Int(nullable: false),
-                        Name = c.String(nullable: false, maxLength: 100),
+                        Name = c.String(nullable: false, maxLength: 256),
                         Location = c.String(maxLength: 100),
                         SiteStatus = c.Int(nullable: false),
                         Remarks = c.String(maxLength: 100),
@@ -189,10 +189,11 @@ namespace DhaliProcurement.Migrations
                         Proc_PurchaseOrderMasId = c.Int(nullable: false),
                         ItemId = c.Int(nullable: false),
                         POQty = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        PORcv = c.Decimal(nullable: false, precision: 18, scale: 2),
                         POAmt = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Items", t => t.ItemId, cascadeDelete: true)
+                .ForeignKey("dbo.Items", t => t.ItemId, cascadeDelete: false)
                 .ForeignKey("dbo.Proc_PurchaseOrderMas", t => t.Proc_PurchaseOrderMasId, cascadeDelete: false)
                 .Index(t => t.Proc_PurchaseOrderMasId)
                 .Index(t => t.ItemId);
@@ -206,16 +207,16 @@ namespace DhaliProcurement.Migrations
                         PODate = c.DateTime(nullable: false),
                         VendorId = c.Int(nullable: false),
                         Proc_TenderMasId = c.Int(nullable: false),
-                        LeadTime = c.Int(),
+                        LeadTime = c.Int(nullable: false),
                         OrderTo = c.String(maxLength: 100),
                         Attention = c.String(maxLength: 100),
                         AttnCell = c.String(maxLength: 100),
                         AttnEmail = c.String(maxLength: 100),
                         Subject = c.String(maxLength: 100),
                         Content = c.String(maxLength: 800),
-                        RecvConcernPerson = c.String(maxLength: 10),
+                        RecvConcernPerson = c.String(maxLength: 100),
                         RecvConcernPersonCell = c.String(maxLength: 100),
-                        POTotalAmt = c.Decimal(precision: 18, scale: 2),
+                        POTotalAmt = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Proc_TenderMas", t => t.Proc_TenderMasId, cascadeDelete: false)
@@ -283,7 +284,7 @@ namespace DhaliProcurement.Migrations
                         Status = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ProcProjects", t => t.ProcProjectId, cascadeDelete: true)
+                .ForeignKey("dbo.ProcProjects", t => t.ProcProjectId, cascadeDelete: false)
                 .Index(t => t.ProcProjectId)
                 .Index(t => t.Rcode, unique: true, name: "RCodeIndex");
             
