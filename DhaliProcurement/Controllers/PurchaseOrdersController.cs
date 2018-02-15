@@ -627,56 +627,74 @@ namespace DhaliProcurement.Controllers
             var orderList = db.Proc_PurchaseOrderMas.Where(x => x.PONo.Trim() == PONo.Trim()).ToList();
             if (orderList.Count == 0)
             {
-                flag = false;
-                Proc_PurchaseOrderMas master = new Proc_PurchaseOrderMas();
-                master.Proc_TenderMasId = TenderId;
-                master.PONo = PONo;
-                master.PODate = PODate;
-                master.VendorId = VendorId;
-                master.LeadTime = LeadTime;
-                master.OrderTo = ProjectManager;
-                master.Attention = VContactPerson;
-                master.AttnCell = AttnCell;
-                master.AttnEmail = Email;
-                master.Subject = Subject;
-                master.Content = Content;
-                master.RecvConcernPerson = RcvConcenPerson;
-                master.RecvConcernPersonCell = RcvPersonCell;
-                master.POTotalAmt = POTotalAmt;
-
-                db.Proc_PurchaseOrderMas.Add(master);
-                //db.SaveChanges();
-                flag = db.SaveChanges() > 0;
-
-                var PurchaseOrderId = master.Id;
-                foreach (var item in AddedDetItems)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    Proc_PurchaseOrderDet detail = new Proc_PurchaseOrderDet();
+                    try
+                    {
+                        flag = false;
+                        Proc_PurchaseOrderMas master = new Proc_PurchaseOrderMas();
+                        master.Proc_TenderMasId = TenderId;
+                        master.PONo = PONo;
+                        master.PODate = PODate;
+                        master.VendorId = VendorId;
+                        master.LeadTime = LeadTime;
+                        master.OrderTo = ProjectManager;
+                        master.Attention = VContactPerson;
+                        master.AttnCell = AttnCell;
+                        master.AttnEmail = Email;
+                        master.Subject = Subject;
+                        master.Content = Content;
+                        master.RecvConcernPerson = RcvConcenPerson;
+                        master.RecvConcernPersonCell = RcvPersonCell;
+                        master.POTotalAmt = POTotalAmt;
+
+                        db.Proc_PurchaseOrderMas.Add(master);
+                        //db.SaveChanges();
+                        flag = db.SaveChanges() > 0;
+
+                        var PurchaseOrderId = master.Id;
+                        foreach (var item in AddedDetItems)
+                        {
+                            Proc_PurchaseOrderDet detail = new Proc_PurchaseOrderDet();
 
 
-                    detail.Proc_PurchaseOrderMasId = PurchaseOrderId;
-                    detail.ItemId = item.ItemId;
-                    detail.POQty = item.POQuantity;
-                    detail.POAmt = item.TotalPrice;
+                            detail.Proc_PurchaseOrderMasId = PurchaseOrderId;
+                            detail.ItemId = item.ItemId;
+                            detail.POQty = item.POQuantity;
+                            detail.POAmt = item.TotalPrice;
 
 
-                    db.Proc_PurchaseOrderDet.Add(detail);
-                    //db.SaveChanges();
-                    flag = db.SaveChanges() > 0;
+                            db.Proc_PurchaseOrderDet.Add(detail);
+                            //db.SaveChanges();
+                            flag = db.SaveChanges() > 0;
+                        }
+
+                        dbContextTransaction.Commit();
+
+                        if (flag == true)
+                        {
+                            result = new
+                            {
+                                flag = true,
+                                message = "Save Successful!"
+                            };
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
+
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
+                    }
+
                 }
             }
-
-            if (flag == true)
-            {
-                result = new
-                {
-                    flag = true,
-                    message = "Save Successful!"
-                };
-            }
-
-
-            return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result, JsonRequestBehavior.AllowGet);
         }
 
 

@@ -262,7 +262,11 @@ namespace DhaliProcurement.Controllers
 
             if (existingProject.Count != 0)
             {
-                var checkdata = db.Project.Where(x => x.Id == ProjectId).SingleOrDefault();
+                using (var dbContextTransaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var checkdata = db.Project.Where(x => x.Id == ProjectId).SingleOrDefault();
 
                 if (checkdata != null)
                 {
@@ -305,63 +309,71 @@ namespace DhaliProcurement.Controllers
 
 
                     flag = db.SaveChanges() > 0;
-                    if (flag == true)
-                    {
-                        if (SiteResourceDetails != null)
-                        {
-                            try
+                            if (flag == true)
                             {
-                                foreach (var item in SiteResourceDetails)
+                                if (SiteResourceDetails != null)
                                 {
-
-                                    ProjectSite sites = new ProjectSite();
-                                    ProjectSiteResource pSiteRes = new ProjectSiteResource();
-                                    sites.ProjectId = ProjectId;
-                                    sites.Name = item.SiteName;
-                                    sites.Location = item.SiteLocation;
-                                    pSiteRes.CompanyResourceId = item.SiteEngineerId;
-
-                                    var checkingProjectSites = db.ProjectSite.FirstOrDefault(x => x.Id == item.ProjectSiteId);
-
-                                    flag = false;
-                                    if (checkingProjectSites == null)
+                                    foreach (var item in SiteResourceDetails)
                                     {
-                                        db.Entry(sites).State = EntityState.Added;
-                                        db.Entry(pSiteRes).State = EntityState.Added;
-                                    }
-                                    else
-                                    {
-                                        var ProjectSite = db.ProjectSite.Where(x => x.ProjectId == ProjectId && x.Id == item.ProjectSiteId).FirstOrDefault();
 
-                                        var ProjectSiteEngineer = db.ProjectSiteResource.Where(x => x.ProjectSiteId == ProjectSite.Id && ProjectSite.ProjectId == ProjectId).FirstOrDefault();
-                                        ProjectSite.ProjectId = ProjectId;
-                                        ProjectSite.Name = item.SiteName;
-                                        ProjectSite.Location = item.SiteLocation;
+                                        ProjectSite sites = new ProjectSite();
+                                        ProjectSiteResource pSiteRes = new ProjectSiteResource();
+                                        sites.ProjectId = ProjectId;
+                                        sites.Name = item.SiteName;
+                                        sites.Location = item.SiteLocation;
                                         pSiteRes.CompanyResourceId = item.SiteEngineerId;
-                                        ProjectSiteEngineer.CompanyResource.Name = item.SiteEngineer;
+
+                                        var checkingProjectSites = db.ProjectSite.FirstOrDefault(x => x.Id == item.ProjectSiteId);
+
+                                        flag = false;
+                                        if (checkingProjectSites == null)
+                                        {
+                                            db.Entry(sites).State = EntityState.Added;
+                                            db.Entry(pSiteRes).State = EntityState.Added;
+                                        }
+                                        else
+                                        {
+                                            var ProjectSite = db.ProjectSite.Where(x => x.ProjectId == ProjectId && x.Id == item.ProjectSiteId).FirstOrDefault();
+
+                                            var ProjectSiteEngineer = db.ProjectSiteResource.Where(x => x.ProjectSiteId == ProjectSite.Id && ProjectSite.ProjectId == ProjectId).FirstOrDefault();
+                                            ProjectSite.ProjectId = ProjectId;
+                                            ProjectSite.Name = item.SiteName;
+                                            ProjectSite.Location = item.SiteLocation;
+                                            pSiteRes.CompanyResourceId = item.SiteEngineerId;
+                                            ProjectSiteEngineer.CompanyResource.Name = item.SiteEngineer;
 
 
-                                        db.Entry(ProjectSite).State = EntityState.Modified;
-                                        db.Entry(ProjectSiteEngineer.CompanyResource).State = EntityState.Modified;
+                                            db.Entry(ProjectSite).State = EntityState.Modified;
+                                            db.Entry(ProjectSiteEngineer.CompanyResource).State = EntityState.Modified;
 
+                                        }
+
+                                        db.SaveChanges();
                                     }
 
-                                    db.SaveChanges();
+                                    dbContextTransaction.Commit();
+
+                                    result = new
+                                    {
+                                        flag = true,
+                                        message = "Edit saving successful !"
+                                    };
+
+                                    return Json(result, JsonRequestBehavior.AllowGet);
                                 }
-
-                                result = new
-                                {
-                                    flag = true,
-                                    message = "Edit saving successful !"
-                                };
-
-                                return Json(result, JsonRequestBehavior.AllowGet);
-                            }
-                            catch (Exception ex)
-                            {
-
                             }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
+
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
                     }
                 }
 

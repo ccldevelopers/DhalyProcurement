@@ -65,16 +65,16 @@ namespace DhaliProcurement.Controllers
             //ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
 
             var EntryProject = (from purchaseMas in db.Proc_PurchaseOrderMas
-                     //   join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
-                        join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                        join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                        join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                        join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                        join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-                        join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                        join project in db.Project on site.ProjectId equals project.Id
-                        where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId
-                        select project).Distinct().ToList();
+                                    //   join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                                join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                                join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                                join project in db.Project on site.ProjectId equals project.Id
+                                where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId
+                                select project).Distinct().ToList();
 
             var procprojects = db.ProcProject.ToList();
             List<ProjectSite> sites = new List<ProjectSite>();
@@ -162,11 +162,11 @@ namespace DhaliProcurement.Controllers
         {
             ViewBag.MaterialEntryMasId = MaterialEntryMasId;
             var id = (from entryMas in db.Proc_MaterialEntryMas
-                     join procProject in db.ProcProject on entryMas.ProcProjectId equals procProject.Id
-                     join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                     join project in db.Project on site.ProjectId equals project.Id
-                     where entryMas.Id == MaterialEntryMasId
-                     select new { site, project }).FirstOrDefault();
+                      join procProject in db.ProcProject on entryMas.ProcProjectId equals procProject.Id
+                      join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                      join project in db.Project on site.ProjectId equals project.Id
+                      where entryMas.Id == MaterialEntryMasId
+                      select new { site, project }).FirstOrDefault();
 
             ViewBag.ProjectId = id.project.Id;
             ViewBag.ProjectName = id.project.Name;
@@ -232,14 +232,14 @@ namespace DhaliProcurement.Controllers
             //var projects = db.Project.SingleOrDefault(x => x.Id == ProjectId);
 
             var projects = (from purchaseMas in db.Proc_PurchaseOrderMas
-                                join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                                join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                                join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-                                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                                //join project in db.Project on site.ProjectId equals project.Id
-                                where tenderMas.isApproved=="A" && site.ProjectId== ProjectId
+                            join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                            join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                            join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                            join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                            join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                            join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                            //join project in db.Project on site.ProjectId equals project.Id
+                            where tenderMas.isApproved == "A" && site.ProjectId == ProjectId
                             select site).Distinct().ToList();
 
             //var sites = db.ProjectSite.Where(x => x.ProjectId == ProjectId).ToList();
@@ -309,7 +309,7 @@ namespace DhaliProcurement.Controllers
                          join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
                          join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
                          join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                         join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id                        
+                         join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
                          join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
                          join procProjectItem in db.ProcProjectItem on procproject.Id equals procProjectItem.ProcProjectId
                          join site in db.ProjectSite on procproject.ProjectSiteId equals site.Id
@@ -344,9 +344,9 @@ namespace DhaliProcurement.Controllers
         {
             //var unit = db.Unit.SingleOrDefault(x => x.Id == itemId);
             var unit = (from procProjectItem in db.ProcProjectItem
-                       join units in db.Unit on procProjectItem.UnitId equals units.Id
-                       where procProjectItem.ItemId == itemId
-                       select units).FirstOrDefault();
+                        join units in db.Unit on procProjectItem.UnitId equals units.Id
+                        where procProjectItem.ItemId == itemId
+                        select units).FirstOrDefault();
 
             var totalRequired = (from procProjectItem in db.ProcProjectItem
                                  join procproject in db.ProcProject on procProjectItem.ProcProjectId equals procproject.Id
@@ -368,14 +368,14 @@ namespace DhaliProcurement.Controllers
             //                  select requisitionMas;
 
             var requisition = (from purchaseMas in db.Proc_PurchaseOrderMas
-                              join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
-                              join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                              join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                              join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                              join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                              join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-                              join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                              where requisitionDet.ItemId == itemId && site.Id == siteId && tenderDet.Proc_RequisitionDetId == requisitionDet.Id && tenderDet.Status=="A"
+                               join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                               join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                               join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                               join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                               join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                               join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                               join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                               where requisitionDet.ItemId == itemId && site.Id == siteId && tenderDet.Proc_RequisitionDetId == requisitionDet.Id && tenderDet.Status == "A"
                                select requisitionMas).Distinct();
 
             foreach (var x in requisition)
@@ -440,7 +440,7 @@ namespace DhaliProcurement.Controllers
             //              where purchaseMas.PONo == PONo && purchaseMas.VendorId == vendor.Id
             //              select vendor).Distinct().FirstOrDefault();
 
-            
+
             var vendors = (from purchaseDet in db.Proc_PurchaseOrderDet
                            join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
                            //join entryDet in db.Proc_MaterialEntryDet on purchaseDet.Id equals entryDet.Proc_PurchaseOrderDetId
@@ -464,13 +464,13 @@ namespace DhaliProcurement.Controllers
         public JsonResult GetPO(int itemId, int projectId, int siteId, string ReqNo)
         {
             var PO = (from requisitionDet in db.Proc_RequisitionDet
-                          join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                          join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId
-                          join tenderMas in db.Proc_TenderMas on tenderDet.Proc_TenderMasId equals tenderMas.Id
-                          join purchaseMas in db.Proc_PurchaseOrderMas on tenderMas.Id equals purchaseMas.Proc_TenderMasId
-                          join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                      join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                      join tenderDet in db.Proc_TenderDet on requisitionDet.Id equals tenderDet.Proc_RequisitionDetId
+                      join tenderMas in db.Proc_TenderMas on tenderDet.Proc_TenderMasId equals tenderMas.Id
+                      join purchaseMas in db.Proc_PurchaseOrderMas on tenderMas.Id equals purchaseMas.Proc_TenderMasId
+                      join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
                       join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
-                          join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                      join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
                       where requisitionMas.Rcode == ReqNo && purchaseDet.ItemId == itemId && site.Id == siteId
                       select purchaseMas).Distinct().ToList();
 
@@ -479,7 +479,7 @@ namespace DhaliProcurement.Controllers
                                  where procProject.ProjectSiteId == siteId && total.ItemId == itemId
                                  select total).FirstOrDefault();
 
-           
+
 
             var requiredQty = (from requisitionDet in db.Proc_RequisitionDet
                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
@@ -503,7 +503,7 @@ namespace DhaliProcurement.Controllers
 
 
             decimal receivedQuantity = 0;
-            if (totalReceived.Count==0)
+            if (totalReceived.Count == 0)
             {
                 receivedQuantity = 0;
             }
@@ -517,7 +517,7 @@ namespace DhaliProcurement.Controllers
                 //receivedQuantity = totalrecv;
             }
 
-            List <SelectListItem> POList = new List<SelectListItem>();
+            List<SelectListItem> POList = new List<SelectListItem>();
 
             foreach (var x in PO)
             {
@@ -545,74 +545,103 @@ namespace DhaliProcurement.Controllers
                 message = "Requisition saving error !"
             };
             var flag = false;
-            var EntryDate =  DateTime.ParseExact(EDate, "dd/mm/yyyy",  CultureInfo.CurrentCulture);
+            var EntryDate = DateTime.ParseExact(EDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
             var planList = (from procProject in db.ProcProject
                             join site in db.ProjectSite on procProject.ProjectSiteId equals SiteId
                             join project in db.Project on site.ProjectId equals ProjectId
                             join materialEntry in db.Proc_MaterialEntryMas on procProject.Id equals materialEntry.ProcProjectId
-                            where project.Id == ProjectId && site.Id== SiteId && materialEntry.EDate== EntryDate
+                            where project.Id == ProjectId && site.Id == SiteId && materialEntry.EDate == EntryDate
                             select procProject).ToList();
 
             if (planList.Count == 0)
             {
-                flag = false;
-                Proc_MaterialEntryMas master = new Proc_MaterialEntryMas();
-
-                var newProj = (from procProject in db.ProcProject
-                               join site in db.ProjectSite on procProject.ProjectSiteId equals SiteId
-                               join project in db.Project on site.ProjectId equals ProjectId
-                               where project.Id == ProjectId
-                               select procProject);
-
-                foreach (var i in newProj)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    master.ProcProjectId = i.Id;
-                }
-
-                master.EDate = EntryDate;
-                db.Proc_MaterialEntryMas.Add(master);
-
-                flag = db.SaveChanges() > 0;
-
-               var EntryMasId = master.Id;
-
-
-                foreach (var item in RequisitionItems)
-                {
-                    Proc_MaterialEntryDet detail = new Proc_MaterialEntryDet();
-                    detail.Proc_MaterialEntryMasId = EntryMasId;
-                    var purchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x=>x.PONo==item.PONo).Id;
-                    detail.Proc_PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(x=>x.Proc_PurchaseOrderMasId == purchaseOrderMasId && x.ItemId==item.ItemId).Id; 
-                    detail.ChallanNo = item.ChallanNo;
-                    if (item.ChallanDate == null) {
-                        detail.ChallanDate = null;
-                    }
-                    else
+                    try
                     {
-                        //detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
-                        detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
-                    }
-                    
-                    detail.EntryQty = item.EntryQty;
-                    detail.Status = item.Status;
+                        flag = false;
+                        Proc_MaterialEntryMas master = new Proc_MaterialEntryMas();
 
-                    db.Proc_MaterialEntryDet.Add(detail);
-                    flag = db.SaveChanges()>0;
-                    if (flag)
-                    {                  
-                        var PORcv = db.Proc_PurchaseOrderDet.Find(detail.Proc_PurchaseOrderDetId);
-                        PORcv.PORcv = PORcv.PORcv + item.EntryQty;
-                        db.Entry(master).State = EntityState.Modified;
+                        var newProj = (from procProject in db.ProcProject
+                                       join site in db.ProjectSite on procProject.ProjectSiteId equals SiteId
+                                       join project in db.Project on site.ProjectId equals ProjectId
+                                       where project.Id == ProjectId
+                                       select procProject);
+
+                        foreach (var i in newProj)
+                        {
+                            master.ProcProjectId = i.Id;
+                        }
+
+                        master.EDate = EntryDate;
+                        db.Proc_MaterialEntryMas.Add(master);
+
                         flag = db.SaveChanges() > 0;
+
+                        var EntryMasId = master.Id;
+
+
+                        foreach (var item in RequisitionItems)
+                        {
+                            Proc_MaterialEntryDet detail = new Proc_MaterialEntryDet();
+                            detail.Proc_MaterialEntryMasId = EntryMasId;
+                            var purchaseOrderMasId = db.Proc_PurchaseOrderMas.FirstOrDefault(x => x.PONo == item.PONo).Id;
+                            detail.Proc_PurchaseOrderDetId = db.Proc_PurchaseOrderDet.FirstOrDefault(x => x.Proc_PurchaseOrderMasId == purchaseOrderMasId && x.ItemId == item.ItemId).Id;
+                            detail.ChallanNo = item.ChallanNo;
+                            if (item.ChallanDate == null)
+                            {
+                                detail.ChallanDate = null;
+                            }
+                            else
+                            {
+                                //detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
+                                detail.ChallanDate = DateTime.ParseExact(item.ChallanDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
+                            }
+
+                            detail.EntryQty = item.EntryQty;
+                            detail.Status = item.Status;
+
+                            db.Proc_MaterialEntryDet.Add(detail);
+                            flag = db.SaveChanges() > 0;
+                            if (flag)
+                            {
+                                var PORcv = db.Proc_PurchaseOrderDet.Find(detail.Proc_PurchaseOrderDetId);
+                                PORcv.PORcv = PORcv.PORcv + item.EntryQty;
+                                db.Entry(master).State = EntityState.Modified;
+                                flag = db.SaveChanges() > 0;
+                            }
+
+                            dbContextTransaction.Commit();
+
+                            if (flag == true)
+                            {
+                                result = new
+                                {
+                                    flag = true,
+                                    message = "Save Successful!"
+                                };
+                            }
+
+                        }
+
+                        //if (flag == false)
+                        //{
+                        //    var mas = db.Proc_MaterialEntryMas.Find(EntryMasId);
+                        //    db.Proc_MaterialEntryMas.Remove(mas);
+                        //    flag = db.SaveChanges() > 0;
+                        //}
                     }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
 
-                }
-
-                if (flag == false)
-                {
-                    var mas = db.Proc_MaterialEntryMas.Find(EntryMasId);
-                    db.Proc_MaterialEntryMas.Remove(mas);
-                    flag = db.SaveChanges() > 0;
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
+                    }
                 }
             }
             else
@@ -624,14 +653,7 @@ namespace DhaliProcurement.Controllers
                 };
             }
 
-            if (flag == true)
-            {
-                result = new
-                {
-                    flag = true,
-                    message = "Save Successful!"
-                };
-            }
+
 
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -649,18 +671,19 @@ namespace DhaliProcurement.Controllers
             bool flag = false;
 
             var counter = 0;
-            var entryDet = db.Proc_MaterialEntryDet.Where(x=>x.Proc_MaterialEntryMasId== MaterialEntryMasId).ToList();
-            foreach(var i in entryDet)
+            var entryDet = db.Proc_MaterialEntryDet.Where(x => x.Proc_MaterialEntryMasId == MaterialEntryMasId).ToList();
+            foreach (var i in entryDet)
             {
                 var check = db.Proc_VendorPaymentDet.Where(x => x.Proc_MaterialEntryDetId == i.Id).ToList();
-                if (check.Count >0)
+                if (check.Count > 0)
                 {
                     counter++;
                 }
             }
 
 
-            if (counter == 0) { 
+            if (counter == 0)
+            {
                 var itemsToDeleteTask = db.Proc_MaterialEntryMas.Where(x => x.Id == MaterialEntryMasId);
                 db.Proc_MaterialEntryMas.RemoveRange(itemsToDeleteTask);
 
@@ -669,7 +692,7 @@ namespace DhaliProcurement.Controllers
 
                 flag = db.SaveChanges() > 0;
             }
-            
+
 
             if (flag)
             {
@@ -823,7 +846,7 @@ namespace DhaliProcurement.Controllers
                                          join procProject in db.ProcProject on total.ProcProjectId equals procProject.Id
                                          join requisitionMas in db.Proc_RequisitionMas on procProject.Id equals requisitionMas.ProcProjectId
                                          join requisitionDet in db.Proc_RequisitionDet on requisitionMas.Id equals requisitionDet.Proc_RequisitionMasId
-                                         where  total.ItemId == ItemId.Id && procProject.ProjectSiteId == requisitionDet.Proc_RequisitionMas.ProcProject.ProjectSiteId
+                                         where total.ItemId == ItemId.Id && procProject.ProjectSiteId == requisitionDet.Proc_RequisitionMas.ProcProject.ProjectSiteId
                                          select total).FirstOrDefault();
 
                     var requiredQty = (from requisitionDet in db.Proc_RequisitionDet
@@ -836,15 +859,15 @@ namespace DhaliProcurement.Controllers
                     //                 join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
                     //                 where requisitionMas.Rcode == requisitionId.Rcode && requisitionDet.ItemId == ItemId.Id
 
-                    var unitPrice = ( from purchaseDet in db.Proc_PurchaseOrderDet
-                                      join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                      join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
-                                      join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                      join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
-                                      join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
-                                      //where requisitionMas.Rcode == requisitionId.Rcode && purchaseDet.ItemId == ItemId.Id
-                                      where purchaseDet.ItemId == ItemId.Id
-                                      select tenderDet).FirstOrDefault();
+                    var unitPrice = (from purchaseDet in db.Proc_PurchaseOrderDet
+                                     join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+                                     join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                                     join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                     join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                     join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                     //where requisitionMas.Rcode == requisitionId.Rcode && purchaseDet.ItemId == ItemId.Id
+                                     where purchaseDet.ItemId == ItemId.Id
+                                     select tenderDet).FirstOrDefault();
 
                     vm.TotalMaterial = totalMaterial.PQuantity;
 
@@ -900,7 +923,7 @@ namespace DhaliProcurement.Controllers
         }
 
 
-        public JsonResult EditEntry(IEnumerable<VMMaterialsEntry> EntryItems, int?[] DeleteItems, int EntryMasId, int ProcProjectId, int ProjectId,string TNo, int SiteId ,string EDate)
+        public JsonResult EditEntry(IEnumerable<VMMaterialsEntry> EntryItems, int?[] DeleteItems, int EntryMasId, int ProcProjectId, int ProjectId, string TNo, int SiteId, string EDate)
         {
             var result = new
             {
@@ -930,7 +953,7 @@ namespace DhaliProcurement.Controllers
             {
                 foreach (var item in EntryItems)
                 {
-                    var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId==item.ItemId && x.ChallanNo == item.ChallanNo);
+                    var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId && x.ChallanNo == item.ChallanNo);
                     //var check = data.SingleOrDefault(x=>x.ChallanNo==item.ChallanNo && x.Proc_PurchaseOrderDet.ItemId==item.ItemId);
 
                     if (check == null)
@@ -998,7 +1021,7 @@ namespace DhaliProcurement.Controllers
 
         public ActionResult DeleteEntryDetailItem(int EntryDetailId)
         {
-            
+
             var result = new
             {
                 flag = false,
@@ -1017,12 +1040,12 @@ namespace DhaliProcurement.Controllers
 
                 //var 
 
-                    result = new
-                    {
-                        flag = true,
-                        message = "Delete Successful Successful!"
-                    };
-              
+                result = new
+                {
+                    flag = true,
+                    message = "Delete Successful Successful!"
+                };
+
             }
             else
             {
@@ -1032,7 +1055,7 @@ namespace DhaliProcurement.Controllers
                     message = "Delete failed! Please delete Vendor payment first!"
                 };
             }
- 
+
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

@@ -541,8 +541,9 @@
             traditional: true,
             success: function (data) {
                 //$('#ReqNo').removeAttr("disabled");
-
+                $('#ModalReqNo').empty();
                 var listOfitems = data.ReqItems.length;
+
                 var items = "<select id='ModalReqNo'>";
                 items = items + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfitems; i++) {
@@ -857,6 +858,7 @@
         var ItemId = $('#ItemName option:selected').val();
         var ProjectId = $('#ProjectId option:selected').val();
         var SiteId = $('#SiteId option:selected').val();
+        var PONo = $('#PONo option:selected').val();
 
         //if (ProjectId == "" && SiteId == "") {
         //    alert('Please Select Project Id and Site Id');
@@ -865,7 +867,7 @@
         $.ajax({
             type: "post",
             url: "/VendorPayments/GetVendorPayDetData",
-            data: { ItemId, ProjectId, SiteId },
+            data: { ItemId, ProjectId, SiteId, PONo },
             datatype: "json",
             traditional: true,
             success: function (data) {
