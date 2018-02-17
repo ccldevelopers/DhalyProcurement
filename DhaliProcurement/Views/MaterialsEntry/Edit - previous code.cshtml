@@ -94,7 +94,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo1", @name= "PONo1" })
+                                        @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo1" })
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Vendor Name</td>
                                     <td class="col-lg-3">
@@ -257,7 +257,7 @@
                            {
                                @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo"})
+                                    @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -383,7 +383,7 @@
                                + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><input class="form-control" value="' + data.List[i].ItemName + '" readonly="true" type="text" name="ItemName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
                                + '<td><input value="" type="hidden" name="UnitId"/><input class="form-control" value="' + data.List[i].UnitName + '" readonly="true" type="text" name="UnitName"  style="width:90px;" disabled="disabled"/></td>'
                                + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control"  name="RCode" style="width:90px;"/><input value="' + data.List[i].RCodeName + '" type="text" class="form-control"  name="RCodeName" style="width:90px;" disabled="disabled"/></td>'
-                               + '<td><input value="' + data.List[i].PONo + '" type="text" name="PurchaseOrder" class="form-control" style="width:90px;" disabled="disabled"/></td>'
+                               + '<td><input value="' + data.List[i].PONo + '" type="text" name="PONo" class="form-control" style="width:90px;" disabled="disabled"/></td>'
                                + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="VendorId"/><input class="form-control" value="' + data.List[i].VendorName + '" readonly="true" type="text" name="VendorName"  style="width:90px;"/></td>'
                                + '<td><input value="' + data.List[i].TotalMaterial + '" type="text" name="TotalMaterial" class="form-control" style="width:90px;" disabled="disabled"/></td>'
                                //+ '<td><input value="' + PreviousReceived + '" type="hidden" name="PreviousQty" class="form-control" style="width:50px;"/><label>' + PreviousReceived + '</label></td>'
@@ -457,7 +457,7 @@
                         //var retVal = confirm("Do you want to delete this Item ?");
                         //if (retVal == true) {
                         var row = $(this).closest('tr');
-                        var itemDetId = $(this).closest('tr').find('td input[name=Proc_MaterialEntryDetId]').val();
+                        var itemDetId = $(this).closest('tr').find('td input[name=TenderDetailId]').val();
                         @*var ProcPurchaseMasterId= @ViewBag.ProcPurchaseMasterId;*@
                         //alert(itemDetId);
 
@@ -1003,7 +1003,7 @@
                     + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><input value="' + ItemName + '" type="text" name="ItemName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input value="' + UnitName + '" type="text" name="UnitName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:50px;"/><input value="' + RCodeName + '" type="text" name="RCodeName" class="form-control" style="width:90px;"/></td>'
-                    + '<td><input value="' + PONo + '" type="text" name="PurchaseOrder" class="form-control" style="width:90px;"/></td>'
+                    + '<td><input value="' + PONo + '" type="text" name="PONo" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + VendorId + '" type="hidden" name="VendorId"/><input value="' + VendorName + '" type="text" name="VendorName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + TotalMaterial + '" type="text" name="TotalMaterial" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + PreviousQty + '" type="text" name="PreviousQty" class="form-control" style="width:90px;"/></td>'
@@ -1117,7 +1117,7 @@
             var Proc_MaterialEntryDetId = document.getElementsByName("Proc_MaterialEntryDetId");
             var ItemId = document.getElementsByName("ItemId");
             var RCode = document.getElementsByName("RCodeName");
-            var PONo = document.getElementsByName("PurchaseOrder");
+            var PONo = document.getElementsByName("PONo");
             var ChallanNo = document.getElementsByName("ChallanNo");
             var ChallanDate = document.getElementsByName("ChallanDate");
             var MaterialEntry = document.getElementsByName("MaterialEntry");
@@ -1129,9 +1129,9 @@
 
 
             var tableCounter = $('#RequisitionDetails tr').length - 1;
-            console.log("=====Started=====");
+
             for (var i = 0; i < tableCounter; i++) {
-                console.log("PO NO: "+PONo[i].value);
+                console.log(PONo[i].value);
             }
             //alert('Length: ' + tableCounter);
             //for (var i = 0; i < tableCounter; i++) {
@@ -1161,7 +1161,6 @@
                 console.log('---------->');
 
             }
-            console.log("=====Ended=====");
 
             TaskDetails = JSON.stringify({
                 EntryItems: EntryItems,

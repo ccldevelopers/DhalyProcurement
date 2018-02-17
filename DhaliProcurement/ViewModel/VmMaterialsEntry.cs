@@ -8,6 +8,8 @@ namespace DhaliProcurement.ViewModel
 {
     public class VMMaterialsEntry
     {
+
+        public int Proc_MaterialEntryDetId { get; set; }
         public int ItemId { get; set; }
         public string RCode { get; set; }
         public string PONo { get; set; }
@@ -25,7 +27,7 @@ namespace DhaliProcurement.ViewModel
 
     public class VMEditMaterialsEntryItem
     {
-        public int Proc_MaterialEntryDetId { get; set; }       
+        public int Proc_MaterialEntryDetId { get; set; }
         public int ProjectId { get; set; }
         public string ProjectName { get; set; }
         public int SiteId { get; set; }

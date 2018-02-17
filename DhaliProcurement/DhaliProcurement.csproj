@@ -1718,6 +1718,7 @@
     <Content Include="Views\MaterialsEntry\Edit - PreviousDesign.cshtml" />
     <Content Include="Views\VendorPayments\Create - PreviousDesign.cshtml" />
     <Content Include="Views\VendorPayments\Edit - PreviousDesign.cshtml" />
+    <Content Include="Views\MaterialsEntry\Edit - previous code.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

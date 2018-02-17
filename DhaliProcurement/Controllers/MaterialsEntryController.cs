@@ -611,17 +611,17 @@ namespace DhaliProcurement.Controllers
                                 flag = db.SaveChanges() > 0;
                             }
 
-                            dbContextTransaction.Commit();
+                        }
 
-                            if (flag == true)
+                        dbContextTransaction.Commit();
+
+                        if (flag == true)
+                        {
+                            result = new
                             {
-                                result = new
-                                {
-                                    flag = true,
-                                    message = "Save Successful!"
-                                };
-                            }
-
+                                flag = true,
+                                message = "Save Successful!"
+                            };
                         }
 
                         //if (flag == false)
@@ -812,7 +812,8 @@ namespace DhaliProcurement.Controllers
                     var PONo = (from purchaseOrderMas in db.Proc_PurchaseOrderMas
                                 join purchaseOrderDet in db.Proc_PurchaseOrderDet on purchaseOrderMas.Id equals purchaseOrderDet.Proc_PurchaseOrderMasId
                                 join entryDet in db.Proc_MaterialEntryDet on purchaseOrderDet.Id equals entryDet.Proc_PurchaseOrderDetId
-                                where entryDet.Proc_MaterialEntryMas.Id == MaterialEntryMasId && purchaseOrderDet.ItemId == ItemId.Id
+                                //where entryDet.Proc_MaterialEntryMas.Id == MaterialEntryMasId && purchaseOrderDet.ItemId == ItemId.Id
+                                where entryDet.Proc_MaterialEntryMas.Id == MaterialEntryMasId && purchaseOrderDet.Id == i.Proc_PurchaseOrderDetId
                                 select purchaseOrderMas).FirstOrDefault();
 
                     vm.PONo = PONo.PONo;
@@ -958,8 +959,8 @@ namespace DhaliProcurement.Controllers
                     {
                         foreach (var item in EntryItems)
                         {
-                            var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId && x.ChallanNo == item.ChallanNo);
-                            //var check = data.SingleOrDefault(x=>x.ChallanNo==item.ChallanNo && x.Proc_PurchaseOrderDet.ItemId==item.ItemId);
+                            //var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId && x.ChallanNo == item.ChallanNo);
+                            var check = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Id == item.Proc_MaterialEntryDetId);
 
                             if (check == null)
                             {
@@ -988,9 +989,9 @@ namespace DhaliProcurement.Controllers
                             else
                             {
 
-                                var Proc_EntryDet_Id = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId);
-                                var getItem = db.Proc_MaterialEntryDet.Find(Proc_EntryDet_Id.Id);
-                                //var getItem = db.Proc_MaterialEntryDet.Find(item.);
+                                //var Proc_EntryDet_Id = db.Proc_MaterialEntryDet.FirstOrDefault(x => x.Proc_MaterialEntryMasId == EntryMasId && x.Proc_PurchaseOrderDet.ItemId == item.ItemId);
+                                //var getItem = db.Proc_MaterialEntryDet.Find(Proc_EntryDet_Id.Id);
+                                var getItem = db.Proc_MaterialEntryDet.Find(item.Proc_MaterialEntryDetId);
 
                                 getItem.ChallanNo = item.ChallanNo;
                                 if (item.ChallanDate == null)
