@@ -45,20 +45,20 @@
         </div>
         <table class="table table-responsive  table-bordered">
             <tr class="bg-grey">
-                <th>SL. No.</th>
-                <th>
+                <th class="col-lg-1">SL. No.</th>
+                <th class="col-lg-4">
                     Project Name
                 </th>
-                <th>
+                <th class="col-lg-2">
                     Requisition No.
                 </th>
-                <th>
+                <th class="col-lg-1">
                     Requisition Date
                 </th>
-                <th>
+                <th class="col-lg-1">
                     @Html.DisplayNameFor(model => model.Status)
                 </th>
-                <th></th>
+                <th class="col-lg-3"></th>
             </tr>
 
             @foreach (var item in Model)
