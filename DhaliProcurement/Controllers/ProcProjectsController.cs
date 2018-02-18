@@ -49,6 +49,18 @@ namespace DhaliProcurement.Controllers
             //return View();
         }
 
+        //rebind items
+        public JsonResult getItemNameandUnit()
+        {
+            var items = new SelectList(db.Item, "Id", "Name");
+            var units= new SelectList(db.Unit, "Id", "Name");
+            var result = new
+            {
+                Items = items,
+                Units = units
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Create()
         {
