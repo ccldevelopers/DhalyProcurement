@@ -44,12 +44,12 @@
                             </div>
 
 
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-4">
                                     @Html.DropDownList("RCode", null, "Select Requisition", htmlAttributes: new { @class = "form-control select2", @id = "RCode" })
                                 </div>
-                            </div>
+                            </div>*@
 
 
                         </div>
@@ -120,34 +120,34 @@
         });
 
 
-        $("#SiteId").change(function () {
-            var SiteId = $('#SiteId').val();
-            var ProjectId = $('#ProjectId option:selected').val();
-            //alert(ProjectId);
+        //$("#SiteId").change(function () {
+        //    var SiteId = $('#SiteId').val();
+        //    var ProjectId = $('#ProjectId option:selected').val();
+        //    //alert(ProjectId);
 
-            $.ajax({
-                type: "post",
-                url: "/Report/GetReqNo",
-                data: { SiteId, ProjectId },
-                datatype: "json",
-                traditional: true,
-                success: function (data) {
-                    //$('#SiteEngineer').val(data.siteEngineer);
-                    $('#RCode').removeAttr("disabled");
+        //    $.ajax({
+        //        type: "post",
+        //        url: "/Report/GetReqNo",
+        //        data: { SiteId, ProjectId },
+        //        datatype: "json",
+        //        traditional: true,
+        //        success: function (data) {
+        //            //$('#SiteEngineer').val(data.siteEngineer);
+        //            $('#RCode').removeAttr("disabled");
 
-                    var listOfitems = data.Items.length;
-                    var items = "<select id='RCode'>";
-                    items = items + '<option value="">--Select--</option>';
-                    for (var i = 0; i < listOfitems; i++) {
-                        items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
-                    }
-                    items = items + '</select>';
-                    $('#RCode').html(items);
+        //            var listOfitems = data.Items.length;
+        //            var items = "<select id='RCode'>";
+        //            items = items + '<option value="">--Select--</option>';
+        //            for (var i = 0; i < listOfitems; i++) {
+        //                items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+        //            }
+        //            items = items + '</select>';
+        //            $('#RCode').html(items);
 
-                }
+        //        }
 
-            });
-        });
+        //    });
+        //});
 
     </script>
 }
