@@ -37,10 +37,6 @@
                                     <span class="error" id="ProjectName_Error"></span>
                                 </td>
                             </tr>
-                            @*<tr>
-                                <td></td>
-                                <td><span class="error" id="ProjectName_Error"></span></td>
-                            </tr>*@
                             <tr>
                                 <td class="col-lg-">Project Manager</td>
                                 <td class="col-lg-10">
@@ -74,14 +70,6 @@
                             </tr>
                         </table>
                         <hr />
-
-
-                        @*<div class="form-group">
-                                <div class="col-md-offset-5 col-md-10">
-                                    <button type="button" id="SaveProject" class="btn btn-primary"><i class="icon-add position-left"></i> Save</button>
-                                </div>
-                            </div>*@
-
 
                     }
 
@@ -132,15 +120,13 @@
             </div>
             <div class="form-group">
                 <div class="col-md-12" style="text-align:center;">
-                    @*<button type="button" id="SaveProject" class="btn btn-primary"  style = "background-color: grey;border: none;" ><i class="icon-add position-left"></i> Create</button>*@
                     <button type="button" id="SaveProject" class="btn btn-primary"><i class="icon-add position-left"></i> Create</button>
                 </div>
             </div>
         </div>
     </div>
-    @*<button type="button" id="editSite" class="btn btn-primary" data-toggle="modal" data-target="#detailForm" style="background-color: grey;border: none;">Edit Site</button>*@
 
-    <!-- Modal -->
+    <!-- Modal for Add staff -->
     <div class="modal fade" id="resourceProjectManagerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -230,14 +216,7 @@
         </div>
     </div>
 
-
-    @*<style>
-            .form-group .select2-container {
-                width: 300px !important;
-            }
-        </style>*@
-    @*<p><button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='@Url.Action("Index")';"><i class="icon-circle-left2 position-left"></i> Go back</button></p>*@
-    <!-- Modal -->
+<!--Modal for editing an item-->
     <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -325,18 +304,10 @@
         $('#addNewRow').click(function (event) {
             event.preventDefault();
 
-
             var SiteName = $('#SiteName').val();
-            //alert('SiteName' + SiteName);
-
             var SiteLocation = $('#SiteLocation').val();
-            //alert('SiteLocation' + SiteLocation);
-
             var SiteEngineer = $('#SiteRName option:selected').text();
-            // alert('SiteEngineer' + SiteEngineer);
-
             var SiteEngineerId = $('#SiteRName option:selected').val();
-            // alert('SiteEngineerId' + SiteEngineerId);
 
             var isValidSite = true;
 
@@ -373,7 +344,7 @@
             else {
                 $('#LocationValidation_Error').hide();
             }
-            if (SiteEngineer === '' || SiteEngineer === "--Select--") {
+            if (SiteEngineer == '' || SiteEngineer == "--Select--") {
 
                 isValidSite = false;
                 $('#SiteEngineer_Error').show();
@@ -434,17 +405,19 @@
         });
 
 
+
+        //Modal Save
         $('#ModalDetailSave').click(function () {
 
 
             var isValidSite = true;
             var TaskId = $('#ModalTaskId').val();
-            //alert(TaskId);
             var SiteName = $('#ModalSite').val();
             var Location = $('#ModalLocation').val();
             var SiteEngineer = $('#ModalSiteEngineer option:selected').val();
             var SiteEngineerName = $('#ModalSiteEngineer option:selected').text();
 
+            //validation for Modal fields
             if (SiteName.trim().length > 256) {
                 $('#ModalSiteName_Error').text("Site Name can not be greater than 256 characters!").show();
                 isValidSite = false;
@@ -460,12 +433,29 @@
             else {
                 $('#ModalLocation_Error').hide();
             }
+            if (Location.trim().length > 256) {
+                $('#ModalLocation_Error').text("Location can not be greater than 256 characters!").show();
+                isValidSite = false;
+            }
+            else {
+                $('#ModalLocation_Error').hide();
+            }
+            if (SiteEngineerName.trim() === '' || SiteEngineerName.trim() === "--Select--") {
 
+                isValidSite = false;
+                $('#ModalSiteEngineer_Error').show();
+            }
+            else {
+                $('#ModalSiteEngineer_Error').hide();
+            }
+                
+           
+            //validation for checking duplicate item
             $('table.Resource-list tbody tr').each(function () {
                 var name = $(this).find("td input[name=SiteName]").val();
                 var task = $(this).find("td input[name=TaskId]").val();
-                //alert(task);
 
+                //checks if the item exists in the table
                 if (task != TaskId.trim()) {
 
                     if (SiteName.toUpperCase() == name.toUpperCase()) {
@@ -476,11 +466,9 @@
                     //    alert('This Site doesnot exist!');
                     //}
                 }
-                //else {
-                //    alert('This is the item');
-                //}
             });
 
+            //if all inputs are valid than i will be aded to the table
             if (isValidSite) {
                 selRow.find('input[name=SiteName]').val(SiteName);
                 selRow.find('input[name=SiteLocation]').val(Location);
@@ -491,13 +479,12 @@
                 selRow.find('label[name=label_SiteLocation]').text(Location);
                 selRow.find('label[name=label_SiteEngineer]').text(SiteEngineerName);
 
-                $('#detailForm').modal('hide');
+                $('#detailForm').modal('hide'); //hides the moidal
             }
-
 
         });
 
-        //end
+        //Modal save ends
     </script>
 
     <script>
@@ -539,6 +526,8 @@
         $('#SaveProject').click(function () {
             if ($.trim($('#ProjectName').val()) == "") {
                 alert('Project name required');
+                //$('#ProjectName_Error').text("Project name required!")
+                //$('#ProjectName_Error').show();
                 $('#ProjectName').focus();
             }
             else if ($.trim($('#RName').val()) == "" | $.trim($('#RName').val()) == "--Select--") {
@@ -546,6 +535,7 @@
                 $('#RName').focus();
             }
             else {
+                $('#ProjectName_Error').hide();
                 CreateProject();
             }
         });
@@ -554,7 +544,6 @@
         function CreateProject() {
 
             var isValid = true;
-            //    debugger;
             var ProjectName = $('#ProjectName').val();
             if (ProjectName.trim().length > 256) {
                 isValid = false;
