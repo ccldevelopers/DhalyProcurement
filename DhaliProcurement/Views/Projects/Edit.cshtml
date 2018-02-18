@@ -128,8 +128,8 @@
                             <tr class="bg-grey">
                                 <th class="col-lg-4">Site Name</th>
                                 <th class="col-lg-4">Location</th>
-                                <th class="col-lg-3">Site Engineer</th>
-                                <th class="col-lg-1"></th>
+                                <th class="col-lg-2">Site Engineer</th>
+                                <th class="col-lg-2"></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -757,7 +757,7 @@
 
         if (Remarks.trim().length > 200) {
             isValid = false;
-            $('#Remarks_Error').text("Remarks cannot be greater than 256 characters!").show();
+            $('#Remarks_Error').text("Remarks cannot be greater than 200 characters!").show();
         }
         else {
             $('#Remarks_Error').hide();

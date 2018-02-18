@@ -346,7 +346,7 @@
                     //if(data[i].Remarks == "null"){
                     //    data[i].Remarks = "";
                     //}
-                    var newRow = jQuery('<tr><td> <input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input type="text" class="form-control" value="' + data[i].ItemName + '" readonly="true" type="text" name="ItemName"/></td>'
+                    var newRow = jQuery('<tr><td> <input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input type="text" class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
                         +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="text" name="Quantity' +
                     '"/></td><td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="text" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="text" name="ItemUnit' +
                     '"/></td><td><input class="form-control" value="' + data[i].PCost + '"  type="text" name="ItemCost' +

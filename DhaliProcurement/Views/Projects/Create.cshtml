@@ -97,7 +97,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span class="error" id="SiteName_Error">Site name required</span></td>
+                                <td><span class="error" id="SiteName_Error">Site name required</span><span class="error" id="SiteNameMax_Error">Site name required</span></td>
                                 <td><span class="error" id="SiteLocation_Error">Location required</span><span class="error" id="LocationValidation_Error"></span></td>
                                 <td><span class="error" id="SiteEngineer_Error">Site Engineer required</span></td>
                             </tr>
@@ -281,6 +281,8 @@
             $('#SiteLocation_Error').hide();
             $('#SiteEngineer_Error').hide();
             $('#LocationValidation_Error').hide();
+            $('#SiteNameMax_Error').hide();
+            
 
             //Modal Edit Validation
             $('#ModalSiteName_Error').hide();
@@ -311,21 +313,20 @@
 
             var isValidSite = true;
 
-            if ($('#SiteName').val().trim() == '') {
-
+            if (SiteName.trim() == '') {
                 isValidSite = false;
-                $('#SiteName_Error').show();
+                $('#SiteName_Error').text("Site Name required").show();
             }
             else {
                 $('#SiteName_Error').hide();
             }
             if ($('#SiteName').val().trim().length > 255) {
 
-                $('#SiteName_Error').text("Site Name can not be greater than 256 characters!").show();
+                $('#SiteNameMax_Error').text("Site Name can not be greater than 256 characters!").show();
                 isValidSite = false;
             }
             else {
-                $('#SiteName_Error').hide();
+                $('#SiteNameMax_Error').hide();
             }
 
             if ($('#SiteLocation').val().trim() == '') {
@@ -534,6 +535,13 @@
                 alert('Project Manager required');
                 $('#RName').focus();
             }
+
+           ////code for end date validation
+           // else if ($('#StartDate').val() != null && $('#EndDate').val() != null) {
+           //     if ($('#StartDate').val() > $('#EndDate').val()) {
+           //         alert('Start Date cannot be less than end date!');
+           //     }
+           // }
             else {
                 $('#ProjectName_Error').hide();
                 CreateProject();
@@ -565,11 +573,12 @@
             var Remarks = $('#Remarks').val();
             if (Remarks.trim().length > 200) {
                 isValid = false;
-                $('#Remarks_Error').text("Remarks cannot be greater than 256 characters!").show();
+                $('#Remarks_Error').text("Remarks cannot be greater than 200 characters!").show();
             }
             else {
                 $('#Remarks_Error').hide();
             }
+
 
             //alert('remarks '+Remarks);
             var RName = $('#RName').val();

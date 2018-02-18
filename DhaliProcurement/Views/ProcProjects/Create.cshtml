@@ -72,6 +72,7 @@
                             <td>BOQ No</td>
                             <td>
                                 @Html.TextBox("BOQNo", null, new { @class = "form-control" })
+                                <span class="error" id="BOQNo_Error"></span>
                             </td>
                         </tr>
 
@@ -103,6 +104,7 @@
                             <td>Remarks</td>
                             <td>
                                 @Html.TextBox("ProjectRemarks", "", new { @class = "form-control" })
+                                <span class="error" id="Remarks_Error"></span>
                             </td>
 
                         </tr>
@@ -181,9 +183,9 @@
                             </tr>
                             <tr>
                                 <td><span class="error" id="ItemName_Error">Item name required</span></td>
-                                <td><span class="error" id="Quantity_Error">Quantity required</span></td>
+                                <td><span class="error" id="Quantity_Error">Quantity required</span><span class="error" id="QuantityMax_Error"></span></td>
                                 <td><span class="error" id="UnitName_Error">Unit required</span></td>
-                                <td><span class="error" id="Costing_Error">Cost required</span></td>
+                                <td><span class="error" id="Costing_Error">Cost required</span><span class="error" id="CostMax_Error"></span></td>
                                 <td></td>
                             </tr>
                         </table>
@@ -305,7 +307,7 @@
         event.preventDefault();
         counter++;
         var ItemId = $('#ItemName option:selected').val();
-        var ItemName = $('#ItemName option:selected').text();
+        var ItemName = $('#ItemName option:selected').text().trim();
         var Qty = $('#Qty').val();
         var Unit = $('#Unit option:selected').text();
         var UnitId = $('#Unit option:selected').val();
@@ -315,7 +317,7 @@
         //new
         var isValidItem = true;
 
-        if ($('#ItemName').val().trim() == '') {
+        if (ItemName == '') {
             $('#ItemName_Error').show();
             isValidItem = false;
             //$('#ItemName').siblings('span.error').css('visibility', 'visible');
@@ -324,13 +326,21 @@
             $('#ItemName_Error').hide();
         }
 
-        if (!($('#Qty').val().trim() != '' && !isNaN($('#Qty').val().trim()))) {
+        if ($('#Qty').val().trim() == '') {
             isValidItem = false;
             $('#Quantity_Error').show();
         }
         else {
             $('#Quantity_Error').hide();
 
+        }
+
+        if (isNaN($('#Qty').val().trim())) {
+            isValidItem = false;
+            $('#QuantityMax_Error').text("Qty should be a numeric value").show()
+        }
+        else {
+            $('#QuantityMax_Error').hide();
         }
 
         if ($('#Unit').val().trim() == '') {
@@ -342,7 +352,7 @@
 
         }
 
-        if (!($('#Cost').val().trim() != '' && !isNaN($('#Cost').val().trim()))) {
+        if ($('#Cost').val().trim() =='') {
             isValidItem = false;
             $('#Costing_Error').show();
         }
@@ -350,28 +360,42 @@
             $('#Costing_Error').hide();
 
         }
+       if (isNaN($('#Cost').val().trim()) ){
+            isValidItem = false;
+            $('#CostMax_Error').text("Cost should be a numeric value").show()
+        }
+        else {
+           $('#CostMax_Error').hide();
+        }
+        
+
+        //$('table.Resource-list tr').each(function () {
+        //    var name = $(this).find("td input[name=ItemName]").val();;
+        //    if (ItemName.trim() == name) {
+        //        alert('This item already exists!');
+        //       // swal('This item already exists!');
+        //        isValidItem = false;
+        //    }
+        //});
+
 
         $('table.Resource-list tr').each(function () {
             var name = $(this).find("td input[name=ItemName]").val();
-            //alert(name);
             if (ItemName == name) {
-                //alert('This item already exists!');
-                swal('This item already exists!');
+                alert('This item already exists!');
                 isValidItem = false;
             }
-
         });
 
         //Add item to list if valid
         if (isValidItem) {
 
             var newRow = jQuery('<tr>'
-                + '<td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName"/></td>'
-                + '<td><input class="form-control" value="' + Qty + '" type="text" name="Quantity"/></td>'
-                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + Unit + '" " readonly="true" type="text" name="ItemUnit"/></td>'
-                + '<td><input class="form-control" value="' + Cost + '"  type="text" name="ItemCost' +
-              '"/></td><td><input class="form-control" value="' + ItemRemarks + '" type="text" name="ItemRemarks' +
-             '"/></td> '
+                + '<td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
+                + '<td><input class="form-control" value="' + Qty + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + Qty + '</label></td>'
+                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + Unit + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + Unit + '</label></td>'
+                + '<td><input class="form-control" value="' + Cost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + Cost + '</label></td>'
+                + '<td><input class="form-control" value="' + ItemRemarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + ItemRemarks + '</label></td>'
              //+ '<td> <button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick" value="Delete" onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td>'
 
               + '<td> '
@@ -381,6 +405,9 @@
             + '</tr>');
 
             jQuery('table.Resource-list').append(newRow);
+
+           
+            RebindItemName();
 
             $('.deleteClick').click(function () {
 
@@ -431,6 +458,8 @@
 
 
     $('#ModalDetailSave').click(function () {
+        var isValidItem = true;
+
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Qty = $('#ModalQty').val();
@@ -439,16 +468,37 @@
         var Cost = $('#ModalCost').val();
         var Remarks = $('#ModalRemarks').val();
 
-        selRow.find('input[name=ItemName]').val(ItemName);
-        selRow.find('input[name=ItemId]').val(ItemId);
-        selRow.find('input[name=Quantity]').val(Qty);
-        selRow.find('input[name=ItemUnit]').val(UnitName);
-        selRow.find('input[name=UnitId]').val(Unitid);
-        selRow.find('input[name=ItemCost]').val(Cost);
-        selRow.find('input[name=ItemRemarks]').val(Remarks);
+        $('table.Resource-list tr').each(function () {
+            var name = $(this).find("td input[name=ItemName]").val();
+            //alert(name);
+            if (ItemName == name) {
+                alert('This item already exists!');
+                //swal('This item already exists!');
+                isValidItem = false;
+            }
 
-        $('#detailForm').modal('hide');
-        totalItemCost();
+        });
+        if (isValidItem) {
+            //update input fields
+            selRow.find('input[name=ItemName]').val(ItemName);
+            selRow.find('input[name=ItemId]').val(ItemId);
+            selRow.find('input[name=Quantity]').val(Qty);
+            selRow.find('input[name=ItemUnit]').val(UnitName);
+            selRow.find('input[name=UnitId]').val(Unitid);
+            selRow.find('input[name=ItemCost]').val(Cost);
+            selRow.find('input[name=ItemRemarks]').val(Remarks);
+
+            //update label
+            selRow.find('label[name=label_ItemName]').text(ItemName);
+            selRow.find('label[name=label_Quantity]').text(Qty);
+            selRow.find('label[name=label_ItemUnit]').text(UnitName);
+            selRow.find('label[name=label_ItemCost]').text(Cost);
+            selRow.find('label[name=label_ItemRemarks]').text(Remarks);
+
+            $('#detailForm').modal('hide');
+            totalItemCost();
+        }
+
     });
 
 
@@ -501,12 +551,15 @@
 
     $(document).ready(function () {
         $('#SiteId').attr("disabled", "true");
-
+        $('#Remarks_Error').hide();
         $('#ItemName_Error').hide();
         $('#Quantity_Error').hide();
         $('#UnitName_Error').hide();
         $('#Costing_Error').hide();
-
+        $('#BOQNo_Error').hide();
+        $('#QuantityMax_Error').hide;
+        $('#CostMax_Error').hide
+        
     });
 
     $('#ProjectId').change(function () {
@@ -569,6 +622,7 @@
             alert('SiteId required');
             $('#SiteId').focus();
         }
+
         //else if ($.trim($('#Cost').val()) === "") {
         //    alert('Cost required');
         //    $('#Cost').focus();
@@ -581,7 +635,7 @@
 
 
     function CreateProjectItem() {
-        
+        var isValid = true;
         var Projectid = $('#ProjectId option:selected').val();
         var ProjectSiteId = $('#SiteId option:selected').val();
         var BOQDate = $('#BOQDate').val();
@@ -592,87 +646,102 @@
         var ProjectStatus = $('#ProjectStatus').val();
         var ProjectRemarks = $('#ProjectRemarks ').val();
 
+        if (BOQNo.trim().length > 100) {
+            $('#BOQNo_Error').text("BOQ Nocan not be greater than 100 characters!").show();
+            isValid = false;
+        }
+        else {
+            $('#BOQNo_Error').hide();
+        }
+
+        if ($('.Resource-list tr').length < 3) {
+            alert('Please Add item to this Project');
+            isValid = false;
+        }
+        if (ProjectRemarks.trim().length > 200) {
+            isValid = false;
+            $('#Remarks_Error').text("Remarks cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#Remarks_Error').hide();
+        }
+
+
+
         var ItemId = document.getElementsByName("ItemId");
-        //for (var i = 0; i < ItemId.length;i++){
-        //    alert('ItemId '+ItemId[i].value);
-        //}
-
         var UnitId = document.getElementsByName("UnitId");
-
-
         var Qty = document.getElementsByName("Quantity");
-
-
         var Unit = document.getElementsByName("ItemUnit");
-
-
         var Cost = document.getElementsByName("ItemCost");
-
         var ItemRemarks = document.getElementsByName("ItemRemarks");
 
 
-        var Length = $('.Resource-list tr').length;
-        //alert(Length);
-        var ItemDetails = [];
 
-        for (var i = 0; i < Length - 2; i++) {
+        if (isValid) {
+            var Length = $('.Resource-list tr').length;
+            //alert(Length);
+            var ItemDetails = [];
 
-            ItemDetails.push({
-                ItemISLNO: ItemId[i].value,
-                PQuantity: Qty[i].value,
-                UnitUSLNO: UnitId[i].value,
-                PCost: Cost[i].value,
-                Remarks: ItemRemarks[i].value,
-                ProjectSiteId: ProjectSiteId
-            });
-            console.log('<----->');
+            for (var i = 0; i < Length - 2; i++) {
+
+                ItemDetails.push({
+                    ItemISLNO: ItemId[i].value,
+                    PQuantity: Qty[i].value,
+                    UnitUSLNO: UnitId[i].value,
+                    PCost: Cost[i].value,
+                    Remarks: ItemRemarks[i].value,
+                    ProjectSiteId: ProjectSiteId
+                });
+                console.log('<----->');
                 console.log('Item:' + ItemDetails[i].ItemISLNO);
                 console.log('Qty:' + ItemDetails[i].PQuantity);
                 console.log('Unit:' + ItemDetails[i].UnitUSLNO);
                 console.log('Cost:' + ItemDetails[i].PCost);
                 console.log('Remarks:' + ItemDetails[i].Remarks);
                 console.log('SId:' + ItemDetails[i].ProjectSiteId);
-        }
-
-
-        ResourceDetails = JSON.stringify({
-            ResourceDetails: ItemDetails,
-            //ProjectId: Projectid,
-            ProjectSiteId: ProjectSiteId,
-            BOQDate: BOQDate,
-            BOQNo: BOQNo,
-            NOADate:NOADate,
-            NOANo: NOANo,
-            ProjectType: ProjectType,
-            ProjectStatus: ProjectStatus,
-            ProjectRemarks:ProjectRemarks
-        });
-        //data: '{"ResourceDetails":"' + ItemDetails + '"}',
-        //{ 'ItemDetails': ItemDetails, 'ProjectId': Projectid.value },
-
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/ProcProjects/ItemCreate',
-            traditional: true,
-            data: ResourceDetails,
-            success: function (result) {
-                //alert('Successful');
-                if (result.flag) {
-                    alert("Record save successfully!");
-                    //swal("Record save successfully!");
-                    window.location = "/ProcProjects/Index";
-
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            failure: function (response) {
-                alert('Error');
             }
-        });
+
+
+            ResourceDetails = JSON.stringify({
+                ResourceDetails: ItemDetails,
+                //ProjectId: Projectid,
+                ProjectSiteId: ProjectSiteId,
+                BOQDate: BOQDate,
+                BOQNo: BOQNo,
+                NOADate: NOADate,
+                NOANo: NOANo,
+                ProjectType: ProjectType,
+                ProjectStatus: ProjectStatus,
+                ProjectRemarks: ProjectRemarks
+            });
+            //data: '{"ResourceDetails":"' + ItemDetails + '"}',
+            //{ 'ItemDetails': ItemDetails, 'ProjectId': Projectid.value },
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/ProcProjects/ItemCreate',
+                traditional: true,
+                data: ResourceDetails,
+                success: function (result) {
+                    //alert('Successful');
+                    if (result.flag) {
+                        alert("Record save successfully!");
+                        //swal("Record save successfully!");
+                        window.location = "/ProcProjects/Index";
+
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                failure: function (response) {
+                    alert('Error');
+                }
+            });
+        }
+ 
 
 
     };
@@ -701,6 +770,48 @@
     });
 
 
+    function RebindItemName() {
+        $.ajax({
+            type: "post",
+            url: "/ProcProjects/getItemNameandUnit",
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+
+
+                var listOfitems = data.Items.length;
+                $('#ItemName').empty();
+
+                var items = "<select id='ItemName'>";
+                items = items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                items = items + '</select>';
+                $('#ItemName').html(items);
+
+                var listOfunits = data.Units.length;
+                $('#Unit').empty();
+                var units = "<select id='Unit'>";
+                units = units + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfunits; i++) {
+                    units = units + '<option value=' + data.Units[i].Value + '>' + data.Units[i].Text + '</option>';
+                }
+                units = units + '</select>';
+                $('#Unit').html(units);
+
+                //var items = "<select id='ModalItemName'>";
+                //items = items + '<option value="">--Select--</option>';
+                //for (var i = 0; i < listOfitems; i++) {
+                //    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                //}
+                //items = items + '</select>';
+                //$('#ModalItemName').html(items);
+
+            }
+
+        });
+    }
 
 
 </script>
