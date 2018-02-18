@@ -429,6 +429,14 @@ namespace DhaliProcurement.Controllers
                 }
 
             }
+            else
+            {
+                result = new
+                {
+                    flag = false,
+                    message = "Req No. already exists!"
+                };
+            }
 
 
 
