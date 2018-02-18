@@ -1,17 +1,13 @@
 ﻿@model DhaliProcurement.ViewModel.VMProjectItem
 @using DhaliProcurement.HtmlHelpers
-
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 @{
     DhaliProcurement.Models.DCPSContext db = new DhaliProcurement.Models.DCPSContext();
     //var ProjectItems = db.ProcProjectItem.Where(x => x.ProjectId == Model.ProjectId && x.ProjectSiteId == Model.ProjectSiteId).ToList();
 }
-
-
 
 
 <div class="row">
@@ -35,13 +31,11 @@
                             <td>
                                 @*@Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2", @style = "width: 500px !important", disabled = "true" })
                                     @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })*@
-
                                 <input type="text" value="@ViewBag.ProcProjectIdEditForm" class="form-control" disabled="disabled" />
                             </td>
                             <td>Project Start Date</td>
                             <td>
                                 @*@Html.TextBox("projStartDate", "", new { @class = "form-control", disabled = "true" })*@
-
                                 @*@Html.TextBox("projStartDate", ViewBag.StartDate)*@
                                 <input type="text" value="@ViewBag.StartDate" class="form-control" disabled="disabled" />
                             </td>
@@ -57,49 +51,42 @@
                                 <input type="text" value="@ViewBag.EndDate" class="form-control" disabled="disabled" />
                             </td>
                         </tr>
-
                         <tr>
                             <td>Site Engineer</td>
                             <td>
                                 <input type="text" value="@ViewBag.StEng" class="form-control" disabled="disabled" />
                             </td>
                         </tr>
-
                         <tr>
                             <td>Project Manager</td>
                             <td>
                                 <input type="text" value="@ViewBag.PrMan" class="form-control" disabled="disabled" />
-
                             </td>
                         </tr>
-
                         <tr>
                             <td>BOQ Date</td>
                             <td>
                                 @*@Html.TextBox("BOQDate", null, new { @class = "form-control datepicker" })*@
                                 <input type="text" value="@ViewBag.BOQDate" id="BOQDate" class="form-control datepicker" />
                             </td>
-
                             <td>BOQ No</td>
                             <td>
                                 @*@Html.TextBox("BOQNo", null, new { @class = "form-control" })*@
                                 <input type="text" value="@ViewBag.BOQNo" id="BOQNo" class="form-control" />
-
+                                <span class="error" id="BOQNo_Error"></span>
                             </td>
                         </tr>
-
                         <tr>
                             <td>NOA Date</td>
                             <td>
                                 @*@Html.TextBox("NOADate", null, new { @class = "form-control datepicker" })*@
                                 <input type="text" value="@ViewBag.NOADate" id="NOADate" class="form-control datepicker" />
                             </td>
-
                             <td>NOA No</td>
                             <td>
                                 @*@Html.TextBox("NOANo", null, new { @class = "form-control" })*@
                                 <input type="text" value="@ViewBag.NOANo" id="NOANo" class="form-control" />
-
+                                <span class="error" id="NOANo_Error"></span>
                             </td>
                         </tr>
                         <tr>
@@ -108,35 +95,28 @@
                                 @Html.DropDownList("ProjectType", null, "Select", new { @class = "form-control select2" })
                                 @*@Html.DropDownList("PType", null, "--Select--", htmlAttributes: new { @id = "ProjectType", @class = "form-control select2"})*@
 
-
                             </td>
-
                             <td>Status</td>
                             <td>
                                 @*@Html.TextBox("ProjectStatus", null, new { @class = "form-control" })*@
                                 <input type="text" value="@ViewBag.PStatus" id="ProjectStatus" class="form-control" />
-
                             </td>
                         </tr>
-
                         <tr>
                             <td>Remarks</td>
                             <td>
                                 @*@Html.TextBox("ProjectRemarks", "", new { @class = "form-control" })*@
                                 <input type="text" value="@ViewBag.PRemarks" id="ProjectRemarks" class="form-control" />
-
+                                <span class="error" id="Remarks_Error"></span>
                             </td>
                         </tr>
-
                     </table>
                     <hr />
 
                 }
-
                 @*<p>
                         <button type="button" class="btn btn-primary btn-xs add-newRow"><i class="icon-add position-left"></i> Add</button>
                     </p>*@
-
                 @*<div class="table-responsive">
                         <table class="table table-xxs table-bordered Task-list" id="TaskTable">
                             <thead>
@@ -155,7 +135,6 @@
                             <tbody></tbody>
                         </table>
                     </div>*@
-
                 <div class="details well" style=" border 1px solid black;">
                     <h4>Project Procurement Items</h4>
                     <div class="jumbotron" style="padding:10px;">
@@ -197,22 +176,27 @@
                             </tr>
                             <tr>
                                 <td><span class="error" id="ItemName_Error">Item name required</span></td>
-                                <td><span class="error" id="Quantity_Error">Quantity required</span></td>
+                                <td><span class="error" id="Quantity_Error">Quantity required</span><span class="error" id="QuantityMax_Error"></span></td>
                                 <td><span class="error" id="UnitName_Error">Unit required</span></td>
-                                <td><span class="error" id="Costing_Error">Cost required</span></td>
-                                <td></td>
+                                <td><span class="error" id="Costing_Error">Cost required</span><span class="error" id="CostMax_Error"></span></td>
+                                <td><span class="error" id="ItemRemarks_Error"></span></td>
                             </tr>
                         </table>
                         <br />
                         <table class="Resource-list table table-bordered" id="Item-list">
-                            <tr class="bg-grey">
-                                <th class="col-lg-2">Item Name</th>
-                                <th class="col-lg-2">Qty</th>
-                                <th class="col-lg-2">Unit</th>
-                                <th class="col-lg-2">Cost</th>
-                                <th class="col-lg-2">Remarks</th>
-                                <th class="col-lg-2"></th>
-                            </tr>
+                            <thead>
+                                <tr class="bg-grey">
+                                    <th class="col-lg-2">Item Name</th>
+                                    <th class="col-lg-2">Qty</th>
+                                    <th class="col-lg-2">Unit</th>
+                                    <th class="col-lg-2">Cost</th>
+                                    <th class="col-lg-2">Remarks</th>
+                                    <th class="col-lg-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="3" style="text-align:right;font-weight:bold;font-size:120%;">Total Cost</td>
@@ -223,73 +207,78 @@
                         </table>
                     </div>
                 </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-12" style="text-align:center">
-            @*<button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='@Url.Action("Index")';" style ="background-color: grey;border: none;"><i class="icon-circle-left2 position-left"></i> Go back</button>*@
-            <button type="button" id="UpdateItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Update</button>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staffModalTitle">Edit Item</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
-            <div class="modal-body">
-                <div class="panel-body">
-                    @Html.AntiForgeryToken()
+        </div>
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:center">
+                @*<button type="button" class="btn btn-warning btn-sm" onclick="window.location.href='@Url.Action("Index")';" style ="background-color: grey;border: none;"><i class="icon-circle-left2 position-left"></i> Go back</button>*@
+                <button type="button" id="UpdateItem" class="btn btn-success"><i class="icon-floppy-disk position-left"></i>Update</button>
+            </div>
+        </div>
+    </div>
 
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <input type="hidden" id="ProjectId" value="" />
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Item Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" ,@disabled="disabled"})
+    <!-- Modal -->
+    <div class="modal fade" id="detailForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staffModalTitle">Edit Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-body">
+                        @Html.AntiForgeryToken()
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <input type="hidden" id="ProjectId" value="" />
                             </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Qty", htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="col-md-10">
-                                @Html.TextBox("ModalQty", null, new { @class = "form-control" })
+                            <div class="form-group">
+                                @Html.Label("Item Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;", @disabled = "disabled" })
+                                    <span class="error" id="ModalItemName_Error"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <input type="hidden" id="modalSiteEng" />
-                                @Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @id = "ModalUnit", @data_required = "required", @style = "width: 150px;" })
+                            <div class="form-group">
+                                @Html.Label("Qty", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("ModalQty", null, new { @class = "form-control" })
+                                    <span class="error" id="ModalQty_Error"></span>
+                                    <span class="error" id="ModalQtyMax_Error"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Cost", htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="col-md-10">
-                                @Html.TextBox("ModalCost", null, new { @class = "form-control" })
+                            <div class="form-group">
+                                @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input type="hidden" id="modalSiteEng" />
+                                    @Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @id = "ModalUnit", @data_required = "required", @style = "width: 150px;" })
+                                    <span class="error" id="ModalUnit_Error"></span>
+                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.Label("Remarks", htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="col-md-10">
-                                @Html.TextBox("ModalRemarks", null, new { @class = "form-control" })
+                            <div class="form-group">
+                                @Html.Label("Cost", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("ModalCost", null, new { @class = "form-control" })
+                                    <span class="error" id="ModalCost_Error"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="col-md-offset-2 col-md-10">
-                                <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="form-group">
+                                @Html.Label("Remarks", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("ModalRemarks", null, new { @class = "form-control" })
+                                    <span class="error" id="ModalRemarks_Error"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -297,99 +286,108 @@
             </div>
         </div>
     </div>
-</div>
+
+    @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+    <script>
+        var counter = 0; //counter for the serial
+        var deleteCounter = 0;
+        var deleteList = [];
+        var selRow;
 
 
-@*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+        $(document).ready(function (){
 
-<script>
-    var counter = 0; //counter for the serial
-    var deleteCounter = 0;
-    var deleteList = [];
-    var selRow;
+            //swal("Hello world!");
 
-
-    $(document).ready(function (){
-
-        //swal("Hello world!");
-
-        $('#ItemName_Error').hide();
-        $('#Quantity_Error').hide();
-        $('#UnitName_Error').hide();
-        $('#Costing_Error').hide();
-
-
-        var Projectid = @ViewBag.PId;
-        var ProjectSiteId = @ViewBag.SId;
-        //debugger;
-
-        ResourceDetails = JSON.stringify({
-
-            ProjectId: Projectid,
-            ProjectSiteId: ProjectSiteId
-
-        });
-
-        var Unit = $('#Unit option:selected').text();
+            $('#Remarks_Error').hide();
+            $('#ItemName_Error').hide();
+            $('#Quantity_Error').hide();
+            $('#UnitName_Error').hide();
+            $('#Costing_Error').hide();
+            $('#BOQNo_Error').hide();
+            $('#NOANo_Error').hide();           
+            $('#QuantityMax_Error').hide();
+            $('#CostMax_Error').hide();            
+            $('#ItemRemarks_Error').hide();
+            
+            $('#ModalItemName_Error').hide();
+            $('#ModalQty_Error').hide();
+            $('#ModalQtyMax_Error').hide();
+            $('#ModalUnit_Error').hide();
+            $('#ModalCost_Error').hide();
+            $('#ModalRemarks_Error').hide();
 
 
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/ProcProjects/getProjectItems/',
-            traditional: true,
-            data: ResourceDetails,
-            success: function (data) {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    //if(data[i].Remarks == "null"){
-                    //    data[i].Remarks = "";
-                    //}
-                    var newRow = jQuery('<tr><td> <input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input type="text" class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
-                        +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="text" name="Quantity' +
-                    '"/></td><td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="text" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="text" name="ItemUnit' +
-                    '"/></td><td><input class="form-control" value="' + data[i].PCost + '"  type="text" name="ItemCost' +
-                    '"/></td><td><input class="form-control" value="' + data[i].Remarks + '" type="text" name="ItemRemarks' +
-                    '"/></td>'
-                    +'<td>'
-                     + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-                     +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
-                   // +'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
-                    +'</td>'
-                    +' </tr>');
+            var Projectid = @ViewBag.PId;
+            var ProjectSiteId = @ViewBag.SId;
+            //debugger;
 
-                    jQuery('table.Resource-list').append(newRow);
-                }
+            ResourceDetails = JSON.stringify({
 
-                totalItemCost();
+                ProjectId: Projectid,
+                ProjectSiteId: ProjectSiteId
 
-                $('.editSite').click(function () {
-                    var row = $(this).closest('tr');
-                    selRow = $(this).closest('tr');
-                    var itemName = row.find('input[name=ItemName]').val();
-                    var itemId = row.find('input[name=ItemId]').val();
-                    var Quantity = row.find('input[name=Quantity]').val();
-                    var ItemUnit = row.find('input[name=ItemUnit]').val();
-                    var UnitId = row.find('input[name=UnitId]').val();
-                    var ItemCost = row.find('input[name=ItemCost]').val();
-                    var ItemRemarks = row.find('input[name=ItemRemarks]').val();
-                    //alert(itemName);
+            });
 
-                
-                    //$('#ModalItemName').val(SiteName);
-                    $('#ModalQty').val(Quantity);
-                    $('#ModalCost').val(ItemCost);
-                    $('#ModalRemarks').val(ItemRemarks);
-                    $('#ModalItemName').val(itemId).change();               
-                    $('#ModalUnit').val(UnitId).change();
-                });
+            var Unit = $('#Unit option:selected').text();
 
 
-                $('.deleteDetailTask').click(function (e) {
-                    e.preventDefault();
-                    //var retVal = confirm("Do you want to delete this Item ?");
-                    //if (retVal == true) {
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/ProcProjects/getProjectItems/',
+                traditional: true,
+                data: ResourceDetails,
+                success: function (data) {
+                    console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+                        //if(data[i].Remarks == "null"){
+                        //    data[i].Remarks = "";
+                        //}
+                        var newRow = jQuery('<tr><td> <input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + data[i].ItemName  + '</label></td>'
+                            +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + data[i].PQuantity + '</label></td>'
+                            +'<td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + data[i].UnitName + '</label></td>'
+                            +'<td><input class="form-control" value="' + data[i].PCost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + data[i].PCost  + '</label></td>'
+                            +'<td><input class="form-control" value="' + data[i].Remarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + data[i].Remarks + '</label></td>'
+                        +'<td>'
+                         + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                         +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
+                       // +'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
+                        +'</td>'
+                        +' </tr>');
+
+                        jQuery('table.Resource-list tbody').append(newRow);
+                    }
+
+                    totalItemCost();
+
+                    $('.editSite').click(function () {
+                        var row = $(this).closest('tr');
+                        selRow = $(this).closest('tr');
+                        var itemName = row.find('input[name=ItemName]').val();
+                        var itemId = row.find('input[name=ItemId]').val();
+                        var Quantity = row.find('input[name=Quantity]').val();
+                        var ItemUnit = row.find('input[name=ItemUnit]').val();
+                        var UnitId = row.find('input[name=UnitId]').val();
+                        var ItemCost = row.find('input[name=ItemCost]').val();
+                        var ItemRemarks = row.find('input[name=ItemRemarks]').val();
+                        //alert(itemName);
+
+
+                        //$('#ModalItemName').val(SiteName);
+                        $('#ModalQty').val(Quantity);
+                        $('#ModalCost').val(ItemCost);
+                        $('#ModalRemarks').val(ItemRemarks);
+                        $('#ModalItemName').val(itemId).change();
+                        $('#ModalUnit').val(UnitId).change();
+                    });
+
+
+                    $('.deleteDetailTask').click(function (e) {
+                        e.preventDefault();
+                        //var retVal = confirm("Do you want to delete this Item ?");
+                        //if (retVal == true) {
                         var row = $(this).closest('tr');
                         var itemDetId = $(this).closest('tr').find('td input[name=ItemId]').val();
                         //alert(itemDetId);
@@ -428,429 +426,558 @@
                             }
                         });
 
-                    //}
-                    //else {
-                    //    return false;
-                    //}
+                        //}
+                        //else {
+                        //    return false;
+                        //}
 
-                });
+                    });
 
 
 
-            },
-            error: function (data) {
-                alert('Error: ');
+                },
+                error: function (data) {
+                    alert('Error: ');
+                }
+            });
+
+        });
+
+
+
+        var ProcProjectId = @ViewBag.ProcProjectId;
+
+
+        $('#ModalDetailSave').click(function () {
+            var isValidItem = true;
+            var ItemName = $('#ModalItemName option:selected').text();
+            var ItemId = $('#ModalItemName option:selected').val();
+            var Qty = $('#ModalQty').val();
+            var Unitid = $('#ModalUnit option:selected').val();
+            var UnitName = $('#ModalUnit option:selected').text();
+            var Cost = $('#ModalCost').val();
+            var Remarks = $('#ModalRemarks').val();
+
+            if (ItemName.trim() == "Select item") {
+                isValidItem = false;
+                $('#ModalItemName_Error').text("Item Name required").show();
+            }
+            else {
+                $('#ModalItemName_Error').hide();
+            }
+            if (Qty.trim() == "") {
+                isValidItem = false;
+                $('#ModalQty_Error').text("Qty required").show();
+            }
+            else {
+                $('#ModalQty_Error').hide();
+            }
+            if (Qty.trim()!="") {
+                if(isNaN(Qty.trim())){
+                    isValidItem = false;
+                    $('#ModalQtyMax_Error').text("Qty must be a numeric value").show();
+                }
+            }
+            else {
+                $('#ModalQtyMax_Error').hide();
+            }
+            if (UnitName.trim() == "Select unit") {
+                isValidItem = false;
+                $('#ModalUnit_Error').text("Unit required").show();
+            }
+            else {
+                $('#ModalUnit_Error').hide();
+            }
+            if (Cost.trim() == "") {
+                isValidItem = false;
+                $('#ModalCost_Error').text("Cost required").show();
+            }
+            else {
+                $('#ModalCost_Error').hide();
+            }
+            if (Cost.trim() != "") {             
+                if(isNaN(Cost.trim() )){
+                    isValidItem = false;
+                    $('#ModalCost_Error').text("Cost must be a numeric value").show();
+                }
+
+            }
+            if (Remarks.trim().length > 50) {
+                isValidItem = false;
+                $('#ModalRemarks_Error').text("Remarks can not be greater than 50 characters!").show();
+            }
+            else {
+                $('#ModalRemarks_Error').hide();
+            }
+
+            //$('table.Resource-list tr').each(function () {
+            //    var name = $(this).find("td input[name=ItemName]").val();
+            //    //alert(name);
+            //    if (ItemName == name) {
+            //        alert('This item already exists!');
+            //        //swal('This item already exists!');
+            //        isValidItem = false;
+            //    }
+
+            //});
+
+            if (isValidItem) {
+
+
+                selRow.find('input[name=ItemName]').val(ItemName);
+                selRow.find('input[name=ItemId]').val(ItemId);
+                selRow.find('input[name=Quantity]').val(Qty);
+                selRow.find('input[name=ItemUnit]').val(UnitName);
+                selRow.find('input[name=UnitId]').val(Unitid);
+                selRow.find('input[name=ItemCost]').val(Cost);
+                selRow.find('input[name=ItemRemarks]').val(Remarks);
+
+                //update label
+                selRow.find('label[name=label_ItemName]').text(ItemName);
+                selRow.find('label[name=label_Quantity]').text(Qty);
+                selRow.find('label[name=label_ItemUnit]').text(UnitName);
+                selRow.find('label[name=label_ItemCost]').text(Cost);
+                selRow.find('label[name=label_ItemRemarks]').text(Remarks);
+
+                $('#detailForm').modal('hide');
+                totalItemCost();
             }
         });
 
-    });
 
-
-
-    var ProcProjectId = @ViewBag.ProcProjectId;
-
-
-    $('#ModalDetailSave').click(function () {
-        var ItemName = $('#ModalItemName option:selected').text();
-        var ItemId = $('#ModalItemName option:selected').val();
-        var Qty = $('#ModalQty').val();
-        var Unitid = $('#ModalUnit option:selected').val();
-        var UnitName = $('#ModalUnit option:selected').text();
-        var Cost = $('#ModalCost').val();
-        var Remarks = $('#ModalRemarks').val();
-
-        selRow.find('input[name=ItemName]').val(ItemName);
-        selRow.find('input[name=ItemId]').val(ItemId);
-        selRow.find('input[name=Quantity]').val(Qty);
-        selRow.find('input[name=ItemUnit]').val(UnitName);
-        selRow.find('input[name=UnitId]').val(Unitid);
-        selRow.find('input[name=ItemCost]').val(Cost);
-        selRow.find('input[name=ItemRemarks]').val(Remarks);
-
-        $('#detailForm').modal('hide');
-        totalItemCost();
-    });
-
-
-    function RemoveTask(e)
-    {
-        debugger;
-
-        var currRowIndex = 0;
-
-        currRowIndex = $(e).closest('tr').index() + 1;
-
-        //  alert('procId '+ProcProjectId);
-
-        if (confirm('Do you really want to delete?')==false)
+        function RemoveTask(e)
         {
-            return;
+            var currRowIndex = 0;
+
+            currRowIndex = $(e).closest('tr').index() + 1;
+
+            //  alert('procId '+ProcProjectId);
+
+            if (confirm('Do you really want to delete?')==false)
+            {
+                return;
+            }
+
+
+
+            //        swal({
+            //            title: "Are you sure?",
+            //            text: "Once deleted, you will not be able to recover this file!",
+            //            icon: "warning",
+            //            buttons: true,
+            //            dangerMode: true,
+            //        })
+            //.then((willDelete) => {
+            //    if (willDelete) {
+
+
+
+            //        swal("Poof! Your imaginary file has been deleted!", {
+            //            icon: "success",
+            //        });
+            //    } else {
+            //        swal("Your imaginary file is safe!");
+            //    }
+            //});
+
+
+
+            var currRowPlanTaskId = $('#Item-list tr').eq(currRowIndex-1).find("td input[name=ItemId]").val();
+            // alert('ItemId: '+ItemId);
+            //  alert($('#Item-list tr').eq(currRowIndex-1).find("td input[name=ItemId]").val());
+            // alert('currIndex: '+currRowPlanTaskId);
+            if (currRowPlanTaskId >0 )
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "/ProcProjects/DeleteProjectItem",
+                    data: { id: currRowPlanTaskId, ProcProjectId: ProcProjectId },
+                    success: function (data) {
+
+                        if (data.flag)
+                        {
+                            alert("Data deleted successfully !");
+                            //swal("Data deleted successfully !");
+                            $(e).parent().parent().remove();
+                            UpdateTableRowIndex();
+                            totalItemCost();
+                            counter--;
+                        }
+                        else
+                        {
+                            alert(data.message);
+                            //swal(data.message);
+                        }
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('Error: ' + textStatus + ' - ' + errorThrown);
+                    },
+                    dataType: "json",
+                    traditional: true
+                });
+            }
+            else
+            {
+                $(e).parent().parent().remove();
+                UpdateTableRowIndex();
+                counter--;
+            }
+
+
         }
 
 
-
-//        swal({
-//            title: "Are you sure?",
-//            text: "Once deleted, you will not be able to recover this file!",
-//            icon: "warning",
-//            buttons: true,
-//            dangerMode: true,
-//        })
-//.then((willDelete) => {
-//    if (willDelete) {
-
-
-
-//        swal("Poof! Your imaginary file has been deleted!", {
-//            icon: "success",
-//        });
-//    } else {
-//        swal("Your imaginary file is safe!");
-//    }
-//});
-
-
-
-        var currRowPlanTaskId = $('#Item-list tr').eq(currRowIndex-1).find("td input[name=ItemId]").val();
-        // alert('ItemId: '+ItemId);
-        //  alert($('#Item-list tr').eq(currRowIndex-1).find("td input[name=ItemId]").val());
-        // alert('currIndex: '+currRowPlanTaskId);
-        if (currRowPlanTaskId >0 )
+        function UpdateTableRowIndex()
         {
-            $.ajax({
-                type: "POST",
-                url: "/ProcProjects/DeleteProjectItem",
-                data: { id: currRowPlanTaskId, ProcProjectId: ProcProjectId },
-                success: function (data) {
-
-                    if (data.flag)
-                    {
-                        alert("Data deleted successfully !");
-                        //swal("Data deleted successfully !");
-                        $(e).parent().parent().remove();
-                        UpdateTableRowIndex();
-                        totalItemCost();
-                        counter--;
-                    }
-                    else
-                    {
-                        alert(data.message);
-                        //swal(data.message);
-                    }
-
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Error: ' + textStatus + ' - ' + errorThrown);
-                },
-                dataType: "json",
-                traditional: true
+            $('td.index').each(function(idx, elem){
+                $(elem).text(idx+1);
             });
-        }
-        else
-        {
-            $(e).parent().parent().remove();
-            UpdateTableRowIndex();
-            counter--;
-        }
+        };
 
 
-    }
 
+        $('#Item-list').on({
+            'change': function () {
+                var ItemTotalCost = 0;
+                for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
+                    //  var quantity = $('#Item-list tr').eq(cn).find("td input[name=Quantity]").val();
+                    // console.log('Quantity: ' + quantity);
+                    var cost = $('#Item-list tr').eq(cn).find("td input[name=ItemCost]").val();
+                    // console.log('Cost: ' + cost);
+                    //alert(cost);
+                    var result = 0;
+                    if (isNaN(cost) || cost=="") {
 
-    function UpdateTableRowIndex()
-    {
-        $('td.index').each(function(idx, elem){
-            $(elem).text(idx+1);
+                        result = parseFloat(0);
+                    }
+                    else {
+                        result = parseFloat(cost);
+                    }
+
+                    ItemTotalCost = parseFloat(ItemTotalCost + result);
+                }
+
+                $('#totalCost').val(ItemTotalCost);
+
+            }
         });
-    };
 
 
 
-    $('#Item-list').on({
-        'change': function () {
+        function totalItemCost() {
+
             var ItemTotalCost = 0;
             for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
                 //  var quantity = $('#Item-list tr').eq(cn).find("td input[name=Quantity]").val();
-                // console.log('Quantity: ' + quantity);
+                //  console.log('Quantity: ' + quantity);
                 var cost = $('#Item-list tr').eq(cn).find("td input[name=ItemCost]").val();
-                // console.log('Cost: ' + cost);
-                //alert(cost);
-                var result = 0;
-                if (isNaN(cost) || cost=="") {
-
-                    result = parseFloat(0);
-                }
-                else {
-                    result = parseFloat(cost);
-                }
-
+                //  console.log('Cost: ' + cost);
+                var result =  parseFloat(cost);
                 ItemTotalCost = parseFloat(ItemTotalCost + result);
             }
 
             $('#totalCost').val(ItemTotalCost);
 
         }
-    });
 
+        //add new row
+        $('#addNewRow').click(function (event) {
 
+            event.preventDefault();
+            counter++;
+            var ItemId = $('#ItemName option:selected').val();
+            var ItemName = $('#ItemName option:selected').text().trim();
+            var Qty = $('#Qty').val();
+            var Unit = $('#Unit option:selected').text();
+            var UnitId = $('#Unit option:selected').val();
+            var Cost = $('#Cost').val();
+            var ItemRemarks = $('#ItemRemarks').val();
 
-    function totalItemCost() {
+            var isValidItem = true;
 
-        var ItemTotalCost = 0;
-        for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
-            //  var quantity = $('#Item-list tr').eq(cn).find("td input[name=Quantity]").val();
-            //  console.log('Quantity: ' + quantity);
-            var cost = $('#Item-list tr').eq(cn).find("td input[name=ItemCost]").val();
-            //  console.log('Cost: ' + cost);
-            var result =  parseFloat(cost);
-            ItemTotalCost = parseFloat(ItemTotalCost + result);
-        }
-
-        $('#totalCost').val(ItemTotalCost);
-
-    }
-
-    //add new row
-    $('#addNewRow').click(function (event) {
-
-        event.preventDefault();
-        counter++;
-        var ItemId = $('#ItemName option:selected').val();
-        var ItemName = $('#ItemName option:selected').text();
-        var Qty = $('#Qty').val();
-        var Unit = $('#Unit option:selected').text();
-        var UnitId = $('#Unit option:selected').val();
-        var Cost = $('#Cost').val();
-        var ItemRemarks = $('#ItemRemarks').val();
-
-        var isValidItem = true;
-
-        if ($('#ItemName').val().trim() == '') {
-            isValidItem = false;
-            $('#ItemName_Error').show();
-            //$('#ItemName').siblings('span.error').css('visibility', 'visible');
-        }
-        else {
-            $('#ItemName_Error').hide();
-            // $('#ItemName').siblings('span.error').css('visibility', 'hidden');
-        }
-
-        if (!($('#Qty').val().trim() != '' && !isNaN($('#Qty').val().trim()))) {
-            isValidItem = false;
-            $('#Quantity_Error').show();
-            // $('#Qty').siblings('span.error').css('visibility', 'visible');
-        }
-        else {
-            $('#Quantity_Error').hide();
-            // $('#Qty').siblings('span.error').css('visibility', 'hidden');
-
-        }
-
-        if ($('#Unit').val().trim() == '') {
-            isValidItem = false;
-            $('#UnitName_Error').show();
-            // $('Unit').siblings('span.error').css('visibility', 'visible');
-        }
-        else {
-            $('#UnitName_Error').hide();
-            // $('#Unit').siblings('span.error').css('visibility', 'hidden');
-
-        }
-
-        if (!($('#Cost').val().trim() != '' && !isNaN($('#Cost').val().trim()))) {
-            isValidItem = false;
-            $('#Costing_Error').show();
-            // $('#Cost').siblings('span.error').css('visibility', 'visible');
-        }
-        else {
-            $('#Costing_Error').hide();
-            //  $('#Cost').siblings('span.error').css('visibility', 'hidden');
-
-        }
-
-        $('table.Resource-list tr').each(function () {
-            var name = $(this).find("td input[name=ItemName]").val();
-            //alert(name);
-            if (ItemName == name) {
-                alert('This item already exists!');
-                //swal('This item already exists!');
+            if (ItemName == 'Select item') {
+                $('#ItemName_Error').show();
                 isValidItem = false;
+                //$('#ItemName').siblings('span.error').css('visibility', 'visible');
+            }
+            else {
+                $('#ItemName_Error').hide();
             }
 
-        });
+            if ($('#Qty').val().trim() == '') {
+                isValidItem = false;
+                $('#Quantity_Error').show();
+            }
+            else {
+                $('#Quantity_Error').hide();
 
-        //Add item to list if valid
-        if (isValidItem) {
-
-            var newRow = jQuery('<tr><td> <input value="' + ItemId + '" type="hidden" name="ItemId"/><input type="text" class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName"/></td>'
-                +'<td><input class="form-control" value="' + Qty + '" type="text" name="Quantity' +
-                   '"/></td><td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input type="text" class="form-control" value="' + Unit + '" " readonly="true"  name="ItemUnit' +
-                   '"/></td><td><input class="form-control" value="' + Cost + '"  type="text" name="ItemCost' +
-                   '"/></td><td><input class="form-control" value="' + ItemRemarks + '" type="text" name="ItemRemarks' +
-                   '"/></td> <td> '
-                     + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-                   +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();" ><i class="icon-cross"></i></button></td></tr>');
-
-            jQuery('table.Resource-list').append(newRow);
-            totalItemCost();
-
-            $('#Qty').val("");
-            $('#Cost').val("");
-            $('#ItemRemarks').val("");
-        }
-
-    });
-
-    $('#UpdateItem').click(function (e) {
-
-        UpdateProcProjectItem();
-
-    });
-
-
-
-
-
-    function UpdateProcProjectItem() {
-        var isValid = true;
-        var ProcProjectId=  @ViewBag.ProcProjectId;
-        // var Projectid = $('#ProjectId option:selected').val();
-        //alert('pid' + ProjectId);
-        var ProjectSiteId = $('#SiteId option:selected').val();
-        // alert('sid' + ProjectSiteId);
-        var BOQDate = $('#BOQDate').val();
-        //  alert('bqdate'+BOQDate);
-        var BOQNo = $('#BOQNo').val();
-        //alert('bqno' + BOQNo);
-        var NOADate = $('#NOADate').val();
-        //alert('noadate' + NOADate);
-        var NOANo = $('#NOANo').val();
-        //alert('noano' + NOANo);
-        var ProjectType = $('#ProjectType').val();
-        //alert('ptype' + ProjectType);
-        var ProjectStatus = $('#ProjectStatus').val();
-        //alert('pstat' + ProjectStatus);
-        var ProjectRemarks = $('#ProjectRemarks ').val();
-        //alert('premarks' + ProjectRemarks);
-
-
-        var ItemId = document.getElementsByName("ItemId");
-        var UnitId = document.getElementsByName("UnitId");
-        var Qty = document.getElementsByName("Quantity");
-        var Unit = document.getElementsByName("ItemUnit");
-        var Cost = document.getElementsByName("ItemCost");
-        var ItemRemarks = document.getElementsByName("ItemRemarks");
-        var Length = $('.Resource-list tr').length;
-        //console.log(Length);
-
-        if ($('.Resource-list tr').length < 3) {
-            alert('Please Add Item to this Site');
-            //swal('Please Add Item to this Site');
-            isValid = false;
-        }
-
-        if (isValid) {
-
-            var ItemDetails = [];
-
-            for (var i = 0; i < Length - 2; i++) {
-
-                ItemDetails.push({ ItemISLNO: ItemId[i].value, PQuantity: Qty[i].value, UnitUSLNO: UnitId[i].value, PCost: Cost[i].value, Remarks: ItemRemarks[i].value, ProjectSiteId: ProjectSiteId, ProcProjectId: ProcProjectId });
-                console.log('<----->');
             }
 
-            for (var i = 0; i < Length - 2; i++) {
-                console.log('Item:' + ItemDetails[i].ItemISLNO);
-                console.log('Qty:' + ItemDetails[i].PQuantity);
-                console.log('Unit:' + ItemDetails[i].UnitUSLNO);
-                console.log('Cost:' + ItemDetails[i].PCost);
-                console.log('Qty:' + ItemDetails[i].Remarks);
-                console.log('PId:' + ItemDetails[i].ProjectId);
-                console.log('SId:' + ItemDetails[i].ProjectSiteId);
-
-                console.log('<----->');
+            if (isNaN($('#Qty').val().trim())) {
+                isValidItem = false;
+                $('#QuantityMax_Error').text("Qty should be a numeric value").show()
+            }
+            else {
+                $('#QuantityMax_Error').hide();
             }
 
-            //ResourceDetails = JSON.stringify({ 'ItemDetails': ItemDetails, 'ProjectId': Projectid.value });
+            if ($('#Unit').val().trim() == '') {
+                isValidItem = false;
+                $('#UnitName_Error').show();
+            }
+            else {
+                $('#UnitName_Error').hide();
 
-            ResourceDetails = JSON.stringify({
-                ResourceDetails: ItemDetails,
-                //ProjectId: Projectid,
-                DeleteItems:deleteList,
-                ProjectSiteId: ProjectSiteId,
-                ProcProjectId: ProcProjectId,
-                BOQDate: BOQDate,
-                BOQNo: BOQNo,
-                NOADate:NOADate,
-                NOANo: NOANo,
-                ProjectType: ProjectType,
-                ProjectStatus: ProjectStatus,
-                ProjectRemarks:ProjectRemarks
-            });
-            //data: '{"ResourceDetails":"' + ItemDetails + '"}',
-            //{ 'ItemDetails': ItemDetails, 'ProjectId': Projectid.value },
-            //debugger
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: '/ProcProjects/UpdateProcProject',
-                traditional: true,
-                data: ResourceDetails,
-                success: function (result) {
-                    //alert('Successful');
-                    if (result.flag) {
-                        alert("Record updated successfully!");
-                        //swal("Record updated successfully!");
-                        //swal("Good job!", "Record updated successfully!", "success");
-                        window.location = "/ProcProjects/Index";
-                    }
-                    else {
-                        alert(result.message);
-                    }
-                },
-                failure: function (response) {
-                    alert('Error');
+            }
+
+            if ($('#Cost').val().trim() == '') {
+                isValidItem = false;
+                $('#Costing_Error').show();
+            }
+            else {
+                $('#Costing_Error').hide();
+
+            }
+            if (isNaN($('#Cost').val().trim())) {
+                isValidItem = false;
+                $('#CostMax_Error').text("Cost should be a numeric value").show()
+            }
+            else {
+                $('#CostMax_Error').hide();
+            }
+
+            if (ItemRemarks.trim().length > 50) {
+                isValidItem = false;
+                $('#ItemRemarks_Error').text("Remarks can not be greater than 50 characters!").show();
+            }
+            else {
+                $('#ItemRemarks_Error').hide();
+            }
+
+            //$('table.Resource-list tr').each(function () {
+            //    var name = $(this).find("td input[name=ItemName]").val();
+            //    //alert(name);
+            //    if (ItemName == name) {
+            //        alert('This item already exists!');
+            //        //swal('This item already exists!');
+            //        isValidItem = false;
+            //    }
+
+            //});
+
+
+            $('table.Resource-list tbody tr').each(function () {
+                var name = $(this).find("td input[name=ItemName]").val().toUpperCase();
+                var ChekkItem = ItemName.toUpperCase();
+                //alert(ChekkItem+'->'+name);
+                if (ChekkItem == name) {
+                    //alert(name.toUpperCase());
+                    alert('This item already exists!');
+                    //swal('This item already exists!');
+                    isValidItem = false;
                 }
+
             });
-        }
 
-    };
 
-</script>
+            //Add item to list if valid
+            if (isValidItem) {
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Plugins/select2/select2.min.js"></script>
-    <script>
-        $(".select2").select2();
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            todayHighlight: true,
-            todayBtn: true,
-            autoclose: true
+                var newRow = jQuery('<tr><td> <input value="' + ItemId + '" type="hidden" name="ItemId"/><input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
+                    +'<td><input class="form-control" value="' + Qty + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + Qty + '</label></td>'
+                    +'<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + Unit + '" name="ItemUnit"/><label name="label_ItemUnit">' + Unit + '</label></td>'
+                    +'<td><input class="form-control" value="' + Cost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + Cost  + '</label></td>'
+                    +'<td><input class="form-control" value="' + ItemRemarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + ItemRemarks + '</label></td>'
+                    +' <td> '
+                         + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
+                       +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();" ><i class="icon-cross"></i></button></td></tr>');
+
+                jQuery('table.Resource-list').append(newRow);
+                totalItemCost();
+
+                $('#Qty').val("");
+                $('#Cost').val("");
+                $('#ItemRemarks').val("");
+            }
+
         });
+
+        $('#UpdateItem').click(function (e) {
+
+            UpdateProcProjectItem();
+
+        });
+
+
+
+
+
+        function UpdateProcProjectItem() {
+            var isValid = true;
+            var ProcProjectId=  @ViewBag.ProcProjectId;
+            // var Projectid = $('#ProjectId option:selected').val();
+            //alert('pid' + ProjectId);
+            var ProjectSiteId = $('#SiteId option:selected').val();
+            // alert('sid' + ProjectSiteId);
+            var BOQDate = $('#BOQDate').val();
+            //  alert('bqdate'+BOQDate);
+            var BOQNo = $('#BOQNo').val();
+            //alert('bqno' + BOQNo);
+            var NOADate = $('#NOADate').val();
+            //alert('noadate' + NOADate);
+            var NOANo = $('#NOANo').val();
+            //alert('noano' + NOANo);
+            var ProjectType = $('#ProjectType').val();
+            //alert('ptype' + ProjectType);
+            var ProjectStatus = $('#ProjectStatus').val();
+            //alert('pstat' + ProjectStatus);
+            var ProjectRemarks = $('#ProjectRemarks ').val();
+            //alert('premarks' + ProjectRemarks);
+
+
+            var ItemId = document.getElementsByName("ItemId");
+            var UnitId = document.getElementsByName("UnitId");
+            var Qty = document.getElementsByName("Quantity");
+            var Unit = document.getElementsByName("ItemUnit");
+            var Cost = document.getElementsByName("ItemCost");
+            var ItemRemarks = document.getElementsByName("ItemRemarks");
+            var Length = $('.Resource-list tr').length;
+            //console.log(Length);
+
+            if (BOQNo.trim().length > 100) {
+                $('#BOQNo_Error').text("BOQ No. can not be greater than 100 characters!").show();
+                isValid = false;
+            }
+            else {
+                $('#BOQNo_Error').hide();
+            }
+            
+            if (NOANo.trim().length > 100) {
+                $('#NOANo_Error').text("NOA No. can not be greater than 100 characters!").show();
+                isValid = false;
+            }
+            else {
+                $('#NOANo_Error').hide();
+            }
+
+            if ($('.Resource-list tr').length < 3) {
+                alert('Please Add item to this Project');
+                isValid = false;
+            }
+            if (ProjectRemarks.trim().length > 100) {
+                isValid = false;
+                $('#Remarks_Error').text("Remarks cannot be greater than 100 characters!").show();
+            }
+            else {
+                $('#Remarks_Error').hide();
+            }
+
+            //if ($('.Resource-list tr').length < 3) {
+            //    alert('Please Add Item to this Site');
+            //    //swal('Please Add Item to this Site');
+            //    isValid = false;
+            //}
+
+            if (isValid) {
+
+                var ItemDetails = [];
+
+                for (var i = 0; i < Length - 2; i++) {
+
+                    ItemDetails.push({ ItemISLNO: ItemId[i].value, PQuantity: Qty[i].value, UnitUSLNO: UnitId[i].value, PCost: Cost[i].value, Remarks: ItemRemarks[i].value, ProjectSiteId: ProjectSiteId, ProcProjectId: ProcProjectId });
+                    console.log('<----->');
+                }
+
+                for (var i = 0; i < Length - 2; i++) {
+                    console.log('Item:' + ItemDetails[i].ItemISLNO);
+                    console.log('Qty:' + ItemDetails[i].PQuantity);
+                    console.log('Unit:' + ItemDetails[i].UnitUSLNO);
+                    console.log('Cost:' + ItemDetails[i].PCost);
+                    console.log('Qty:' + ItemDetails[i].Remarks);
+                    console.log('PId:' + ItemDetails[i].ProjectId);
+                    console.log('SId:' + ItemDetails[i].ProjectSiteId);
+
+                    console.log('<----->');
+                }
+
+                //ResourceDetails = JSON.stringify({ 'ItemDetails': ItemDetails, 'ProjectId': Projectid.value });
+
+                ResourceDetails = JSON.stringify({
+                    ResourceDetails: ItemDetails,
+                    //ProjectId: Projectid,
+                    DeleteItems:deleteList,
+                    ProjectSiteId: ProjectSiteId,
+                    ProcProjectId: ProcProjectId,
+                    BOQDate: BOQDate,
+                    BOQNo: BOQNo,
+                    NOADate:NOADate,
+                    NOANo: NOANo,
+                    ProjectType: ProjectType,
+                    ProjectStatus: ProjectStatus,
+                    ProjectRemarks:ProjectRemarks
+                });
+                //data: '{"ResourceDetails":"' + ItemDetails + '"}',
+                //{ 'ItemDetails': ItemDetails, 'ProjectId': Projectid.value },
+                //debugger
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/ProcProjects/UpdateProcProject',
+                    traditional: true,
+                    data: ResourceDetails,
+                    success: function (result) {
+                        //alert('Successful');
+                        if (result.flag) {
+                            alert("Record updated successfully!");
+                            //swal("Record updated successfully!");
+                            //swal("Good job!", "Record updated successfully!", "success");
+                            window.location = "/ProcProjects/Index";
+                        }
+                        else {
+                            alert(result.message);
+                        }
+                    },
+                    failure: function (response) {
+                        alert('Error');
+                    }
+                });
+            }
+
+        };
+
     </script>
-
-}
-
-<style>
-    /*.scrolling {
-        width: 100%;
-        height: 350px;
-        /*border: 13px solid #bed5cd;
-        overflow-x: scroll;
-        overflow-y: scroll;
-    }*/
-    span.error {
-        display: block;
-        /*visibility: hidden;*/
-        color: red;
-        font-size: 90%;
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="~/Plugins/select2/select2.min.js"></script>
+        <script>
+            $(".select2").select2();
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                todayBtn: true,
+                autoclose: true
+            });
+        </script>
     }
-        textarea {
-    resize: none;
-}
+    <style>
+            /*.scrolling {
+            width: 100%;
+            height: 350px;
+            /*border: 13px solid #bed5cd;
+            overflow-x: scroll;
+            overflow-y: scroll;
+        }*/
+            span.error {
+                display: block;
+                /*visibility: hidden;*/
+                color: red;
+                font-size: 90%;
+            }
 
-</style>
+            textarea {
+                resize: none;
+            }
+    </style>
