@@ -1041,21 +1041,55 @@ namespace DhaliProcurement.Controllers
         [HttpGet]
         public ActionResult MaterialsEntry()
         {
-            var projects = (from entryMas in db.Proc_MaterialEntryMas
-                            join procProject in db.ProcProject on entryMas.ProcProjectId equals procProject.Id
-                            join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
-                            join project in db.Project on site.ProjectId equals project.Id
-                            select project).Distinct().ToList();
+            //var projects = (from entryMas in db.Proc_MaterialEntryMas
+            //                join procProject in db.ProcProject on entryMas.ProcProjectId equals procProject.Id
+            //                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+            //                join project in db.Project on site.ProjectId equals project.Id
+            //                select project).Distinct().ToList();
 
-            List<SelectListItem> projectList = new List<SelectListItem>();
+            //List<SelectListItem> projectList = new List<SelectListItem>();
 
-            foreach (var x in projects)
+            //foreach (var x in projects)
+            //{
+            //    projectList.Add(new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            //}
+
+            //ViewBag.ProjectId = projectList;
+            //ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+
+            var EntryProject = (from purchaseMas in db.Proc_PurchaseOrderMas
+                                join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                                join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                                join project in db.Project on site.ProjectId equals project.Id
+                                where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId
+                                select project).Distinct().ToList();
+
+            var procprojects = db.ProcProject.ToList();
+            List<ProjectSite> sites = new List<ProjectSite>();
+            foreach (var i in procprojects)
             {
-                projectList.Add(new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                sites.Add(site);
             }
 
-            ViewBag.ProjectId = projectList;
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+            List<Project> projects = new List<Project>();
+
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+
+          
+            ViewBag.ProjectId = new SelectList(EntryProject.Distinct(), "Id", "Name");
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
+
+
 
             return View();
         }
@@ -1251,8 +1285,31 @@ namespace DhaliProcurement.Controllers
         {
 
             ViewBag.RCode = new SelectList(db.Proc_RequisitionMas, "Id", "Rcode");
-            ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+
+            var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
+                                       join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+                                       where requisitionMas.ProcProjectId == procproject.Id && requisitionMas.Status == "A"
+                                       select procproject).ToList();
+
+            List<ProjectSite> sites = new List<ProjectSite>();
+
+            foreach (var i in requisitionProjects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                sites.Add(site);
+            }
+
+            List<Project> projects = new List<Project>();
+
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+
+            ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
 
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "Approved", Value = "0" });
@@ -1527,8 +1584,69 @@ namespace DhaliProcurement.Controllers
         [HttpGet]
         public ActionResult VendorPayment()
         {
-            ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+            //var tenderProjects = (from tendarMas in db.Proc_TenderMas
+            //                      join tenderDet in db.Proc_TenderDet on tendarMas.Id equals tenderDet.Proc_TenderMasId
+            //                      join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+            //                      join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+            //                      join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+            //                      join Site in db.ProjectSite on procProj.ProjectSiteId equals Site.Id
+            //                      join proj in db.Project on Site.ProjectId equals proj.Id
+            //                      where procProj.ProjectSiteId == Site.Id && tendarMas.isApproved == "A"
+            //                      select Site).ToList();
+
+            //List<ProjectSite> sites = new List<ProjectSite>();
+            //foreach (var i in tenderProjects)
+            //{
+            //    var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.Id);
+            //    sites.Add(site);
+            //}
+
+            //List<Project> projects = new List<Project>();
+            //foreach (var i in sites)
+            //{
+            //    var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+            //    projects.Add(proj);
+            //}
+
+
+
+            //ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+            //ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
+
+
+            var EntryProject = (from purchaseMas in db.Proc_PurchaseOrderMas
+                                    //   join purchaseDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purchaseDet.Proc_PurchaseOrderMasId
+                                join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
+                                join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                                join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                                join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                                join project in db.Project on site.ProjectId equals project.Id
+                                where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId
+                                select project).Distinct().ToList();
+
+            var procprojects = db.ProcProject.ToList();
+            List<ProjectSite> sites = new List<ProjectSite>();
+            foreach (var i in procprojects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                sites.Add(site);
+            }
+
+            List<Project> projects = new List<Project>();
+
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+
+
+            ViewBag.ProjectId = new SelectList(EntryProject.Distinct(), "Id", "Name");
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
 
             var vendors = (from vendorMas in db.Proc_VendorPaymentMas
                            join vendor in db.Vendor on vendorMas.VendorId equals vendor.Id
