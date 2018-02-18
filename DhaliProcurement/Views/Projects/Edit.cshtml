@@ -33,14 +33,14 @@
                         <tr>
                             <td class="col-lg-2">Project Name</td>
                             <td class="col-lg-10" colspan="2">
-                                <input type="text" value="@ViewBag.ProjectName" id="ProjectName" class="form-control" />
+                                <input type="text" value="@ViewBag.ProjectName" id="ProjectName" class="form-control" tabindex="1"/>
 
                             </td>
                         </tr>
                         <tr>
                             <td class="col-lg-">Project Manager</td>
                             <td class="col-lg-10">
-                                @Html.DropDownList("ProjectManager", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required" })
+                                @Html.DropDownList("ProjectManager", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required",@tabindex = "2" })
                                 @*<button type="button" id="addProjectManager" class="btn btn-primary" data-toggle="modal" data-target="#resourceProjectManagerModal">Add</button>*@
                             </td>
                             <td class="col-lg-1">
@@ -51,13 +51,13 @@
                         <tr>
                             <td>Project Start Date</td>
                             <td colspan="2">
-                                <input type="text" value="@ViewBag.StartDate" id="StartDate" class="form-control datepicker" />
+                                <input type="text" value="@ViewBag.StartDate" id="StartDate" class="form-control datepicker" tabindex = "3" />
                             </td>
                         </tr>
                         <tr>
                             <td>Project End Date</td>
                             <td colspan="2">
-                                <input type="text" value="@ViewBag.EndDate" id="EndDate" class="form-control datepicker" />
+                                <input type="text" value="@ViewBag.EndDate" id="EndDate" class="form-control datepicker" tabindex="4" />
                             </td>
                         </tr>
                         @*<tr>
@@ -76,7 +76,7 @@
                         <tr>
                             <td>Remarks</td>
                             <td colspan="2">
-                                <input type="text" value="@ViewBag.ProjectRemarks" id="ProjectRemarks" class="form-control" />
+                                <input type="text" value="@ViewBag.ProjectRemarks" id="ProjectRemarks" class="form-control" tabindex="5"/>
                             </td>
                         </tr>
 
@@ -103,16 +103,16 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" id="SiteName" class="form-control" />
+                                <input type="text" id="SiteName" class="form-control"  tabindex="6"/>
                             </td>
                             <td>
-                                <input type="text" id="SiteLocation" class="form-control" />
+                                <input type="text" id="SiteLocation" class="form-control"  tabindex="7"/>
                             </td>
                             <td>
-                                @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteRName" })
+                                @Html.DropDownList("RName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteRName" , @tabindex = "8" })
                             </td>
                             <td>
-                                <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
+                                <input type="button" id="addNewRow" value="ADD" class="btn btn-primary" style="background-color: grey;border: none;" tabindex="9"/>
                             </td>
                         </tr>
                         <tr>
@@ -125,10 +125,10 @@
                     <table class="Resource-list table table-bordered" id="Item-list">
                         <thead>
                             <tr class="bg-grey">
-                                <th>Site Name</th>
-                                <th>Location</th>
-                                <th>Site Engineer</th>
-                                <th></th>
+                                <th class="col-lg-4">Site Name</th>
+                                <th class="col-lg-4">Location</th>
+                                <th class="col-lg-3">Site Engineer</th>
+                                <th class="col-lg-1"></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -359,9 +359,9 @@
 
              taskCounter++;
              var newRow = jQuery('<tr>'
-                 +'<td><input class="form-control" value="' + data[i].ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><input class="form-control" value="' + data[i].SiteName + '" type="text" name="SiteName"/><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
-                + '<td><input class="form-control" value="' + data[i].SiteLocation + '" type="text" name="SiteLocation"/></td>'
-                + '<td><input value="' + data[i].SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + data[i].SiteEngineer + '"  type="text" name="SiteEngineer" disabled="disabled"/></td>'
+                 +'<td><input class="form-control" value="' + data[i].ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><input class="form-control" value="' + data[i].SiteName + '" type="hidden" name="SiteName"/><label name="label_SiteName">' + data[i].SiteName + '</label><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
+                + '<td><input class="form-control" value="' + data[i].SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + data[i].SiteLocation + '</label></td>'
+                + '<td><input value="' + data[i].SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + data[i].SiteEngineer + '"  type="hidden" name="SiteEngineer" disabled="disabled"/><label name="label_SiteEngineer">' +  data[i].SiteEngineer  + '</label></td>'
                 +'<td>'
                 //+'<button  onclick="RemoveTask(this)" type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
@@ -477,6 +477,10 @@
             selRow.find('input[name=SiteEngineer]').val(SiteEngineerName);
             selRow.find('input[name=SiteEngineerId]').val(SiteEngineer);
 
+            selRow.find('label[name=label_SiteName]').text(SiteName);
+            selRow.find('label[name=label_SiteLocation]').text(Location);
+            selRow.find('label[name=label_SiteEngineer]').text(SiteEngineerName);
+
             $('#detailForm').modal('hide');
         }
     });
@@ -521,7 +525,11 @@
         else {
             $('#SiteName_Error').hide();
         }
+        if ($('#SiteName').val().trim().length >255) {
 
+            alert("Site Name can not be greater than 256 characters!!");
+            isValidSite = false;
+        }
         if ($('#SiteLocation').val().trim() == '') {
 
             isValidSite = false;
@@ -529,6 +537,11 @@
         }
         else {
             $('#SiteLocation_Error').hide();
+        }
+        if ($('#SiteLocation').val().trim().length >255) {
+
+            alert("Site Location can not be greater than 256 characters!!");
+            isValidSite = false;
         }
 
         if (SiteEngineer === '' || SiteEngineer==="--Select--") {
@@ -554,9 +567,9 @@
         if (isValidSite)
         {
             taskCounter++;
-            var newRow = jQuery('<tr><td><input class="form-control" value="' + ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><input class="form-control" value="' + SiteName + '" type="text" name="SiteName"/><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
-                + '<td><input class="form-control" value="' + SiteLocation + '" type="text" name="SiteLocation"/></td>'
-                + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="text" name="SiteEngineer"/></td>'
+            var newRow = jQuery('<tr><td><input class="form-control" value="' + ProjectSiteId + '" type="hidden" name="ProjectSiteId"/><label name="label_SiteName">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName"/><input type="hidden" name="TaskId" value="' + taskCounter + '"/></td>'
+                + '<td><input class="form-control" value="' + SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + SiteLocation + '</label></td>'
+                + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="hidden" name="SiteEngineer"/><label name="label_SiteEngineer">' + SiteEngineer + '</label></td>'
                 +'<td>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 +' <button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
