@@ -492,8 +492,10 @@
                 $('#ModalCost_Error').hide();
             }
             if (Cost.trim() != "") {
-                isValidItem = false;
-                $('#ModalCost_Error').text("Cost must be a numeric value").show();
+                if (isNaN(Cost.trim())) {
+                    isValidItem = false;
+                    $('#ModalCost_Error').text("Cost must be a numeric value").show();
+                }
             }
             else {
                 $('#ModalCost_Error').hide();

@@ -29,6 +29,7 @@
                             <td>Req. No.</td>
                             <td>
                                 @Html.TextBox("ReqNo", "", new { @class = "form-control" })
+                                <span class="error" id="ReqNO_Error"></span>
                             </td>
                         </tr>
                         <tr>
@@ -58,6 +59,7 @@
                             <td>Remarks</td>
                             <td>
                                 @Html.TextBox("ProjectRemarks", "", new { @class = "form-control" })
+                                <span class="error" id="ProjectRemarks_Error"></span>
                             </td>
                         </tr>
                     </table>
@@ -106,28 +108,30 @@
                                     <td>
                                         <input type="text" id="CurrentStock" class="form-control" />
                                     </td>
-                                    <td style="font-weight: bold;">Req. Qty</td>
-                                    <td>
-                                        <input type="text" id="ReqQty" class="form-control" />
-                                    </td>
                                     <td style="font-weight: bold;">Required Before(Date)</td>
                                     <td>
                                         <input type="text" id="RequiredDate" class="form-control datepicker" />
                                     </td>
+                                    <td style="font-weight: bold;">Req. Qty</td>
+                                    <td>
+                                        <input type="text" id="ReqQty" class="form-control" />
+                                    </td>
+
                                 </tr>
                                 <tr>
 
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td><span class="error" id="CurrentStock_Error">Curren stock must be a numeric value</span> </td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <span class="error" id="ReqQty_Error">Req Qty must be a number</span>
-                                        <span class="error" id="ReqQty_Error2">Req Qty can not be empty</span>
+                                        <span class="error" id="ReqQty_Error">Req Qty must be a numeric value</span>
+                                        <span class="error" id="ReqQty_Error2">Req Qty required</span>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+
                                 </tr>
                                 <tr style="text-align:center;">
                                     <td style="font-weight: bold;">Brand/Quantity</td>
@@ -144,6 +148,7 @@
                                     <td style="font-weight: bold;">Remarks</td>
                                     <td>
                                         <input type="text" id="ItemRemarks" class="form-control" />
+                                        <span class="error" id="ItemRemarks_Error"></span>
                                     </td>
                                     <td>
                                         <input type="button" id="addNewRow" value="ADD" class="btn btn-primary btn-sm" style="background-color: grey;border: none;" />
@@ -218,6 +223,7 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
+                              <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -254,6 +260,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalCurrentStock", null, new { @class = "form-control" })
+                                <span class="error" id="ModalCurrentStock_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -261,6 +268,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalQty", null, new { @class = "form-control" })
+                                <span class="error" id="ModalQty_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -275,6 +283,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalBrand", null, new { @class = "form-control" })
+                                <span class="error" id="ModalBrand_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -282,6 +291,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalSize", null, new { @class = "form-control" })
+                                <span class="error" id="ModalSize_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -289,6 +299,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalRemarks", null, new { @class = "form-control" })
+                                <span class="error" id="ModalRemarks_Error"></span>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -315,12 +326,22 @@
         RebindDatePicker();
         $('#SiteId').attr("disabled", "true");
         $("#ItemName").attr("disabled", "true");
-
-
+        
+        $('#ReqNO_Error').hide();
+        $('#ProjectRemarks_Error').hide();
         $('#ItemName_Error').hide();
+        $('#CurrentStock_Error').hide();       
         $('#ReqQty_Error').hide();
         $('#ReqQty_Error2').hide();
+
         //RebindDatePicker();
+        
+        $('#ModalItemName_Error').hide();
+        $('#ModalCurrentStock_Error').hide();
+        $('#ModalQty_Error').hide();
+        $('#ModalBrand_Error').hide();
+        $('#ModalSize_Error').hide();
+        $('#ModalRemarks_Error').hide();
     });
 
 
@@ -374,7 +395,7 @@
 
                 var listOfitems = data.Items.length;
                 var items = "<select id='ItemName'>";
-                items = items + '<option value="">--Select--</option>';
+                items = items + '<option value="">Select item</option>';
                 for (var i = 0; i < listOfitems; i++) {
                     items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
                 }
@@ -383,7 +404,7 @@
 
 
                 var items = "<select id='ModalItemName'>";
-                items = items + '<option value="">--Select--</option>';
+                items = items + '<option value="">Select item</option>';
                 for (var i = 0; i < listOfitems; i++) {
                     items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
                 }
@@ -460,14 +481,23 @@
         var Status = "N";
 
         if (ItemName == "" || ItemName == "Select item") {
-            $('#ItemName_Error').show();
+            $('#ItemName_Error').text("Item required").show();
             isAllValid = false;
         }
         else {
             //$('#ItemName_Error').css('visibility', 'hidden');
             $('#ItemName_Error').hide();
         }
-
+        
+        if (CurrentStock != "") {
+            if (isNaN(CurrentStock)) {
+                $('#CurrentStock_Error').show();
+                isAllValid = false;
+            }
+        }
+        else {
+            $('#CurrentStock_Error').hide();
+        }
         if (ReqQty == "") {
             $('#ReqQty_Error2').show();
             isAllValid = false;
@@ -481,6 +511,13 @@
         }
         else {
             $('#ReqQty_Error').hide();
+        }
+        if (ItemRemarks.trim().length > 50) {
+            isAllValid = false;
+            $('#ItemRemarks_Error').text("Remarks can not be greater than 50 characters!").show();
+        }
+        else {
+            $('#ItemRemarks_Error').hide();
         }
 
         $('table.Resource-list tbody tr').each(function () {
@@ -496,18 +533,17 @@
 
         if (isAllValid) {
             var newRow = jQuery('<tr>'
-                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" type="text" name="ItemName" style="width:80px;" disabled="disabled"/></td>'
-                //+ '<td><input type="hidden" value="' + UnitId + '" type="text" name="UnitId"/></td>'
-                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control"  value="' + Unit + '" type="text" name="ItemUnit" disabled="disabled" style="width:80px;"/></td>'
-                + '<td><input class="form-control" value="' + TotalRequired + '"  type="text" name="TotalRequired" disabled="disabled"/></td>'
-                + '<td><input class="form-control" value="' + TotalReceived + '"  type="text" name="TotalReceived" disabled="disabled"/></td>'
-                + '<td><input class="form-control" value="' + RemainingBalance + '"  type="text" name="RemainingBalance" disabled="disabled"/></td>'
-                + '<td><input class="form-control" value="' + CurrentStock + '"  type="text" name="CurrentStock" style="width:80px;"/></td>'
-                + '<td><input class="form-control" value="' + ReqQty + '"  type="text" name="ReqQty" style="width:80px;"/></td>'
-                + '<td><input class="form-control datepicker" style="width:90px;" value="' + requiredDate + '" type="text" name="RequiredDate"/></td>'
-                + '<td><input class="form-control" value="' + Brand + '"  type="text" name="Brand" style="width:80px;"/></td>'
-                + '<td><input class="form-control" value="' + Size + '"  type="text" name="Size"style="width:80px;"/></td>'
-                + '<td><input class="form-control" style="width:90px;"  value="' + ItemRemarks + '" type="text" name="ItemRemarks"/></td>'
+                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName" style="width:80px;" disabled="disabled"/><label name="label_ItemName" style="width:200px;">' + ItemName + '</label></td>'
+                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control"  value="' + Unit + '" type="hidden" name="ItemUnit" disabled="disabled" style="width:80px;"/><label name="label_ItemUnit">' + Unit + '</label></td>'
+                + '<td><input class="form-control" value="' + TotalRequired + '"  type="hidden" name="TotalRequired" disabled="disabled"/><label name="label_TotalRequired">' + TotalRequired + '</label></td>'
+                + '<td><input class="form-control" value="' + TotalReceived + '"  type="hidden" name="TotalReceived" disabled="disabled"/><label name="label_TotalReceived">' + TotalReceived + '</label></td>'
+                + '<td><input class="form-control" value="' + RemainingBalance + '"  type="hidden" name="RemainingBalance" disabled="disabled"/><label name="label_RemainingBalance">' + RemainingBalance + '</label></td>'
+                + '<td><input class="form-control" value="' + CurrentStock + '"  type="hidden" name="CurrentStock" style="width:80px;"/><label name="label_CurrentStock">' + CurrentStock + '</label></td>'
+                + '<td><input class="form-control" value="' + ReqQty + '"  type="hidden" name="ReqQty" style="width:80px;"/><label name="label_ReqQty">' + ReqQty + '</label></td>'
+                + '<td><input class="form-control datepicker" style="width:90px;" value="' + requiredDate + '" type="hidden" name="RequiredDate"/><label name="label_RequiredDate">' + requiredDate + '</label></td>'
+                + '<td><input class="form-control" value="' + Brand + '"  type="hidden" name="Brand" style="width:80px;"/><label name="label_Brand">' + Brand + '</label></td>'
+                + '<td><input class="form-control" value="' + Size + '"  type="hidden" name="Size"style="width:80px;"/><label name="label_Size">' + Size + '</label></td>'
+                + '<td><input class="form-control" style="width:90px;"  value="' + ItemRemarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + ItemRemarks + '</label></td>'
                 + '<td><input value="' + Status + '" type="hidden" name="Status"/> '
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 + '<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
@@ -516,7 +552,7 @@
 
             jQuery('table.Resource-list tbody').append(newRow);
 
-            $('#ItemName').val("");
+            //$('#ItemName').val("");
             $('#UnitName').val("");
             $('#TotalRequired').val("");
             $('#TotalReceived').val("");
@@ -601,6 +637,8 @@
     });
 
     $('#ModalDetailSave').click(function () {
+        var isValidItem = true;
+
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -615,23 +653,82 @@
         var ModalSize = $('#ModalSize').val();
         var Remarks = $('#ModalRemarks').val();
 
+        if (ItemName.trim() == "Select item") {
+            isValidItem = false;
+            $('#ModalItemName_Error').text("Item Name required").show();
+        }
+        else {
+            $('#ModalItemName_Error').hide();
+        }
+        if (ModalCurrentStock.trim() != "") {
+            if (isNaN(ModalCurrentStock.trim())) {
+                isValidItem = false;
+                $('#ModalCurrentStock_Error').text("Current Stock must be a numeric value").show();
+            }
+        }
+        else {
+            $('#ModalCurrentStock_Error').hide();
+        }
 
-        selRow.find('input[name=ItemName]').val(ItemName);
-        selRow.find('input[name=ItemId]').val(ItemId);
-        selRow.find('input[name=ItemUnit]').val(UnitName);
-        selRow.find('input[name=UnitId]').val(Unitid);
-        selRow.find('input[name=TotalRequired]').val(ModalTotalRequired);
-        selRow.find('input[name=TotalReceived]').val(ModalTotalReceived);
-        selRow.find('input[name=RemainingBalance]').val(ModalRemainingBalance);
-        selRow.find('input[name=CurrentStock]').val(ModalCurrentStock);
-        selRow.find('input[name=ReqQty]').val(Qty);
-        selRow.find('input[name=RequiredDate]').val(ModalRequiredDate);
-        selRow.find('input[name=Brand]').val(ModalBrand);
-        selRow.find('input[name=Size]').val(ModalSize);
-        selRow.find('input[name=ItemRemarks]').val(Remarks);
+        if (Qty.trim() == "") {
+                isValidItem = false;
+                $('#ModalQty_Error').text("Qty required").show();
+            
+        }
+        else {
+            $('#ModalQty_Error').hide();
+        }
 
-        $('#detailForm').modal('hide');
-        totalItemCost();
+        if (Qty.trim() != "") {
+            if (isNaN(Qty.trim())) {
+                isValidItem = false;
+                $('#ModalQty_Error').text("Req Qty must be a numeric value").show();
+            }
+        }
+        if (ModalBrand.trim().length > 50) {
+            isValidItem = false;
+            $('#ModalBrand_Error').text("Brand cannot be greater than 50 characters!").show();
+        }
+        else {
+            $('#ModalBrand_Error').hide();
+        }
+        if (ModalSize.trim().length > 50) {
+            isValidItem = false;
+            $('#ModalSize_Error').text("Size cannot be greater than 50 characters!").show();
+        }
+        else {
+            $('#ModalSize_Error').hide();
+        }
+        if (Remarks.trim().length > 50) {
+            isValidItem = false;
+            $('#ModalRemarks_Error').text("Remarks cannot be greater than 50 characters!").show();
+        }
+        else {
+            $('#ModalRemarks_Error').hide();
+        }
+        
+        
+
+        if (isValidItem) {
+            selRow.find('input[name=ItemName]').val(ItemName);
+            selRow.find('input[name=ItemId]').val(ItemId);
+            selRow.find('input[name=ItemUnit]').val(UnitName);
+            selRow.find('input[name=UnitId]').val(Unitid);
+            selRow.find('input[name=TotalRequired]').val(ModalTotalRequired);
+            selRow.find('input[name=TotalReceived]').val(ModalTotalReceived);
+            selRow.find('input[name=RemainingBalance]').val(ModalRemainingBalance);
+            selRow.find('input[name=CurrentStock]').val(ModalCurrentStock);
+            selRow.find('input[name=ReqQty]').val(Qty);
+            selRow.find('input[name=RequiredDate]').val(ModalRequiredDate);
+            selRow.find('input[name=Brand]').val(ModalBrand);
+            selRow.find('input[name=Size]').val(ModalSize);
+            selRow.find('input[name=ItemRemarks]').val(Remarks);
+
+            selRow.find('label[name=label_ItemName]').text(ItemName);
+
+            $('#detailForm').modal('hide');
+            totalItemCost();
+        }
     });
 
 
@@ -663,6 +760,8 @@
     });
 
     function CreateSitePlanTask() {
+        var isValid = true;
+
         //==========Master Form==========
 
         //var ProjectId = document.getElementById("ProjectId");
@@ -682,6 +781,25 @@
         //alert('remarks: ' + remarks);
         //var Status = "N";
 
+
+        if (ReqNo.trim().length > 20) {
+            isValid = false;
+            $('#ReqNO_Error').text("Req No. cannot be greater than 20 characters!").show();
+        }
+        else {
+            $('#ReqNO_Error').hide();
+        }
+
+        if (remarks.trim().length > 50) {
+            isValid = false;
+            $('#ProjectRemarks_Error').text("Remarks cannot be greater than 50 characters!").show();
+        }
+        else {
+            $('#ProjectRemarks_Error').hide();
+        }
+
+
+
         //===========Detail Form===========
         var ItemId = document.getElementsByName("ItemId");
         var TotalRequired = document.getElementsByName("TotalRequired");
@@ -694,76 +812,80 @@
         var RequiredDate = document.getElementsByName("RequiredDate");
         var ItemRemarks = document.getElementsByName("ItemRemarks");
 
-        var RequisitionItems = [];
-        //alert($('#RequisitionDetails tr').length - 1)
 
-        var tableCounter = $('#RequisitionDetails tr').length - 1;
-        //alert('Length: ' + tableCounter);
+        if (isValid) {
+            var RequisitionItems = [];
+            //alert($('#RequisitionDetails tr').length - 1)
 
-        for (var i = 0; i < tableCounter; i++) {
-            RequisitionItems.push({
-                ItemId: ItemId[i].value,
-                ReqQty: ReqQty[i].value,
-                CStockQty: CurrentStock[i].value,
-                Brand: Brand[i].value,
-                Size: Size[i].value,
-                RequiredDate: RequiredDate[i].value,
-                ItemRemarks: ItemRemarks[i].value
+            var tableCounter = $('#RequisitionDetails tr').length - 1;
+            //alert('Length: ' + tableCounter);
+
+            for (var i = 0; i < tableCounter; i++) {
+                RequisitionItems.push({
+                    ItemId: ItemId[i].value,
+                    ReqQty: ReqQty[i].value,
+                    CStockQty: CurrentStock[i].value,
+                    Brand: Brand[i].value,
+                    Size: Size[i].value,
+                    RequiredDate: RequiredDate[i].value,
+                    ItemRemarks: ItemRemarks[i].value
+                });
+                console.log('---------->');
+                console.log('ItemId: ' + RequisitionItems[i].ItemId);
+                console.log('CurrentStock: ' + RequisitionItems[i].CurrentStock);
+                console.log('ReqQty: ' + RequisitionItems[i].ReqQty);
+                console.log('Brand: ' + RequisitionItems[i].Brand);
+                console.log('Size: ' + RequisitionItems[i].Size);
+                console.log('Required Date: ' + RequisitionItems[i].RequiredDate);
+                console.log('ItemRemarks: ' + RequisitionItems[i].ItemRemarks);
+                console.log('---------->');
+
+            }
+
+            TaskDetails = JSON.stringify({
+                RequisitionItems: RequisitionItems,
+                ProjectId: ProjectId,
+                SiteId: SiteId,
+                RequisitionDate: RequisitionDate,
+                ReqNo: ReqNo,
+                remarks: remarks
             });
-            console.log('---------->');
-            console.log('ItemId: ' + RequisitionItems[i].ItemId);
-            console.log('CurrentStock: ' + RequisitionItems[i].CurrentStock);
-            console.log('ReqQty: ' + RequisitionItems[i].ReqQty);
-            console.log('Brand: ' + RequisitionItems[i].Brand);
-            console.log('Size: ' + RequisitionItems[i].Size);
-            console.log('Required Date: ' + RequisitionItems[i].RequiredDate);
-            console.log('ItemRemarks: ' + RequisitionItems[i].ItemRemarks);
-            console.log('---------->');
 
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/MaterialRequisition/CreateRequisition',
+                data: TaskDetails,
+                success: function (result) {
+                    console.log(result);
+                    if (result.flag === true) {
+                        alert("Record created successfully!");
+
+                        $('#ProjectId').val("");
+                        $('#SiteId').val("");
+                        $('#RequisitionDate').val("");
+                        $('#ReqNo').val("");
+                        $('#SiteEngineer').val("");
+                        $('#ProjectManager').val("");
+                        $('#ProjectRemarks').val("");
+
+                        window.location.replace("/MaterialRequisition/Index");
+
+
+                    }
+                    else {
+                        alert(result.message);
+                    }
+
+
+                },
+                failure: function (response) {
+                    alert('error');
+                }
+            });
         }
 
-        TaskDetails = JSON.stringify({
-            RequisitionItems: RequisitionItems,
-            ProjectId: ProjectId,
-            SiteId: SiteId,
-            RequisitionDate: RequisitionDate,
-            ReqNo: ReqNo,
-            remarks: remarks
-        });
-
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/MaterialRequisition/CreateRequisition',
-            data: TaskDetails,
-            success: function (result) {
-                console.log(result);
-                if (result.flag === true) {
-                    alert("Record created successfully!");
-
-                    $('#ProjectId').val("");
-                    $('#SiteId').val("");
-                    $('#RequisitionDate').val("");
-                    $('#ReqNo').val("");
-                    $('#SiteEngineer').val("");
-                    $('#ProjectManager').val("");
-                    $('#ProjectRemarks').val("");
-
-                    window.location.replace("/MaterialRequisition/Index");
-
-
-                }
-                else {
-                    alert(result.message);
-                }
-
-
-            },
-            failure: function (response) {
-                alert('error');
-            }
-        });
 
     }
 
