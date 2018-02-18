@@ -34,8 +34,33 @@ namespace DhaliProcurement.Controllers
         [HttpGet]
         public ActionResult ProjectInfoCosting()
         {
-            ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+
+            var procprojects = (from procProject in db.ProcProject
+                                join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
+                                join project in db.Project on site.ProjectId equals project.Id
+                                where site.Id == procProject.ProjectSiteId
+                                select new { site, project }).Distinct().ToList();
+
+            List<ProjectSite> sites = new List<ProjectSite>();
+            foreach (var i in procprojects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.site.Id);
+                sites.Add(site);
+            }
+
+            List<Project> projects = new List<Project>();
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+
+            ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
+
+
 
             return View();
         }
@@ -236,8 +261,29 @@ namespace DhaliProcurement.Controllers
         {
 
             ViewBag.RCode = new SelectList(db.Proc_RequisitionMas, "Id", "Rcode");
-            ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+            var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
+                                       join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+                                       where requisitionMas.ProcProjectId == procproject.Id && requisitionMas.Status == "A"
+                                       select procproject).ToList();
+
+            List<ProjectSite> sites = new List<ProjectSite>();
+
+            foreach (var i in requisitionProjects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                sites.Add(site);
+            }
+
+            List<Project> projects = new List<Project>();
+
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+            ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
 
             return View();
         }
@@ -414,28 +460,59 @@ namespace DhaliProcurement.Controllers
         [HttpGet]
         public ActionResult PurchaseOrderReport()
         {
-            var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
-                                       join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
-                                       where requisitionMas.ProcProjectId == procproject.Id && requisitionMas.Status == "A"
-                                       select procproject).ToList();
+            //var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
+            //                           join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+            //                           where requisitionMas.ProcProjectId == procproject.Id && requisitionMas.Status == "A"
+            //                           select procproject).ToList();
+
+            //List<ProjectSite> sites = new List<ProjectSite>();
+
+            //foreach (var i in requisitionProjects)
+            //{
+            //    var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+            //    sites.Add(site);
+            //}
+
+            //List<Project> projects = new List<Project>();
+
+            //foreach (var i in sites)
+            //{
+            //    var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+            //    projects.Add(proj);
+            //}
+            //ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+            //ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
+
+            var tenderProjects = (from tendarMas in db.Proc_TenderMas
+                                  join tenderDet in db.Proc_TenderDet on tendarMas.Id equals tenderDet.Proc_TenderMasId
+                                  join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                                  join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                                  join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                                  join Site in db.ProjectSite on procProj.ProjectSiteId equals Site.Id
+                                  join proj in db.Project on Site.ProjectId equals proj.Id
+                                  where procProj.ProjectSiteId == Site.Id && tendarMas.isApproved == "A"
+                                  select Site).ToList();
 
             List<ProjectSite> sites = new List<ProjectSite>();
-
-            foreach (var i in requisitionProjects)
+            foreach (var i in tenderProjects)
             {
-                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.Id);
                 sites.Add(site);
             }
 
             List<Project> projects = new List<Project>();
-
             foreach (var i in sites)
             {
                 var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
                 projects.Add(proj);
             }
+
+
+
             ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
             ViewBag.SiteId = new SelectList(sites, "Id", "Name");
+
 
 
             ViewBag.PONo = new SelectList(db.Proc_RequisitionMas, "Id", "PONo");
@@ -605,7 +682,7 @@ namespace DhaliProcurement.Controllers
                 //                     where tenderDet.Proc_TenderMasId == tenderMas.Id && purMas.Id == purchaseMaster.PurchaseMasId && purDet.ItemId == reqDet.ItemId
                 //                     select tenderDet.TQPrice).Distinct().FirstOrDefault();
 
-                foreach (var item in purchaseDet)
+                foreach (var item in purchaseDet.Distinct())
                 {
                     dsPurchaseOrder.PurchaseOrderDetails.AddPurchaseOrderDetailsRow(item.PurchaseDetId,
                                                                        item.Proc_PurchaseOrderMasId,
@@ -664,8 +741,29 @@ namespace DhaliProcurement.Controllers
         {
 
             ViewBag.RCode = new SelectList(db.Proc_RequisitionMas, "Id", "Rcode");
-            ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
-            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+            var requisitionProjects = (from requisitionMas in db.Proc_RequisitionMas
+                                       join procproject in db.ProcProject on requisitionMas.ProcProjectId equals procproject.Id
+                                       where requisitionMas.ProcProjectId == procproject.Id && requisitionMas.Status == "A"
+                                       select procproject).ToList();
+
+            List<ProjectSite> sites = new List<ProjectSite>();
+
+            foreach (var i in requisitionProjects)
+            {
+                var site = db.ProjectSite.FirstOrDefault(x => x.Id == i.ProjectSiteId);
+                sites.Add(site);
+            }
+
+            List<Project> projects = new List<Project>();
+
+            foreach (var i in sites)
+            {
+                var proj = db.Project.FirstOrDefault(x => x.Id == i.ProjectId);
+                projects.Add(proj);
+            }
+
+            ViewBag.ProjectId = new SelectList(projects.Distinct(), "Id", "Name");
+            ViewBag.SiteId = new SelectList(sites, "Id", "Name");
 
             return View();
         }
