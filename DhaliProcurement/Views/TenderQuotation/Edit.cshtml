@@ -37,6 +37,7 @@
                             <td>
                                 @Html.TextBox("TNo", Model.proc_TenderMas.TNo, new { @class = "form-control" })
                                 <input type="hidden" value="@ViewBag.TenderId" id="TenderId" />
+                                <span class="error" id="TNo_Error"></span>
                             </td>
                             <td>Tender Date</td>
                             <td>
@@ -48,12 +49,14 @@
                             <td>Specification</td>
                             <td>
                                 @Html.TextBox("Specs", Model.proc_TenderMas.Specs, new { @class = "form-control" })
+                                <span class="error" id="Specs_Error"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>Remarks</td>
                             <td>
                                 @Html.TextBox("TenderRemarks", Model.proc_TenderMas.Remarks, new { @class = "form-control" })
+                                <span class="error" id="TenderRemarks_Error"></span>
                             </td>
                         </tr>
 
@@ -271,6 +274,7 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
                                     @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
+                                    <span class="error" id="ModalProjectName_Error"></span>
                                 </div>
                             </div>
 
@@ -279,7 +283,7 @@
                                 <div class="col-md-10">
                                     @*<input type="hidden" id="modalunitId" />*@
                                     @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
-
+                                    <span class="error" id="ModalSiteName_Error"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -288,7 +292,8 @@
                                 <div class="col-md-10">
                                     <input type="hidden" id="ModalProc_RequisitionDetId" />
                                     @Html.DropDownList("RCode", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalRequisition" })
-                                </div>
+                                    <span class="error" id="ModalReqNo_Error"></span>
+                                 </div>
                             </div>
                             <div class="form-group">
                                 @Html.Label("Item Name", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -296,6 +301,7 @@
                                 <div class="col-md-10">
                                     <input type="hidden" id="ModalProc_RequisitionDetId"/>
                                     @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                    <span class="error" id="ModalItemName_Error"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -303,6 +309,7 @@
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     @Html.TextBox("ModalQty", null, new { @class = "form-control", @disabled = "disabled" })
+
                                 </div>
                             </div>
                             <div class="form-group">
@@ -318,13 +325,15 @@
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     @Html.DropDownList("VendorId", null, "Select Vendor", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalVendor" })
-                                </div>
+                                    <span class="error" id="ModalVendorName_Error"></span>
+                                 </div>
                             </div>
                             <div class="form-group">
                                 @Html.Label("Qtn No", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     @Html.TextBox("ModalQtnNo", null, new { @class = "form-control" })
+                                    <span class="error" id="ModalQtnNo_Error"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -339,6 +348,7 @@
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     @Html.TextBox("ModalUnitPrice", null, new { @class = "form-control" })
+                                    <span class="error" id="ModalUnitPrice_Error"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -351,7 +361,7 @@
                             <div class="modal-footer">
                                 <div class="col-md-offset-2 col-md-10">
                                     <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -360,12 +370,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
 
 
 
@@ -391,6 +395,10 @@
             $("#RCode").attr("disabled", "true");
             $("#ItemName").attr("disabled", "true");
 
+            $('#TNo_Error').hide();
+            $('#Specs_Error').hide();
+            $('#TenderRemarks_Error').hide();
+
             $('#ProjectName_Error').hide();
             $('#SiteName_Error').hide();
             $('#ReqNo_Error').hide();
@@ -398,6 +406,14 @@
             $('#VendorName_Error').hide();
             $('#QtnNo_Error').hide();
             $('#UnitPrice_Error').hide();
+
+            $('#ModalProjectName_Error').hide();
+            $('#ModalSiteName_Error').hide();
+            $('#ModalReqNo_Error').hide();
+            $('#ModalItemName_Error').hide();
+            $('#ModalVendorName_Error').hide();
+            $('#ModalQtnNo_Error').hide();
+            $('#ModalUnitPrice_Error').hide();
 
             $("input[name=TQDate]").datepicker({
                 format: 'dd/mm/yyyy',
@@ -428,13 +444,13 @@
 
                                     var row = $('<tr bgcolor="#D0F0C0" style="font-weight:bold;">'
                                        +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
-                                       + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;">' + data.List[i].ProjectName + '<label></td>'
-                                       + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;">' + data.List[i].SitetName + '<label></td>'
-                                       + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="ReqCode" style="font-weight:bold;"/><label style="font-weight:bold;">' + data.List[i].RCodeName + '<label><input value="' + data.List[i].RCodeName + '" type="hidden" name="RCodeName" style="font-weight:bold;"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
-                                       + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label style="font-weight:bold;">' + data.List[i].ItemName + '<label><input value="' + data.List[i].ItemName + '" type="hidden" name="ItemName"/></td>'
+                                       + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label style="font-weight:bold;width:150px;">' + data.List[i].ProjectName + '<label></td>'
+                                       + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label style="font-weight:bold;width:150px;">' + data.List[i].SitetName + '<label></td>'
+                                       + '<td><input value="' + data.List[i].RCode + '" type="hidden" name="ReqCode" style="font-weight:bold;"/><label style="font-weight:bold;width:150px;">' + data.List[i].RCodeName + '<label><input value="' + data.List[i].RCodeName + '" type="hidden" name="RCodeName" style="font-weight:bold;"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                                       + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label style="font-weight:bold;width:150px;">' + data.List[i].ItemName + '<label><input value="' + data.List[i].ItemName + '" type="hidden" name="ItemName"/></td>'
                                        + '<td><label style="font-weight:bold;">' + data.List[i].Qty + '<label></td>'                                  
                                        + '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label style="font-weight:bold;">' + data.List[i].UnitName + '<label></td>'
-                                       + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="Vendor"/><label style="font-weight:bold;">' + data.List[i].VendorName + '<label><input value="' + data.List[i].VendorName + '" type="hidden" name="VendorName"/></td>'
+                                       + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="Vendor"/><label style="font-weight:bold;width:150px;">' + data.List[i].VendorName + '<label><input value="' + data.List[i].VendorName + '" type="hidden" name="VendorName"/></td>'
                                        +'<td> <input class="form-control" style="width:110px;" type="hidden" name="TQNo" value="' + data.List[i].TQNo + '" style="font-weight:bold;" /><label style="font-weight:bold;">' + data.List[i].TQNo+ '<label></td>'
                                        +'<td><input class="form-control datepicker" style="width:90px;" type="hidden" name="TQDate" value="' + data.List[i].TQDate + '"/><label style="font-weight:bold;">' + data.List[i].TQDate + '<label></td>'
                                        +'<td><input class="form-control" style="width:70px;" type="hidden" name="TQPrice" value="' + data.List[i].TQPrice + '"/><label style="font-weight:bold;">' + data.List[i].TQPrice + '<label></td>'
@@ -460,17 +476,17 @@
                                     counter++;
                                     var row = $('<tr>'
                                        +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
-                                       + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><input class="form-control" value="' + data.List[i].ProjectName + '" type="text" name="ProjectName" style="width:90px;" disabled="disabled"/></td>'
-                                       + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><input class="form-control" value="' + data.List[i].SitetName + '" type="text" name="SiteName" style="width:90px;"  disabled="disabled"/></td>'
-                                       + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control" name="ReqCode"  style="width:90px;"/><input value="' + data.List[i].RCodeName+ '" type="text" class="form-control" name="RCodeName"  style="width:90px;"  disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
-                                       + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><input value="' + data.List[i].ItemName + '" type="text" class="form-control" name="ItemName"  style="width:90px;"  disabled="disabled"/></td>'
-                                       + '<td><input class="form-control" value="' + data.List[i].Qty  + '" type="text" name="Qty" style="width:90px;" disabled="disabled"/></td>'
-                                       + '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + data.List[i].UnitName + '" type="text" name="UnitName" disabled="disabled" style="width:90px;"/></td>'
-                                       + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="Vendor"/><input value="' + data.List[i].VendorName + '" type="text" class="form-control" name="VendorName"  disabled="disabled"  style="width:90px;"/></td>'
-                                       + '<td><input class="form-control" style="width:110px;" type="text" name="TQNo" value="' + data.List[i].TQNo + '" /></td>'
-                                       + '<td><input class="form-control datepicker" style="width:90px;" type="text" name="TQDate" value="' + data.List[i].TQDate + '"/></td>'
-                                       + '<td><input class="form-control" style="width:70px;" type="text" name="TQPrice" value="' + data.List[i].TQPrice + '"/></td>'
-                                       + '<td><input value="' + data.List[i].Qty * data.List[i].TQPrice + '" type="text" name="TotalPrice" class="form-control TotalPrice" style="width:90px;" disabled="disabled"/><input class="Status"  value="'+data.List[i].Status +'" type="hidden" name="Status"/></td>'
+                                       + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label name="label_ProjectName" style="width:150px;">'+ data.List[i].ProjectName + '</label><input class="form-control" value="' + data.List[i].ProjectName + '" type="hidden" name="ProjectName" style="width:90px;" disabled="disabled"/></td>'
+                                       + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName" style="width:150px;">' + data.List[i].SitetName + '</label><input class="form-control" value="' + data.List[i].SitetName + '" type="hidden" name="SiteName" style="width:90px;"  disabled="disabled"/></td>'
+                                       + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control" name="ReqCode"  style="width:90px;"/><label name="label_RCodeName" style="width:150px;">' + data.List[i].RCodeName + '</label><input value="' + data.List[i].RCodeName+ '" type="hidden" class="form-control" name="RCodeName"  style="width:90px;"  disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                                       + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName">' + data.List[i].ItemName + '</label><input value="' + data.List[i].ItemName + '" type="hidden" class="form-control" name="ItemName"  style="width:90px;"  disabled="disabled"/></td>'
+                                       + '<td><input class="form-control" value="' + data.List[i].Qty  + '" type="hidden" name="Qty" style="width:90px;" disabled="disabled"/><label name="label_Qty">' + data.List[i].Qty  + '</label></td>'
+                                       + '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data.List[i].UnitName + '</label><input class="form-control" value="' + data.List[i].UnitName + '" type="hidden" name="UnitName" disabled="disabled" style="width:90px;"/></td>'
+                                       + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="Vendor"/><label name="label_VendorName">' + data.List[i].VendorName + '</label><input value="' + data.List[i].VendorName + '" type="hidden" class="form-control" name="VendorName"  disabled="disabled"  style="width:90px;"/></td>'
+                                       + '<td><input class="form-control" style="width:110px;" type="hidden" name="TQNo" value="' + data.List[i].TQNo + '" /><label name="label_TQNo">' + data.List[i].TQNo + '</label></td>'
+                                       + '<td><input class="form-control datepicker" style="width:90px;" type="hidden" name="TQDate" value="' + data.List[i].TQDate + '"/><label name="label_TQDate">' + data.List[i].TQDate + '</label></td>'
+                                       + '<td><input class="form-control" style="width:70px;" type="hidden" name="TQPrice" value="' + data.List[i].TQPrice + '"/><label name="label_TQPrice">' + data.List[i].TQPrice + '</label></td>'
+                                       + '<td><input value="' + data.List[i].Qty * data.List[i].TQPrice + '" type="hidden" name="TotalPrice" class="form-control TotalPrice" style="width:90px;" disabled="disabled"/><label name="label_TotalPrice">' + data.List[i].Qty * data.List[i].TQPrice + '</label><input class="Status"  value="'+data.List[i].Status +'" type="hidden" name="Status"/></td>'
                                        + '<td style="width:100px;">'+
                                                 ' <input type="checkbox"/>'
                                                   + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
@@ -525,17 +541,17 @@
                                     counter++;
                                     var row = $('<tr>'
                                        +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+data.List[i].TenderDetailId+'"/></td>'
-                                      + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><input class="form-control" value="' + data.List[i].ProjectName + '" type="text" name="ProjectName" style="width:90px;" disabled="disabled"/></td>'
-                                       + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><input class="form-control" value="' + data.List[i].SitetName + '" type="text" name="SiteName" style="width:90px;" disabled="disabled"/></td>'
-                                       + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control" name="ReqCode"  style="width:90px;"/><input value="' + data.List[i].RCodeName + '" type="text" class="form-control" name="RCodeName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
-                                       + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><input value="' + data.List[i].ItemName + '" type="text" class="form-control" name="ItemName"  style="width:90px;" disabled="disabled"/></td>'
-                                       + '<td><input class="form-control" value="' + data.List[i].Qty  + '" type="text" name="Qty" style="width:90px;" disabled="disabled"/></td>'
-                                       + '<td><input  value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + data.List[i].UnitName + '" type="text" name="UnitName" disabled="disabled" style="width:80px;"/></td>'
+                                      + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId"/><label name="label_ProjectName">' + data.List[i].ProjectName  + '</label><input class="form-control" value="' + data.List[i].ProjectName + '" type="hidden" name="ProjectName" style="width:90px;" disabled="disabled"/></td>'
+                                       + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName">' + data.List[i].SitetName  + '</label><input class="form-control" value="' + data.List[i].SitetName + '" type="hidden" name="SiteName" style="width:90px;" disabled="disabled"/></td>'
+                                       + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control" name="ReqCode"  style="width:90px;"/><label name="label_RCodeName">' + data.List[i].RCodeName + '</label><input value="' + data.List[i].RCodeName + '" type="hidden" class="form-control" name="RCodeName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                                       + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName">' + data.List[i].ItemName  + '</label><input value="' + data.List[i].ItemName + '" type="hidden" class="form-control" name="ItemName"  style="width:90px;" disabled="disabled"/></td>'
+                                       + '<td><input class="form-control" value="' + data.List[i].Qty  + '" type="hidden" name="Qty" style="width:90px;" disabled="disabled"/><label name="label_Qty">' +  data.List[i].Qty  + '</label></td>'
+                                       + '<td><input  value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data.List[i].UnitName + '</label><input class="form-control" value="' + data.List[i].UnitName + '" type="hidden" name="UnitName" disabled="disabled" style="width:80px;"/></td>'
                                        + '<td><input value="' + data.List[i].VendorId + '" type="hidden" name="Vendor"/><label>' + data.List[i].VendorName + '<label><input value="' + data.List[i].VendorName + '" type="hidden" name="VendorName"/></td>'
-                                       +'<td> <input class="form-control" style="width:110px;" type="text" name="TQNo" value="' + data.List[i].TQNo + '" /></td>'
-                                       +'<td><input class="form-control datepicker" style="width:90px;" type="text" name="TQDate" value="' + data.List[i].TQDate + '"/></td>'
-                                       +'<td><input class="form-control" style="width:70px;" type="text" name="TQPrice" value="' + data.List[i].TQPrice + '"/></td>'
-                                       +'<td><input value="' + data.List[i].Qty * data.List[i].TQPrice + '" type="text" name="TotalPrice" class="form-control TotalPrice" style="width:90px;" disabled="disabled"/><input class="Status"  value="'+data.List[i].Status +'" type="hidden" name="Status"/></td>'
+                                       +'<td> <input class="form-control" style="width:110px;" type="text" name="TQNo" value="' + data.List[i].TQNo + '" /><label name="label_TQNo">' + data.List[i].TQNo + '</label></td>'
+                                       +'<td><input class="form-control datepicker" style="width:90px;" type="hidden" name="TQDate" value="' + data.List[i].TQDate + '"/><label name="label_TQDate">' + data.List[i].TQDate + '</label></td>'
+                                       +'<td><input class="form-control" style="width:70px;" type="hidden" name="TQPrice" value="' + data.List[i].TQPrice + '"/><label name="label_TQPrice">' + data.List[i].TQPrice + '</label></td>'
+                                       +'<td><input value="' + data.List[i].Qty * data.List[i].TQPrice + '" type="hidden" name="TotalPrice" class="form-control TotalPrice" style="width:90px;" disabled="disabled"/><label name="label_TotalPrice">' + data.List[i].Qty * data.List[i].TQPrice + '</label><input class="Status"  value="'+data.List[i].Status +'" type="hidden" name="Status"/></td>'
                                        +'<td style="width:100px;">'+
                                                 '<input type="checkbox" style="display:none"/>'
                                                   + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
@@ -661,11 +677,14 @@
 
         
         $('#ModalDetailSave').click(function () {
+            var isAllValid = true;
+
             var ModalProjectId = $('#ModalProjectId option:selected').val();
             var ModalProjectName = $('#ModalProjectId option:selected').text();
             var ModalSiteId = $('#ModalSiteId option:selected').val();
             var ModalSiteName = $('#ModalSiteId option:selected').text();
             var ModalRequisition = $('#ModalRequisition option:selected').val();
+            var ModalRCodeName =  $('#ModalRequisition option:selected').text();
             var ModalItemId = $('#ModalItemName option:selected').val();
             var ModalItemName = $('#ModalItemName option:selected').text();
             var ModalQty = $('#ModalQty').val();
@@ -679,30 +698,110 @@
             var ModalUnitPrice = $('#ModalUnitPrice').val();
             var ModalTotal = $('#ModalTotal').val();
 
+            if (ModalProjectName.trim() == "" || ModalProjectName.trim() == "--Select--") {
+                $('#ModalProjectName_Error').text("Project required").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalProjectName_Error').hide();
+            }
+            if (ModalSiteName.trim() == "" || ModalSiteName.trim() == "--Select--") {
+                $('#ModalSiteName_Error').text("Site required").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalSiteName_Error').hide();
+            }
+            if (ModalRCodeName.trim() == "" || ModalRCodeName.trim() == "--Select--") {
+                $('#ModalReqNo_Error').text("Requisition required").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalReqNo_Error').hide();
+            }
+            if (ModalItemName.trim() == "" || ModalItemName.trim() == "--Select--") {
+                $('#ModalItemName_Error').stext("Item required").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalItemName_Error').hide();
+            }
+            if (ModalVendorName.trim() == "" || ModalVendorName.trim() == "--Select--") {
+                $('#VendorName_Error').text("Vendor required").show();
+                isAllValid = false;
+            }
+            else {
+                $('#VendorName_Error').hide();
+            }
+            if (ModalUnitPrice.trim() == "") {
+                $('#ModalUnitPrice_Error').text("Unit Price required").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalUnitPrice_Error').hide();
+            }
+            if(ModalUnitPrice.trim()!=""){
+                if(isNaN(ModalUnitPrice.trim())){
+                    $('#ModalUnitPrice_Error').text("Unit Price must be a numeric value!").show();
+                    isAllValid = false;
+                }
+                else{
+                    $('#ModalUnitPrice_Error').hide();
+                }
+            }
+            if (ModalQtnNo.trim().length > 50) {
+                $('#ModalQtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalQtnNo_Error').hide();
+            }
 
-            selRow.find('input[name=ProjectId]').val(ModalProjectId);
-            selRow.find('input[name=ProjectName]').val(ModalProjectName);
-            selRow.find('input[name=SiteId]').val(ModalSiteId);
-            selRow.find('input[name=SiteName]').val(ModalSiteName);
-            selRow.find('input[name=ReqCode]').val(ModalRequisition);
-            selRow.find('input[name=ItemId]').val(ModalItemId);
-            selRow.find('input[name=ItemName]').val(ModalItemName);
-            selRow.find('input[name=Proc_RequisitionDetId]').val(ModalProc_RequisitionDetId);
-            selRow.find('input[name=Qty]').val(ModalQty);
-            selRow.find('input[name=UnitName]').val(ModalUnitName);
-            selRow.find('input[name=UnitId]').val(ModalUnit);
-            selRow.find('input[name=Vendor]').val(ModalVendorId);
-            selRow.find('input[name=VendorName]').val(ModalVendorName);
-            selRow.find('input[name=TQNo]').val(ModalQtnNo);
-            selRow.find('input[name=TQDate]').val(ModalQtnDate);
-            selRow.find('input[name=TQPrice]').val(ModalUnitPrice);
-            selRow.find('input[name=TotalPrice]').val(ModalTotal);
+            if (isAllValid) {
+                selRow.find('input[name=ProjectId]').val(ModalProjectId);
+                selRow.find('input[name=ProjectName]').val(ModalProjectName);
+                selRow.find('input[name=SiteId]').val(ModalSiteId);
+                selRow.find('input[name=SiteName]').val(ModalSiteName);
+                selRow.find('input[name=ReqCode]').val(ModalRequisition);
+                selRow.find('input[name=ItemId]').val(ModalItemId);
+                selRow.find('input[name=ItemName]').val(ModalItemName);
+                selRow.find('input[name=Proc_RequisitionDetId]').val(ModalProc_RequisitionDetId);
+                selRow.find('input[name=Qty]').val(ModalQty);
+                selRow.find('input[name=UnitName]').val(ModalUnitName);
+                selRow.find('input[name=UnitId]').val(ModalUnit);
+                selRow.find('input[name=Vendor]').val(ModalVendorId);
+                selRow.find('input[name=VendorName]').val(ModalVendorName);
+                selRow.find('input[name=TQNo]').val(ModalQtnNo);
+                selRow.find('input[name=TQDate]').val(ModalQtnDate);
+                selRow.find('input[name=TQPrice]').val(ModalUnitPrice);
+                selRow.find('input[name=TotalPrice]').val(ModalTotal);
 
+                selRow.find('label[name=label_ProjectName]').text(ModalProjectName);
+                selRow.find('label[name=label_SiteName]').text(ModalSiteName);
+                selRow.find('label[name=label_RCodeName]').text(ModalRCodeName);
+                selRow.find('label[name=label_ItemName]').val(ModalItemName);
+                selRow.find('label[name=label_Qty]').text(ModalQty);
+                selRow.find('label[name=label_UnitName]').text(ModalUnitName);
+                selRow.find('label[name=label_VendorName]').text(ModalVendorName);
+                selRow.find('label[name=label_TQNo]').text(ModalQtnNo);
+                selRow.find('label[name=label_TQDate]').text(ModalQtnDate);
+                selRow.find('label[name=label_TQPrice]').text(ModalUnitPrice);
+                selRow.find('label[name=label_TotalPrice]').text(ModalTotal);
 
-            $('#detailForm').modal('hide');
-            totalItemCost();
+                $('#detailForm').modal('hide');
+                //totalItemCost();
+            }
         });
 
+        $('#ModalClose').click(function () {
+            $('#ModalProjectName_Error').hide();
+            $('#ModalSiteName_Error').hide();
+            $('#ModalReqNo_Error').hide();
+            $('#ModalItemName_Error').hide();
+            $('#VendorName_Error').hide();
+            $('#ModalUnitPrice_Error').hide();
+            $('#ModalQtnNo_Error').hide();
+        });
 
         $('#ModalProjectId').change(function () {
             var id = $('#ModalProjectId option:selected').val();
@@ -958,6 +1057,25 @@
             }
         }, 'input[name=unitPrice]');
 
+        
+        $(document).on({
+            'change': function () {
+                var price = $(this).val();
+                var quantity = $('#ModalQty').val();
+                var totalPrice = price * quantity;
+                if (isNaN(totalPrice)) {
+                    //alert('Unit Price must be a numeric value!!')
+                    $('#ModalUnitPrice_Error').text('Unit Price must be a numeric value!').show();
+                    $('#ModalUnitPrice').val("");
+                    $('#ModalTotal').val("");
+                }
+                else {
+                    $('#ModalTotal').val(totalPrice);
+                    $('#ModalUnitPrice_Error').hide();
+                }
+            }
+        }, 'input[name=ModalUnitPrice]');
+
         //add new row
         $('#addNewRow').click(function (event) {
             event.preventDefault();
@@ -987,35 +1105,78 @@
 
 
 
-            if (ProjectName.trim() == "" || ProjectName.trim() == "Select Project") {
+            //if (ProjectName.trim() == "" || ProjectName.trim() == "Select Project") {
+            //    $('#ProjectName_Error').show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#ProjectName_Error').hide();
+            //}
+            //if (SiteName.trim() == "" || SiteName.trim() == "Select Site") {
+            //    $('#SiteName_Error').show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#SiteName_Error').hide();
+            //}
+            //if (RCode.trim() == "" || RCode.trim() == "Select Requisition") {
+            //    $('#ReqNo_Error').show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#ReqNo_Error').hide();
+            //}
+            //if (ItemName.trim() == "" || ItemName.trim() == "Select Item") {
+            //    $('#ItemName_Error').show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#ItemName_Error').hide();
+            //}
+            //if (VendorName.trim() == "" || VendorName.trim() == "Select Vendor") {
+            //    $('#VendorName_Error').show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#VendorName_Error').hide();
+            //}
+            //if (TQPrice.trim() == "") {
+            //    $('#UnitPrice_Error').show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#UnitPrice_Error').hide();
+            //}
+
+            if (ProjectName.trim() == "" || ProjectName.trim() == "--Select--") {
                 $('#ProjectName_Error').show();
                 isAllValid = false;
             }
             else {
                 $('#ProjectName_Error').hide();
             }
-            if (SiteName.trim() == "" || SiteName.trim() == "Select Site") {
+            if (SiteName.trim() == "" || SiteName.trim() == "--Select--") {
                 $('#SiteName_Error').show();
                 isAllValid = false;
             }
             else {
                 $('#SiteName_Error').hide();
             }
-            if (RCode.trim() == "" || RCode.trim() == "Select Requisition") {
+            if (RCode.trim() == "" || RCode.trim() == "--Select--") {
                 $('#ReqNo_Error').show();
                 isAllValid = false;
             }
             else {
                 $('#ReqNo_Error').hide();
             }
-            if (ItemName.trim() == "" || ItemName.trim() == "Select Item") {
+            if (ItemName.trim() == "" || ItemName.trim() == "--Select--") {
                 $('#ItemName_Error').show();
                 isAllValid = false;
             }
             else {
                 $('#ItemName_Error').hide();
             }
-            if (VendorName.trim() == "" || VendorName.trim() == "Select Vendor") {
+            if (VendorName.trim() == "" || VendorName.trim() == "--Select--") {
                 $('#VendorName_Error').show();
                 isAllValid = false;
             }
@@ -1029,6 +1190,14 @@
             else {
                 $('#UnitPrice_Error').hide();
             }
+            if (TQNo.trim().length > 50) {
+                $('#QtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
+                isAllValid = false;
+            }
+            else {
+                $('#QtnNo_Error').hide();
+            }
+
 
             $('table.Resource-list tr').each(function () {
                 var Item = $(this).find("td input[name=ItemName]").val();
