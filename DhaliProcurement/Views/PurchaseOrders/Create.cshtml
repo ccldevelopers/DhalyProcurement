@@ -336,29 +336,32 @@
     $(document).on({
         'change': function () {
             var price = $('#UnitPrice').val();
-            //alert('Unit Price :' + price);
             var quantity = $('#POQuantity1').val();
             var totalPrice = price * quantity;
-            //alert('ttl'+totalPrice);
-            $('#TotalPrice1').val(totalPrice);
+            if (isNaN(totalPrice)) {
+                $('#POQuantity_Error').text('Unit Price must be a numeric value!').show();
+                $('#POQuantity1').val("");
+                $('#TotalPrice1').val("");
+            }
+            else {
+                $('#POQuantity_Error').hide();
+                $('#TotalPrice1').val(totalPrice);
+            }
+         
+          
         }
     }, 'input[name=POQuantity1]');
-
+    
 
     $(document).on({
         'change': function () {
             var price = $(this).closest('tr').find("td:eq(3) input.UnitPriceNew").val();
-            //var row = $(this).closest('tr');
-
-            //alert('Unit Price :' + price);
             var quantity = $(this).closest('tr').find("td:eq(5) input.POQuantityNew").val();
-            //alert('quantity :' + quantity);
             var totalPrice = price * quantity;
 
             if (isNaN(totalPrice)) {
                 alert('Unit Price must be a numeric value!!')
-                //$('#TQPrice').val("");
-                //$('#TotalPrice').val("");
+                $(this).closest('tr').find("td:eq(6) input.TotalPriceNew").val("");
             }
             else {
                 $(this).closest('tr').find("td:eq(6) input.TotalPriceNew").val(totalPrice);
@@ -366,7 +369,24 @@
         }
     }, 'input[name=POQuantity]');
 
+    $(document).on({
+        'change': function () {
+            var price = $('#ModalUnitPrice').val();
+            var quantity = $('#ModalPOQuantity').val();
+            var totalPrice = price * quantity;
+            if (isNaN(totalPrice)) {
+                $('#ModalPOQuantity_Error').text('Unit Price must be a numeric value!').show();
+                $('#ModalPOQuantity').val("");
+                $('#ModalTotalPrice').val("");
+            }
+            else {
+                $('#ModalPOQuantity_Error').hide();
+                $('#ModalTotalPrice').val(totalPrice);
+            }
 
+           
+        }
+    }, 'input[name=ModalPOQuantity]');
 
     //add new row
     $('#addNewRow').click(function (event) {
@@ -489,6 +509,8 @@
 
 
     $('#ModalDetailSave').click(function () {
+        var isAllValid = true;
+
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -501,18 +523,54 @@
         var ModalTotalPrice = ModalUnitPrice * ModalPOQuantity;
 
 
-        selRow.find('input[name=ItemName]').val(ItemName);
-        selRow.find('input[name=ItemId]').val(ItemId);
-        selRow.find('input[name=UnitName]').val(UnitName);
-        selRow.find('input[name=UnitId]').val(Unitid);
-        selRow.find('input[name=Size]').val(ModalSize);
-        selRow.find('input[name=UnitPrice]').val(ModalUnitPrice);
-        selRow.find('input[name=RequisitionQty]').val(ModalRequisitionQty);
-        selRow.find('input[name=POQuantity]').val(ModalPOQuantity);
-        selRow.find('input[name=TotalPrice]').val(ModalTotalPrice);
+        if (ItemName.trim() == "" || ItemName.trim() == "--Select--") {
+            $('#ModalItemName_Error').text("Item required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalItemName_Error').hide();
+        }
+        if (ModalPOQuantity.trim() == "") {
+            $('#ModalPOQuantity_Error').text("PO Quantity required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalPOQuantity_Error').hide();
+        }
+        if (ModalPOQuantity.trim() != "") {
+            if (isNaN(ModalPOQuantity.trim())) {
+                isAllValid = false;
+                $('#ModalPOQuantity_Error').text("PO Quantity must be a numeric value!").show();
+            }
+            else {
+                $('#ModalPOQuantity_Error').hide();
+            }
+        }
 
-        $('#detailForm').modal('hide');
-        totalItemCost();
+        if (isAllValid) {
+            selRow.find('input[name=ItemName]').val(ItemName);
+            selRow.find('input[name=ItemId]').val(ItemId);
+            selRow.find('input[name=UnitName]').val(UnitName);
+            selRow.find('input[name=UnitId]').val(Unitid);
+            selRow.find('input[name=Size]').val(ModalSize);
+            selRow.find('input[name=UnitPrice]').val(ModalUnitPrice);
+            selRow.find('input[name=RequisitionQty]').val(ModalRequisitionQty);
+            selRow.find('input[name=POQuantity]').val(ModalPOQuantity);
+            selRow.find('input[name=TotalPrice]').val(ModalTotalPrice);
+
+            selRow.find('label[name=label_ItemName]').text(ItemName);
+            selRow.find('label[name=label_UnitName]').text(UnitName);
+            selRow.find('label[name=label_Size]').text(ModalSize);
+            selRow.find('label[name=label_UnitPrice]').text(ModalUnitPrice);
+            selRow.find('label[name=label_RequisitionQty]').text(ModalRequisitionQty);
+            selRow.find('label[name=label_POQuantity]').text(ModalPOQuantity);
+            selRow.find('label[name=label_TotalPrice]').text(ModalTotalPrice);
+
+            $('#detailForm').modal('hide');
+            totalItemCost();
+        }
+
+
     });
 
 
@@ -569,9 +627,13 @@
             alert('PO Date required!');
             $('#PODate').focus();
         }
-        else if ($.trim($('#LeadTime').val()) === "" || isNaN($('#LeadTime').val())) {
-            alert('Lead Time required!');
+        else if ($.trim($('#LeadTime').val()) === "") {
+            //alert('Lead Time required!');
+            $('#LeadTime_Error').text("Lead Time required!").show();
             $('#LeadTime').focus();
+        }
+        else if ($('.Resource-list tr').length < 3) {
+            alert('Please Add Item to this PO');
         }
             //else if ($('.Resource-list tr').length < 2) {
             //        alert('Please Add Item to this order');
@@ -584,8 +646,9 @@
 
 
     function CreatePurchaseOrder() {
+
+        var isValid = true;
         //==========Master Form==========
-        debugger;
         var PONo = $("#PONo").val();
         //alert('PONo: ' + PONo);
         var PODate = $("#PODate").val();
@@ -619,6 +682,79 @@
         var RcvPersonCell = $("#RcvPersonCell").val();
         //alert('RcvPersonCell: ' + RcvPersonCell);
         var POTotalAmt = $("#totalCost").val();
+
+
+        if (PONo.trim().length > 100) {
+            isValid = false;
+            $('#PONo_Error').text("Tender No. cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#PONo_Error').hide();
+        }
+        if (VContactPerson.trim().length > 100) {
+            isValid = false;
+            $('#VContactPerson_Error').text("Attention cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#VContactPerson_Error').hide();
+        }
+        if (ProjectManager.trim().length > 100) {
+            isValid = false;
+            $('#ProjectManager_Error').text("Order To cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#ProjectManager_Error').hide();
+        }
+        if (AttnCell.trim().length > 100) {
+            isValid = false;
+            $('#Cell_Error').text("Cell cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#Cell_Error').hide();
+        }
+        if (Email.trim().length > 100) {
+            isValid = false;
+            $('#Email_Error').text("Email cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#Email_Error').hide();
+        }
+        if (Subject.trim().length > 100) {
+            isValid = false;
+            $('#Subject_Error').text("Subject cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#Subject_Error').hide();
+        }
+        if (isNaN(LeadTime)) {
+            isValid = false;
+            $('#LeadTime_Error').text("Lead Time must be a numeric value!").show();
+        }
+        else {
+            $('#LeadTime_Error').hide();
+        }
+        if (Content.trim().length > 800) {
+            isValid = false;
+            $('#Content_Error').text("Content cannot be greater than 800 characters!").show();
+        }
+        else {
+            $('#Content_Error').hide();
+        }
+        if (RcvConcenPerson.trim().length > 100) {
+            isValid = false;
+            $('#RcvConcenPerson_Error').text("Receive concern person cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#RcvConcenPerson_Error').hide();
+        }
+        if (RcvPersonCell.trim().length > 100) {
+            isValid = false;
+            $('#RcvPersonCell_Error').text("Cell cannot be greater than 100 characters!").show();
+        }
+        else {
+            $('#RcvPersonCell_Error').hide();
+        }
+
         //===========Detail Form===========
         var ItemId = document.getElementsByName("ItemId");
         var ItemName = document.getElementsByName("ItemName");
@@ -638,74 +774,81 @@
         //alert('POQuantity ' + POQuantity);
         var TotalPrice = document.getElementsByName("TotalPrice");
         //alert('TotalPrice ' + TotalPrice);
-        var AddedDetItems = [];
-        var tableCounter = $('#Item-list tr').length - 1;
-        //alert('Length: ' + tableCounter);
-        //  debugger;
-        for (var i = 0; i < tableCounter - 1; i++) {
-            AddedDetItems.push({
-                ItemId: ItemId[i].value,
-                ItemName: ItemName[i].value,
-                UnitId: UnitId[i].value,
-                UnitName: UnitName[i].value,
-                Size: Size[i].value,
-                UnitPrice: UnitPrice[i].value,
-                POQuantity: POQuantity[i].value,
-                TotalPrice: TotalPrice[i].value
-            });
-            console.log('---------->');
-            console.log('ItemId: ' + AddedDetItems[i].ItemId);
-            console.log('ItemName: ' + AddedDetItems[i].ItemName);
-            console.log('UnitId: ' + AddedDetItems[i].UnitId);
-            console.log('UnitName: ' + AddedDetItems[i].UnitName);
-            console.log('Size: ' + AddedDetItems[i].Size);
-            console.log('UnitPrice: ' + AddedDetItems[i].UnitPrice);
-            console.log('POQuantity: ' + AddedDetItems[i].POQuantity);
-            console.log('TotalPrice: ' + AddedDetItems[i].TotalPrice);
-            console.log('---------->');
 
-        }
-        ResourceDetails = JSON.stringify({
-            AddedDetItems: AddedDetItems,
-            PONo: PONo,
-            PODate: PODate,
-            //ProjectId :ProjectId,
-            //SiteId : SiteId,
-            //PurchaseAddress : PurchaseAddress,
-            VendorId: VendorId,
-            TenderId: TenderId,
-            VContactPerson: VContactPerson,
-            ProjectManager: ProjectManager,
-            AttnCell: AttnCell,
-            Email: Email,
-            Subject: Subject,
-            LeadTime: LeadTime,
-            Content: Content,
-            RcvConcenPerson: RcvConcenPerson,
-            RcvPersonCell: RcvPersonCell,
-            POTotalAmt: POTotalAmt
-        });
-        //  debugger;
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/PurchaseOrders/PurchaseCreateOrder',
-            data: ResourceDetails,
-            success: function (result) {
-                console.log(result);
-                if (result.flag === true) {
-                    alert("Record created successfully!");
-                    window.location.replace("/PurchaseOrders/Index");
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            failure: function (response) {
-                alert('error');
+
+
+        if (isValid) {
+            var AddedDetItems = [];
+            var tableCounter = $('#Item-list tr').length - 1;
+            //alert('Length: ' + tableCounter);
+ 
+            for (var i = 0; i < tableCounter - 1; i++) {
+                AddedDetItems.push({
+                    ItemId: ItemId[i].value,
+                    ItemName: ItemName[i].value,
+                    UnitId: UnitId[i].value,
+                    UnitName: UnitName[i].value,
+                    Size: Size[i].value,
+                    UnitPrice: UnitPrice[i].value,
+                    POQuantity: POQuantity[i].value,
+                    TotalPrice: TotalPrice[i].value
+                });
+                console.log('---------->');
+                console.log('ItemId: ' + AddedDetItems[i].ItemId);
+                console.log('ItemName: ' + AddedDetItems[i].ItemName);
+                console.log('UnitId: ' + AddedDetItems[i].UnitId);
+                console.log('UnitName: ' + AddedDetItems[i].UnitName);
+                console.log('Size: ' + AddedDetItems[i].Size);
+                console.log('UnitPrice: ' + AddedDetItems[i].UnitPrice);
+                console.log('POQuantity: ' + AddedDetItems[i].POQuantity);
+                console.log('TotalPrice: ' + AddedDetItems[i].TotalPrice);
+                console.log('---------->');
+
             }
-        });
+            ResourceDetails = JSON.stringify({
+                AddedDetItems: AddedDetItems,
+                PONo: PONo,
+                PODate: PODate,
+                //ProjectId :ProjectId,
+                //SiteId : SiteId,
+                //PurchaseAddress : PurchaseAddress,
+                VendorId: VendorId,
+                TenderId: TenderId,
+                VContactPerson: VContactPerson,
+                ProjectManager: ProjectManager,
+                AttnCell: AttnCell,
+                Email: Email,
+                Subject: Subject,
+                LeadTime: LeadTime,
+                Content: Content,
+                RcvConcenPerson: RcvConcenPerson,
+                RcvPersonCell: RcvPersonCell,
+                POTotalAmt: POTotalAmt
+            });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/PurchaseOrders/PurchaseCreateOrder',
+                data: ResourceDetails,
+                success: function (result) {
+                    console.log(result);
+                    if (result.flag === true) {
+                        alert("Record created successfully!");
+                        window.location.replace("/PurchaseOrders/Index");
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                failure: function (response) {
+                    alert('error');
+                }
+            });
+        }
+
+   
     }
 
 
