@@ -328,6 +328,8 @@ namespace DhaliProcurement.ReportDataset {
             
             private global::System.Data.DataColumn columnSiteEngineer;
             
+            private global::System.Data.DataColumn columnProjectRemarks;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ProjectListDSDataTable() {
@@ -419,6 +421,14 @@ namespace DhaliProcurement.ReportDataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ProjectRemarksColumn {
+                get {
+                    return this.columnProjectRemarks;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -454,7 +464,7 @@ namespace DhaliProcurement.ReportDataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ProjectListDSRow AddProjectListDSRow(int ProjectId, int SiteId, string ProjectName, string SiteName, string SiteLocation, string ProjectEngineer, string SiteEngineer) {
+            public ProjectListDSRow AddProjectListDSRow(int ProjectId, int SiteId, string ProjectName, string SiteName, string SiteLocation, string ProjectEngineer, string SiteEngineer, string ProjectRemarks) {
                 ProjectListDSRow rowProjectListDSRow = ((ProjectListDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ProjectId,
@@ -463,7 +473,8 @@ namespace DhaliProcurement.ReportDataset {
                         SiteName,
                         SiteLocation,
                         ProjectEngineer,
-                        SiteEngineer};
+                        SiteEngineer,
+                        ProjectRemarks};
                 rowProjectListDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowProjectListDSRow);
                 return rowProjectListDSRow;
@@ -493,6 +504,7 @@ namespace DhaliProcurement.ReportDataset {
                 this.columnSiteLocation = base.Columns["SiteLocation"];
                 this.columnProjectEngineer = base.Columns["ProjectEngineer"];
                 this.columnSiteEngineer = base.Columns["SiteEngineer"];
+                this.columnProjectRemarks = base.Columns["ProjectRemarks"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -512,6 +524,8 @@ namespace DhaliProcurement.ReportDataset {
                 base.Columns.Add(this.columnProjectEngineer);
                 this.columnSiteEngineer = new global::System.Data.DataColumn("SiteEngineer", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSiteEngineer);
+                this.columnProjectRemarks = new global::System.Data.DataColumn("ProjectRemarks", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProjectRemarks);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1083,6 +1097,22 @@ namespace DhaliProcurement.ReportDataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ProjectRemarks {
+                get {
+                    try {
+                        return ((string)(this[this.tableProjectListDS.ProjectRemarksColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProjectRemarks\' in table \'ProjectListDS\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableProjectListDS.ProjectRemarksColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsProjectIdNull() {
                 return this.IsNull(this.tableProjectListDS.ProjectIdColumn);
             }
@@ -1163,6 +1193,18 @@ namespace DhaliProcurement.ReportDataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetSiteEngineerNull() {
                 this[this.tableProjectListDS.SiteEngineerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsProjectRemarksNull() {
+                return this.IsNull(this.tableProjectListDS.ProjectRemarksColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetProjectRemarksNull() {
+                this[this.tableProjectListDS.ProjectRemarksColumn] = global::System.Convert.DBNull;
             }
         }
         

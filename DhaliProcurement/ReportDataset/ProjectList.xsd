@@ -22,6 +22,7 @@
               <xs:element name="SiteLocation" msprop:Generator_ColumnVarNameInTable="columnSiteLocation" msprop:Generator_ColumnPropNameInRow="SiteLocation" msprop:Generator_ColumnPropNameInTable="SiteLocationColumn" msprop:Generator_UserColumnName="SiteLocation" type="xs:string" minOccurs="0" />
               <xs:element name="ProjectEngineer" msprop:Generator_ColumnVarNameInTable="columnProjectEngineer" msprop:Generator_ColumnPropNameInRow="ProjectEngineer" msprop:Generator_ColumnPropNameInTable="ProjectEngineerColumn" msprop:Generator_UserColumnName="ProjectEngineer" type="xs:string" minOccurs="0" />
               <xs:element name="SiteEngineer" msprop:Generator_ColumnVarNameInTable="columnSiteEngineer" msprop:Generator_ColumnPropNameInRow="SiteEngineer" msprop:Generator_ColumnPropNameInTable="SiteEngineerColumn" msprop:Generator_UserColumnName="SiteEngineer" type="xs:string" minOccurs="0" />
+              <xs:element name="ProjectRemarks" msprop:Generator_ColumnVarNameInTable="columnProjectRemarks" msprop:Generator_ColumnPropNameInRow="ProjectRemarks" msprop:Generator_ColumnPropNameInTable="ProjectRemarksColumn" msprop:Generator_UserColumnName="ProjectRemarks" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
