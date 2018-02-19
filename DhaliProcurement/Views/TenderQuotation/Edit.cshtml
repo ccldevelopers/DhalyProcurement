@@ -69,7 +69,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">Project</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("ProjectId", null, "Select Project", htmlAttributes: new
+                                        @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new
                                    {
                                        @class = "form-control select2",
                                        @data_required = "required",
@@ -78,7 +78,7 @@
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Site</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("SiteId", null, "Select Site", htmlAttributes: new
+                                        @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new
                                    {
                                        @class = "form-control select2",
                                        @data_required = "required",
@@ -87,7 +87,7 @@
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("RCode", null, "Select Requisition", htmlAttributes: new
+                                        @Html.DropDownList("RCode", null, "--Select--", htmlAttributes: new
                                    {
                                        @class = "form-control select2",
                                        @data_required = "required",
@@ -108,7 +108,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">Item</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("ItemName", null, "Select Item", htmlAttributes: new
+                                        @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new
                                    {
                                        @class = "form-control select2",
                                        @data_required = "required",
@@ -138,7 +138,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">Vendor</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("VendorId", null, "Select Vendor", htmlAttributes: new
+                                        @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new
                                    {
                                        @class = "form-control select2",
                                        @data_required = "required",
@@ -273,7 +273,7 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
+                                    @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
                                     <span class="error" id="ModalProjectName_Error"></span>
                                 </div>
                             </div>
@@ -282,7 +282,7 @@
                                 @Html.Label("Site", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @*<input type="hidden" id="modalunitId" />*@
-                                    @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
+                                    @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
                                     <span class="error" id="ModalSiteName_Error"></span>
                                 </div>
                             </div>
@@ -291,7 +291,7 @@
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     <input type="hidden" id="ModalProc_RequisitionDetId" />
-                                    @Html.DropDownList("RCode", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalRequisition" })
+                                    @Html.DropDownList("RCode", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalRequisition" })
                                     <span class="error" id="ModalReqNo_Error"></span>
                                  </div>
                             </div>
@@ -300,7 +300,7 @@
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
                                     <input type="hidden" id="ModalProc_RequisitionDetId"/>
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
                                     <span class="error" id="ModalItemName_Error"></span>
                                 </div>
                             </div>
@@ -324,7 +324,7 @@
                                 @Html.Label("Vendor Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("VendorId", null, "Select Vendor", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalVendor" })
+                                    @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalVendor" })
                                     <span class="error" id="ModalVendorName_Error"></span>
                                  </div>
                             </div>
@@ -1213,17 +1213,17 @@
             if (isAllValid) {
                 var newRow = jQuery('<tr>'
                      +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="TenderDetailId" value="'+TenderDetailId+'"/></td>'
-                    + '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId"/><input type="text" value="'+ ProjectName+'" class="form-control" name="ProjectName"  style="width:90px;" disabled="disabled"/></td>'
-                    + '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><input type="text" value="'+ SiteName+'" class="form-control" name="SiteName"  style="width:90px;" disabled="disabled"/></td>'
-                    + '<td><input value="' + RCode + '" type="hidden" class="form-control" name="ReqCode"/><input value="' + RCodeName + '" type="text" class="form-control" name="RCodeName" style="width:90px;" disabled="disabled"/><input value="' + Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
-                    + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><input value="' + ItemName + '" class="form-control" type="text" name="ItemName" style="width:90px;" disabled="disabled"/></td>'
-                    + '<td><input value="' + Qty + '" type="text" name="Qty" class="form-control" style="width:90px;" disabled="disabled"/></td>'
-                    + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input value="' + UnitName + '" class="form-control" type="text" name="UnitName" style="width:90px;" disabled="disabled"/></td>'
-                    + '<td><input value="' + VendorId + '" type="hidden" name="Vendor"/><input value="' + VendorName + '" class="form-control" type="text" name="VendorName" style="width:90px;" disabled="disabled"/></td>'
-                    + '<td><input value="' + TQNo + '" type="text" name="TQNo" class="form-control" style="width:110px;"/></td>'
-                    + '<td><input value="' + TQDate + '" type="text" name="TQDate" class="form-control datepicker" style="width:90px;"/></td>'
-                    + '<td><input value="' + TQPrice + '" type="text" name="TQPrice" class="form-control" style="width:90px;"/></td>'
-                    + '<td><input value="' + TotalPrice + '" type="text" name="TotalPrice" class="form-control" style="width:90px;" disabled="disabled"/><input  class="Status"  value="' + Status + '" type="hidden" name="Status"/></td>'
+                    + '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId"/><label name="label_ProjectName">' + ProjectName  + '</label><input type="hidden" value="'+ ProjectName+'" class="form-control" name="ProjectName"  style="width:90px;" disabled="disabled"/></td>'
+                    + '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName">' + SiteName  + '</label><input type="hidden" value="'+ SiteName+'" class="form-control" name="SiteName"  style="width:90px;" disabled="disabled"/></td>'
+                    + '<td><input value="' + RCode + '" type="hidden" class="form-control" name="ReqCode"/><label name="label_RCodeName">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" class="form-control" name="RCodeName" style="width:90px;" disabled="disabled"/><input value="' + Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                    + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName">' + ItemName  + '</label><input value="' + ItemName + '" class="form-control" type="hidden" name="ItemName" style="width:90px;" disabled="disabled"/></td>'
+                    + '<td><input value="' + Qty + '" type="hidden" name="Qty" class="form-control" style="width:90px;" disabled="disabled"/><label name="label_Qty">' +  Qty  + '</label></td>'
+                    + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input value="' + UnitName + '" class="form-control" type="hidden" name="UnitName" style="width:90px;" disabled="disabled"/></td>'
+                    + '<td><input value="' + VendorId + '" type="hidden" name="Vendor"/><label>' + VendorName + '<label><input value="' + VendorName + '" class="form-control" type="hidden" name="VendorName" style="width:90px;" disabled="disabled"/></td>'
+                    + '<td><input value="' + TQNo + '" type="hidden" name="TQNo" class="form-control" style="width:110px;"/><label name="label_TQNo">' + TQNo + '</label></td>'
+                    + '<td><input value="' + TQDate + '" type="hidden" name="TQDate" class="form-control datepicker" style="width:90px;"/><label name="label_TQDate">' + TQDate + '</label></td>'
+                    + '<td><input value="' + TQPrice + '" type="hidden" name="TQPrice" class="form-control" style="width:90px;"/></td>'
+                    + '<td><input value="' + TotalPrice + '" type="hidden" name="TotalPrice" class="form-control" style="width:90px;" disabled="disabled"/><label name="label_TotalPrice">' + TotalPrice + '</label><input  class="Status"  value="' + Status + '" type="hidden" name="Status"/></td>'
                     + '<td> '
                      + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                     +' <button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button><input type="checkbox"/>'
