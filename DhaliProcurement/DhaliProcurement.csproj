@@ -229,6 +229,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProjectInformationDetail.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ReportDataset\ProjectList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectList.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ReportDataset\PurchaseOrderDetail.cs">
       <DependentUpon>PurchaseOrderDetail.xsd</DependentUpon>
     </Compile>
@@ -256,6 +261,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ProjectList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProjectList.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModel\VendorPaymentEdit.cs" />
     <Compile Include="ViewModel\VMVenderPayment.cs" />
@@ -773,6 +784,17 @@
     </Content>
     <Content Include="ReportDataset\PurchaseOrderDetail.xsc">
       <DependentUpon>PurchaseOrderDetail.xsd</DependentUpon>
+    </Content>
+    <Content Include="ReportDataset\ProjectList.xsc">
+      <DependentUpon>ProjectList.xsd</DependentUpon>
+    </Content>
+    <None Include="ReportDataset\ProjectList.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProjectList.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="ReportDataset\ProjectList.xss">
+      <DependentUpon>ProjectList.xsd</DependentUpon>
     </Content>
     <None Include="ReportDataset\PurchaseOrderDetail.xsd">
       <SubType>Designer</SubType>
@@ -1719,6 +1741,7 @@
     <Content Include="Views\VendorPayments\Create - PreviousDesign.cshtml" />
     <Content Include="Views\VendorPayments\Edit - PreviousDesign.cshtml" />
     <Content Include="Views\MaterialsEntry\Edit - previous code.cshtml" />
+    <Content Include="Views\Report\ProjectList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1754,6 +1777,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802150454244_15Feb_2018.resx">
       <DependentUpon>201802150454244_15Feb_2018.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ProjectList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ProjectList.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

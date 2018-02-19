@@ -2547,5 +2547,112 @@ namespace DhaliProcurement.Controllers
 
 
 
+
+
+
+
+        //ProjectList report february 19
+        [HttpGet]
+        public ActionResult ProjectList()
+        {
+
+            ViewBag.ProjectId = new SelectList(db.Project,"Id", "Name");
+
+            ViewBag.SiteId = new SelectList(db.ProjectSite,"Id", "Name");
+
+
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProjectList(int? ProjectId, int? SiteId)
+        {
+
+            var companyInfo = db.CompanyInformation.SingleOrDefault();
+            ProjectList projectListDS = new ProjectList();
+
+
+            projectListDS.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                         companyInfo.Address,
+                                                         companyInfo.Phone,
+                                                         companyInfo.Web,
+                                                         companyInfo.Email,
+                                                         companyInfo.Id);
+      
+
+            var projectLists = (from projSite in db.ProjectSite
+                               join proj in db.Project on projSite.Id equals proj.Id
+                               join projRes in db.ProjectResource on proj.Id equals projRes.ProjectId
+                               join projSiteRes in db.ProjectSiteResource on projSite.Id equals projSiteRes.ProjectSiteId
+                               join compRes in db.CompanyResource on projRes.CompanyResourceId equals compRes.Id 
+                               join compResSite in db.CompanyResource on projSiteRes.CompanyResourceId equals compResSite.Id
+                               where projSite.Id == proj.Id
+                               select new
+                                   {
+                                   ProjectId= proj.Id,
+                                   SiteId= projSite.Id,
+                                   ProjectName= proj.Name,
+                                   SiteName= projSite.Name,
+                                   SiteLocation= projSite.Location,
+                                   ProjectManager= projRes.CompanyResource.Name,
+                                   SiteEngineer= projSiteRes.CompanyResource.Name                                  
+                                   }).Distinct().ToList();
+
+
+
+            if (ProjectId != null && SiteId != null)
+            {
+
+                projectLists = projectLists.Where(x => x.ProjectId == ProjectId && x.SiteId == SiteId).ToList();
+            }
+          
+            else if (ProjectId != null)
+            {
+                projectLists = projectLists.Where(x => x.ProjectId == ProjectId).ToList();
+            }          
+
+            foreach (var item in projectLists)
+            {
+                projectListDS.ProjectListDS.AddProjectListDSRow(
+                   item.ProjectId,
+                   item.SiteId,
+                   item.ProjectName,
+                   item.SiteName,
+                   item.SiteLocation,
+                   item.ProjectManager,
+                   item.SiteEngineer
+                    );
+            }
+
+
+
+            ReportDocument rd = new ReportDocument();
+
+            rd.Load(Path.Combine(Server.MapPath("~/Reports"), "ProjectList.rpt"));
+
+            rd.SetDataSource(projectListDS);
+
+            Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            Byte[] fileBuffer = ms.ToArray();
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-length", fileBuffer.Length.ToString());
+            Response.BinaryWrite(fileBuffer);
+            return null;
+        }
+
+
+
+
+
+
+
     }
-    }
+}
