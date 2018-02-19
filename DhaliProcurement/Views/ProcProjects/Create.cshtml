@@ -323,6 +323,11 @@
                 $('#QuantityMax_Error').hide();
             }
 
+            if (Qty.length > 14) {
+                isValidItem = false;
+                $('#QuantityMax_Error').text("Qty must be less than 14 characters!").show()
+            }
+
             if ($('#Unit').val().trim() == '') {
                 isValidItem = false;
                 $('#UnitName_Error').show();
@@ -346,6 +351,11 @@
             }
             else {
                 $('#CostMax_Error').hide();
+            }
+
+            if (Cost.length > 14) {
+                isValidItem = false;
+                $('#CostMax_Error').text("Cost must be less than 14 characters!").show()
             }
 
             if (ItemRemarks.trim().length > 50) {

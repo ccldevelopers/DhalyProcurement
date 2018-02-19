@@ -597,15 +597,14 @@
             console.log('POQuantity: ' + quantity);
             var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();
             console.log('UnitPrice: ' + cost);
-            var result = parseFloat(quantity) * parseFloat(cost);
-            if (isNaN(result)) {
-                $('#totalCost').val("");
-            }
-            else {
-                ItemTotalCost = parseFloat(ItemTotalCost + result);
-                $('#totalCost').val(ItemTotalCost);
-            }
-           
+            var result = parseFloat(quantity) * parseFloat(cost);         
+        }
+        if (isNaN(result)) {
+            $('#totalCost').val("");
+        }
+        else {
+            ItemTotalCost = parseFloat(ItemTotalCost + result);
+            $('#totalCost').val(ItemTotalCost);
         }
       
     }

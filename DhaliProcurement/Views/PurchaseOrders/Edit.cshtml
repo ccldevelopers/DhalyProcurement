@@ -212,7 +212,9 @@
                                     <th>Total Price</th>
                                     <th></th>
                                 </tr>
+                                @*<tbody></tbody>*@
                                 <tfoot>
+                                   
                                     <tr>
                                         @*<td></td>
                                             <td></td>
@@ -481,10 +483,18 @@
               +'<td><input class="form-control TotalPriceNew" value="' + TotalPrice + '" type="hidden" readonly="true" name="TotalPrice"/><label name="label_TotalPrice">' + TotalPrice + '</label></td>'
               +'<td>'
               + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-              +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded" onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td>'
+              //+'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded " onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td>'
+               +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick"><i class="icon-cross"></i></button></td>'             
               +'</tr>');
 
             jQuery('table.Resource-list').append(newRow);
+
+            
+            $('.deleteClick').click(function () {
+
+                $(this).parent().parent().remove();
+                totalItemCost();
+            });
 
             $('.editSite').click(function () {
                 var row = $(this).closest('tr');
@@ -515,10 +525,12 @@
 
 
             totalItemCost();
-            //totalItemCost();
+           
 
-            $('#POQuantity').val("");
-            $('#TotalPrice').val("");
+            //$('#POQuantity').val("");
+            //$('#TotalPrice').val("");
+            $('#POQuantity1').val("");
+            $('#TotalPrice1').val("");
             $('#Size').val("");
             $('#UnitName').val("");
             $('#RequisitionQty').val("");
@@ -529,20 +541,20 @@
         //end
     });
 
-    $('#Item-list').on({
-        'change': function () {
-            var ItemTotalCost = 0;
-            for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
-                var quantity = $('#Item-list tr').eq(cn).find("td input[name=POQuantity]").val();
-                // console.log('Quantity: ' + quantity);
-                var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();
-                // console.log('Cost: ' + cost);
-                var result = parseFloat(quantity) * parseFloat(cost);
-                ItemTotalCost = parseFloat(ItemTotalCost + result);
-            }
-            $('#totalCost').val(ItemTotalCost);
-        }
-    });
+    //$('#Item-list').on({
+    //    'change': function () {
+    //        var ItemTotalCost = 0;
+    //        for (var cn = 1; cn < $('#Item-list tr').length - 1; cn++) {
+    //            var quantity = $('#Item-list tr').eq(cn).find("td input[name=POQuantity]").val();
+    //            // console.log('Quantity: ' + quantity);
+    //            var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();
+    //            // console.log('Cost: ' + cost);
+    //            var result = parseFloat(quantity) * parseFloat(cost);
+    //            ItemTotalCost = parseFloat(ItemTotalCost + result);
+    //        }
+    //        $('#totalCost').val(ItemTotalCost);
+    //    }
+    //});
 
 
 
@@ -557,14 +569,14 @@
             console.log('UnitPrice: ' + cost);
             var result = parseFloat(quantity) * parseFloat(cost);
             ItemTotalCost = parseFloat(ItemTotalCost + result);
-
+            
         }
-
+      
         if (isNaN(result)) {
             $('#totalCost').val("");
         }
         else {
-            ItemTotalCost = parseFloat(ItemTotalCost + result);
+            //ItemTotalCost = parseFloat(ItemTotalCost + result);
             $('#totalCost').val(ItemTotalCost);
         }
         //$('#totalCost').val(ItemTotalCost);
@@ -702,18 +714,17 @@
                             else {
                                 alert(result.message);
                             }
-
+                            totalItemCost();
 
                         },
                         failure: function (response) {
                             alert('error');
+                            totalItemCost();
                         }
                     });
 
-                    //}
-                    //else {
-                    //    return false;
-                    //}
+                    totalItemCost();
+
 
                 });
 

@@ -40,17 +40,17 @@
                                 @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
                                 <td style="font-weight: bold;" class="col-lg-1">Project</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
+                                    @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
                                     <input type="hidden" value="" id="ProjectId" />
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Site</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
+                                    @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
                                     <input type="hidden" value="" id="SiteId" />
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
+                                    @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
                                     <input type="hidden" value="" id="ReqNo" />
                                 </td>
                             </tr>
@@ -65,13 +65,13 @@
                             <tr>
                                 <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
+                                    @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
                                     <input type="hidden" value="" id="PONo" />
 
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Item</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Req. Qty Material</td>
                                 <td class="col-lg-3">
@@ -94,7 +94,7 @@
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Challan No</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo" })
+                                    @Html.DropDownList("ChallanNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo" })
                                     <input type="hidden" value="" id="Proc_MaterialEntryDetId" />
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Bill No.</td>
@@ -109,7 +109,7 @@
                                 <td></td>
                                 <td><span class="error" id="Challan_Error" style="padding-left:10px;">Challan No. Required</span></td>
                                 <td></td>
-                                <td></td>
+                                <td><span class="error" id="BillNo_Error" style="padding-left:10px;">Challan No. Required</span></td>
 
                             </tr>
                             <tr>
@@ -135,7 +135,7 @@
                                 <td></td>
                                 <td><span class="error" id="Payment_Error" style="padding-left:10px;">Payment Required</span></td>
                                 <td></td>
-                                <td></td>
+                                <td><span class="error" id="Remarks_Error" style="padding-left:10px;"></span></td>
 
                             </tr>
                             <tr>
@@ -204,21 +204,24 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
-                            </div>
+                                @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
+                                <span class="error" id="ModalProjectId_Error"></span>
+                              </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Site Name", htmlAttributes: new
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
-                            </div>
+                                @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
+                                <span class="error" id="ModalSiteId_Error"></span>
+                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
+                                @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
+                                <span class="error" id="ModalReq_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -226,7 +229,8 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
+                                @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
+                                <span class="error" id="ModalPO_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -234,8 +238,9 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
-                            </div>
+                                @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                <span class="error" id="ModalItemId_Error"></span>
+                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Req Qty", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -256,8 +261,8 @@
                             @Html.Label("Challan No", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalChallanNo" })
-                                @*@Html.TextBox("ModalChallanNo", null, new { @class = "form-control", @disabled = "disabled" })*@
+                                @Html.DropDownList("ChallanNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalChallanNo" })
+                                <span class="error" id="ModalChallan_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -265,6 +270,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalBillNo", null, new { @class = "form-control" })
+                                <span class="error" id="ModalBillNo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -373,18 +379,18 @@
                     //console.log("VP "+data.List[i].Proc_VendorPaymentDetId);
 
                     var newRow = jQuery('<tr>'
-                          + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId" class="form-control" style="width:50px;"/><input class="form-control" value="' + data.List[i].ProjectName + '" readonly="true" type="text" name="ProjectName"  style="width:90px;"/></td>'
-                          + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId" class="form-control" style="width:50px;"/><input class="form-control" value="' + data.List[i].SiteName + '" readonly="true" type="text" name="SiteName"  style="width:90px;"/></td>'
-                          + '<td><input value="' + data.List[i].ReqNo + '" type="hidden" name="ReqNo" class="form-control" style="width:90px;"/><input value="' + data.List[i].ReqNoName + '" type="text" name="ReqNoName" class="form-control" style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_VendorPaymentDetId + '" type="hidden" name="Proc_VendorPaymentDetId"/></td>'
-                          + '<td><input value="' + data.List[i].PONo + '" type="hidden" name="PONo" class="form-control" style="width:90px;"/><input class="form-control" value="' + data.List[i].PONoName + '" readonly="true" type="text" name="PONoName"  style="width:90px;"/><input value="' + data.List[i].Proc_MaterialEntryDetId + '" type="hidden" name="Proc_MaterialEntryDetId"/></td>'
-                          + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId" class="form-control" style="width:50px;"/><input class="form-control" value="' + data.List[i].ItemName + '" readonly="true" type="text" name="ItemName"  style="width:90px;"/></td>'
-                          + '<td><input value="' + data.List[i].Qty + '" type="text" name="ReqQty" class="form-control" style="width:50px;" disabled="disabled"/></td>'
-                          + '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + data.List[i].UnitName + '" readonly="true" type="text" name="UnitName"  style="width:90px;"/></td>'
-                          + '<td><input value="' + data.List[i].ChallanNo + '" type="hidden" name="ChallanNo" class="form-control" style="width:80px;" disabled="disabled"/><input value="' + data.List[i].ChallanNoName + '" type="text" name="ChallanNoName" class="form-control" style="width:90px;"/></td>'
-                          + '<td><input value="' + data.List[i].BillNo + '" type="text" name="BillNo" class="form-control" style="width:80px;"/></td>'
-                          + '<td><input value="' + data.List[i].TotalAmt + '" type="text" name="TotalAmount" class="form-control" style="width:110px;" disabled="disabled"/></td>'
-                          + '<td><input value="' + data.List[i].Payment + '" type="text" class="form-control" style="width:80px;" name="Payment"/></td>'
-                          + '<td><input value="' + data.List[i].Remarks + '" type="text" class="form-control" style="width:80px;" name="Remarks"/></td>'
+                          + '<td><input value="' + data.List[i].ProjectId + '" type="hidden" name="ProjectId" class="form-control" style="width:50px;"/><label name="label_ProjectName" style="width:150px;">' + data.List[i].ProjectName + '</label><input class="form-control" value="' + data.List[i].ProjectName + '" readonly="true" type="hidden" name="ProjectName"  style="width:90px;"/></td>'
+                          + '<td><input value="' + data.List[i].SiteId + '" type="hidden" name="SiteId" class="form-control" style="width:50px;"/><label name="label_SiteName" style="width:150px;">' + data.List[i].SiteName + '</label><input class="form-control" value="' + data.List[i].SiteName + '" readonly="true" type="hidden" name="SiteName"  style="width:90px;"/></td>'
+                          + '<td><input value="' + data.List[i].ReqNo + '" type="hidden" name="ReqNo" class="form-control" style="width:90px;"/><label name="label_ReqNoName" style="width:150px;">' + data.List[i].ReqNoName + '</label><input value="' + data.List[i].ReqNoName + '" type="hidden" name="ReqNoName" class="form-control" style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_VendorPaymentDetId + '" type="hidden" name="Proc_VendorPaymentDetId"/></td>'
+                          + '<td><input value="' + data.List[i].PONo + '" type="hidden" name="PONo" class="form-control" style="width:90px;"/><label name="label_PONoName" style="width:150px;">' + data.List[i].PONoName + '</label><input class="form-control" value="' + data.List[i].PONoName + '" readonly="true" type="hidden" name="PONoName"  style="width:90px;"/><input value="' + data.List[i].Proc_MaterialEntryDetId + '" type="hidden" name="Proc_MaterialEntryDetId"/></td>'
+                          + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId" class="form-control" style="width:50px;"/><label name="label_ItemName" style="width:150px;">' + data.List[i].ItemName  + '</label><input class="form-control" value="' + data.List[i].ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;"/></td>'
+                          + '<td><input value="' + data.List[i].Qty + '" type="hidden" name="ReqQty" class="form-control" style="width:50px;" disabled="disabled"/><label name="label_ReqQty">' + data.List[i].Qty + '</label></td>'
+                          + '<td><input value="' + data.List[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data.List[i].UnitName + '</label><input class="form-control" value="' + data.List[i].UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;"/></td>'
+                          + '<td><input value="' + data.List[i].ChallanNo + '" type="hidden" name="ChallanNo" class="form-control" style="width:80px;" disabled="disabled"/><label name="label_ChallanNo">' + data.List[i].ChallanNoName + '</label><input value="' + data.List[i].ChallanNoName + '" type="hidden" name="ChallanNoName" class="form-control" style="width:90px;"/></td>'
+                          + '<td><input value="' + data.List[i].BillNo + '" type="hidden" name="BillNo" class="form-control" style="width:80px;"/><label name="label_BillNo">' + data.List[i].BillNo  + '</label></td>'
+                          + '<td><input value="' + data.List[i].TotalAmt + '" type="hidden" name="TotalAmount" class="form-control" style="width:110px;" disabled="disabled"/><label name="label_TotalAmount">' + data.List[i].TotalAmt + '</label></td>'
+                          + '<td><input value="' + data.List[i].Payment + '" type="hidden" class="form-control" style="width:80px;" name="Payment"/><label name="label_Payment">' + data.List[i].Payment + '</label></td>'
+                          + '<td><input value="' + data.List[i].Remarks + '" type="hidden" class="form-control" style="width:80px;" name="Remarks"/><label name="label_Remarks">' + data.List[i].Remarks + '</label></td>'
                           //  + '<td><button onclick="RemoveTask('+data.List[i].Proc_VendorPaymentDetId+')" type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded"><i class="icon-cross"></i></button></td></tr>');
                           + '<td>'
                           + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
@@ -1007,8 +1013,8 @@
         var Remarks = $('#Remarks').val();
         var Proc_MaterialEntryDetId= $('#Proc_MaterialEntryDetId').val();
         //   alert('Proc_MaterialEntryDetId '+Proc_MaterialEntryDetId);
-
-        if ($('#ProjectId').val().trim() == '') {
+        
+        if ($('#ProjectId').val().trim() == '' || ProjectName == "--Select--") {
             $('#ProjectId_Error').show();
             isAllValid = false;
         }
@@ -1016,28 +1022,28 @@
             $('#ProjectId_Error').hide();
         }
 
-        if ($('#SiteId').val().trim() == '') {
+        if ($('#SiteId').val().trim() == '' || SiteName == "--Select--") {
             $('#SiteId_Error').show();
             isAllValid = false;
         }
         else {
             $('#SiteId_Error').hide();
         }
-        if ($('#ReqNo').val().trim() == '') {
+        if ($('#ReqNo').val().trim() == '' || ReqNoName == "--Select--") {
             $('#Req_Error').show();
             isAllValid = false;
         }
         else {
             $('#Req_Error').hide();
         }
-        if ($('#PONo').val().trim() == '') {
+        if ($('#PONo').val().trim() == '' || PONoName == "--Select--") {
             $('#PO_Error').show();
             isAllValid = false;
         }
         else {
             $('#PO_Error').hide();
         }
-        if ($('#ItemName').val().trim() == '') {
+        if ($('#ItemName').val().trim() == '' || ItemName == "--Select--") {
             $('#ItemId_Error').show();
             isAllValid = false;
         }
@@ -1051,14 +1057,26 @@
         else {
             $('#Challan_Error').hide();
         }
-        if (!($('#Payment').val().trim() != '' && !isNaN($('#Payment').val().trim()))) {
+        if ($('#Payment').val().trim() == '') {
             isAllValid = false;
-            $('#Payment_Error').show();
+            $('#Payment_Error').text("Payment required").show();
         }
         else {
-            $('#Payment_Error').hide();
+            if(isNaN($('#Payment').val().trim())){
+                isAllValid = false;
+                $('#Payment_Error').text("Payment must be a numeric value!").show();
+            }
+            else {
+                $('#Payment_Error').hide();
+            }           
         }
-
+        if (Remarks.length> 50) {
+            $('#Remarks_Error').text("Remarks cannot be greater than 50 characters!").show();
+            isAllValid = false;
+        }
+        else {
+            $('#Remarks_Error').hide();
+        }
 
         $('table.Resource-list tr').each(function () {
             var Item = $(this).find("td input[name=BillNo]").val();

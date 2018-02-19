@@ -22,6 +22,7 @@
                         <td class="col-lg-2">Party Name</td>
                         <td class="col-lg-6">
                             @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2" })
+
                         </td>
                         <td>Payment Date</td>
                         <td>
@@ -40,17 +41,17 @@
                                 @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
                                 <td style="font-weight: bold;" class="col-lg-1">Project</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
+                                    @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ProjectId" })
                                     <input type="hidden" value="" id="ProjectId" />
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Site</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
+                                    @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "SiteId" })
                                     <input type="hidden" value="" id="SiteId" />
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
+                                    @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
                                     <input type="hidden" value="" id="ReqNo" />
                                 </td>
                             </tr>
@@ -65,13 +66,13 @@
                             <tr>
                                 <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
+                                    @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
                                     <input type="hidden" value="" id="PONo" />
 
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Item</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Req. Qty Material</td>
                                 <td class="col-lg-3">
@@ -94,7 +95,7 @@
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Challan No</td>
                                 <td class="col-lg-3">
-                                    @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo" })
+                                    @Html.DropDownList("ChallanNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ChallanNo" })
                                     <input type="hidden" value="" id="Proc_MaterialEntryDetId" />
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Bill No.</td>
@@ -109,7 +110,7 @@
                                 <td></td>
                                 <td><span class="error" id="Challan_Error" style="padding-left:10px;">Challan No. Required</span></td>
                                 <td></td>
-                                <td></td>
+                                <td><span class="error" id="BillNo_Error" style="padding-left:10px;">Challan No. Required</span></td>
 
                             </tr>
                             <tr>
@@ -135,7 +136,7 @@
                                 <td></td>
                                 <td><span class="error" id="Payment_Error" style="padding-left:10px;">Payment Required</span></td>
                                 <td></td>
-                                <td></td>
+                                <td><span class="error" id="Remarks_Error" style="padding-left:10px;"></span></td>
 
                             </tr>
                             <tr>
@@ -207,21 +208,24 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
-                            </div>
+                                @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
+                                <span class="error" id="ModalProjectId_Error"></span>
+                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Site Name", htmlAttributes: new
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
-                            </div>
+                                @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
+                                <span class="error" id="ModalSiteId_Error"></span>
+                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
+                                @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
+                                <span class="error" id="ModalReq_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -229,16 +233,18 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
-                            </div>
+                                @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
+                                <span class="error" id="ModalPO_Error"></span>
+                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Item Name", htmlAttributes: new
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
-                            </div>
+                                @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                <span class="error" id="ModalItemId_Error"></span>
+                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Req Qty", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -259,22 +265,24 @@
                             @Html.Label("Challan No", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.DropDownList("ChallanNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalChallanNo" })
+                                @Html.DropDownList("ChallanNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalChallanNo" })
                                 @*@Html.TextBox("ModalChallanNo", null, new { @class = "form-control", @disabled = "disabled" })*@
-                            </div>
+                                <span class="error" id="ModalChallan_Error"></span>
+                              </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Bill No", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalBillNo", null, new { @class = "form-control" })
+                                <span class="error" id="ModalBillNo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Challan Amount(tk)", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.TextBox("ModalTotalAmount", null, new { @class = "form-control" })
+                                @Html.TextBox("ModalTotalAmount", null, new { @class = "form-control" ,@disabled= "disabled" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -282,6 +290,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalPayment", null, new { @class = "form-control" })
+                                <span class="error" id="ModalPayment_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -289,6 +298,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalRemarks", null, new { @class = "form-control" })
+                                <span class="error" id="ModalRemarks_Error"></span>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -317,8 +327,6 @@
         $("#PONo").attr("disabled", "true");
         $("#ItemName").attr("disabled", "true");
         $("#ChallanNo").attr("disabled", "true");
-        //$('#ItemName_Error').hide();
-        //$('#ReqQty_Error').hide();
 
         $('#ProjectId_Error').hide();
         $('#SiteId_Error').hide();
@@ -564,73 +572,6 @@
     });
 
 
-    //$("#ChallanNo").change(function () {
-    //    //  var ItemId = $('#ItemName option:selected').val();
-    //    var Proc_MaterialEntryDetId = $('#Proc_MaterialEntryDetId').val();
-    //    //  var ProjectId = $('#ProjectId option:selected').val();
-    //    //  var SiteId = $('#SiteId option:selected').val();
-
-
-    //    $.ajax({
-    //        type: "post",
-    //        url: "/VendorPayments/GetTotalAmt",
-    //        data: { Proc_MaterialEntryDetId: Proc_MaterialEntryDetId },
-    //        datatype: "json",
-    //        traditional: true,
-    //        success: function (data) {
-    //            // $('#ChallanNo').removeAttr("disabled");
-    //            //  $('#UnitId').val(data.UnitId);
-    //            //  $('#UnitName').val(data.UnitName);
-    //            //  $('#ReqQty').val(data.RemQty);
-    //            // $('#Proc_MaterialEntryDetId').val(data.Proc_MaterialEntryDetId);
-    //            $('#TotalAmount').val(data.totalAmt);
-    //        }
-
-    //    });
-    //});
-
-
-
-
-
-    //$("#ReqNo").change(function () {
-    //    var ItemId = $('#ItemName option:selected').val();
-    //    var ProjectId = $('#ProjectId option:selected').val();
-    //    var SiteId = $('#SiteId option:selected').val();
-    //    var ReqNo = $('#ReqNo option:selected').val();
-
-    //    if (ProjectId == "" && SiteId == "") {
-    //        alert('Please Select Project Id and Site Id');
-    //    }
-
-    //    $.ajax({
-    //        type: "post",
-    //        url: "/MaterialsEntry/GetVendor",
-    //        data: { ItemId, ProjectId, SiteId, ReqNo },
-    //        datatype: "json",
-    //        traditional: true,
-    //        success: function (data) {
-    //            $('#VendorName').val(data.vendorName);
-    //            $('#VendorId').val(data.VendorId);
-    //            $('#TotalMaterial').val(data.TotalMaterial);
-    //            $('#RemainingQty').val(data.RemainingQty);
-    //            $('#UnitPrice').val(data.UnitPrice);
-    //            var previousRemaining = data.TotalMaterial - data.RemainingQty;
-    //            $('#PreviousQty').val(previousRemaining);
-    //        }
-
-    //    });
-    //});
-
-    //$(document).on({
-    //    'change': function () {
-    //        var entry = $(this).val();
-    //        alert('Material Entry :' + entry);
-    //        var unitprice = $('#UnitPrice').val();
-    //        var totalPrice = entry * unitprice;
-    //        $('#Cost').val(totalPrice);
-    //    }
-    //}, 'input[name=ItemEntry]');
 
 
     //add new row
@@ -681,7 +622,7 @@
 
         //alert(Proc_MaterialEntryDetId);
 
-        if ($('#ProjectId').val().trim() == '') {
+        if ($('#ProjectId').val().trim() == '' || $('#ProjectId').text().trim() == "--Select--") {
             $('#ProjectId_Error').show();
             isAllValid = false;
         }
@@ -689,21 +630,21 @@
             $('#ProjectId_Error').hide();
         }
 
-        if ($('#SiteId').val().trim() == '') {
+        if ($('#SiteId').val().trim() == '' || $('#SiteId').text().trim() == "--Select--") {
             $('#SiteId_Error').show();
             isAllValid = false;
         }
         else {
             $('#SiteId_Error').hide();
         }
-        if ($('#ReqNo').val().trim() == '') {
+        if ($('#ReqNo').val().trim() == '' || $('#ReqNo').text().trim() == "--Select--") {
             $('#Req_Error').show();
             isAllValid = false;
         }
         else {
             $('#Req_Error').hide();
         }
-        if ($('#PONo').val().trim() == '') {
+        if ($('#PONo').val().trim() == '' || $('#PONo').text().trim() == "--Select--") {
             $('#PO_Error').show();
             isAllValid = false;
         }
@@ -717,20 +658,44 @@
         else {
             $('#ItemId_Error').hide();
         }
-        if ($('#ChallanNo').val().trim() == '') {
+        if ($('#ChallanNo').val().trim() == '' || $('#ChallanNo').text().trim() == "--Select--") {
             $('#Challan_Error').show();
             isAllValid = false;
         }
         else {
             $('#Challan_Error').hide();
         }
-        if (!($('#Payment').val().trim() != '' && !isNaN($('#Payment').val().trim()))) {
+        
+        if (BillNo.length > 50) {
+            $('#BillNo_Error').text("Bill No. cannot be greater than 50 characters!").show();
             isAllValid = false;
-            $('#Payment_Error').show();
         }
         else {
-            $('#Payment_Error').hide();
+            $('#BillNo_Error').hide();
         }
+
+        if ($('#Payment').val().trim() == '') {
+            isAllValid = false;
+            $('#Payment_Error').text("Payment required").show();
+        }
+        else {
+            if(isNaN($('#Payment').val().trim())){
+                isAllValid = false;
+                $('#Payment_Error').text("Payment must be a numeric value!").show();
+            }
+            else {
+                $('#Payment_Error').hide();
+            }
+           
+        }
+        if (Remarks.length> 50) {
+            $('#Remarks_Error').text("Remarks cannot be greater than 50 characters!").show();
+            isAllValid = false;
+        }
+        else {
+            $('#Remarks_Error').hide();
+        }
+        
 
         $('table.Resource-list tr').each(function () {
             var Item = $(this).find("td input[name=BillNo]").val();
@@ -745,18 +710,19 @@
 
         if (isAllValid) {
             var newRow = jQuery('<tr>'
-                + '<td><input value="' + Proc_MaterialEntryDetId + '" type="hidden" name="Proc_MaterialEntryDetId"/><input value="' + ProjectId + '" type="hidden" name="ProjectId" class="form-control" style="width:50px;"/><input class="form-control" value="' + ProjectName + '" readonly="true" type="text" name="ProjectName"  style="width:90px;"/></td>'
-                + '<td><input value="' + SiteId + '" type="hidden" name="SiteId" class="form-control" style="width:50px;"/><input class="form-control" value="' + SiteName + '" readonly="true" type="text" name="SiteName"  style="width:90px;"/></td>'
-                + '<td><input value="' + ReqNo + '" type="hidden" name="ReqNo" class="form-control" style="width:50px;"/><input class="form-control" value="' + ReqNoName + '" readonly="true" type="text" name="ReqNoName"  style="width:90px;"/></td>'
-                + '<td><input value="' + PONo + '" type="hidden" name="PONo" class="form-control" style="width:50px;"/><input class="form-control" value="' + PONoName + '" readonly="true" type="text" name="PONoName"  style="width:90px;"/></td>'
-                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId" class="form-control" style="width:50px;"/><input class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName"  style="width:90px;"/></td>'
-                + '<td><input value="' + ReqQty + '" type="text" name="ReqQty" class="form-control" style="width:50px;"/></td>'
-                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + UnitName + '" readonly="true" type="text" name="UnitName"  style="width:90px;"/></td>'
-                + '<td><input value="' + ChallanNo + '" type="text" name="ChallanNo" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + BillNo + '" type="text" name="BillNo" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + TotalAmount + '" type="text" name="TotalAmount" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + Payment + '" type="text" name="Payment" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + Remarks + '" type="text" name="Remarks" class="form-control" style="width:90px;"/></td>'
+                + '<td><input value="' + Proc_MaterialEntryDetId + '" type="hidden" name="Proc_MaterialEntryDetId"/>'
+                + '<input value="' + ProjectId + '" type="hidden" name="ProjectId" class="form-control" style="width:50px;"/><label name="label_ProjectName" style="width:150px;">' + ProjectName + '</label><input class="form-control" value="' + ProjectName + '" readonly="true" type="hidden" name="ProjectName"  style="width:90px;"/></td>'
+                + '<td><input value="' + SiteId + '" type="hidden" name="SiteId" class="form-control" style="width:50px;"/><label name="label_SiteName" style="width:150px;">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" readonly="true" type="hidden" name="SiteName"  style="width:90px;"/></td>'
+                + '<td><input value="' + ReqNo + '" type="hidden" name="ReqNo" class="form-control" style="width:50px;"/><label name="label_ReqNoName" style="width:150px;">' + ReqNoName + '</label><input class="form-control" value="' + ReqNoName + '" readonly="true" type="hidden" name="ReqNoName"  style="width:90px;"/></td>'
+                + '<td><input value="' + PONo + '" type="hidden" name="PONo" class="form-control" style="width:50px;"/><label name="label_PONoName" style="width:150px;">' + PONoName + '</label><input class="form-control" value="' + PONoName + '" readonly="true" type="hidden" name="PONoName"  style="width:90px;"/></td>'
+                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId" class="form-control" style="width:50px;"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;"/></td>'
+                + '<td><input value="' + ReqQty + '" type="hidden" name="ReqQty" class="form-control" style="width:50px;"/><label name="label_ReqQty">' + ReqQty + '</label></td>'
+                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;"/></td>'
+                + '<td><input value="' + ChallanNo + '" type="hidden" name="ChallanNo" class="form-control" style="width:90px;"/><label name="label_ChallanNo">' + ChallanNo + '</label></td>'
+                + '<td><input value="' + BillNo + '" type="hidden" name="BillNo" class="form-control" style="width:90px;"/><label name="label_BillNo">' + BillNo + '</label></td>'
+                + '<td><input value="' + TotalAmount + '" type="hidden" name="TotalAmount" class="form-control" style="width:90px;"/><label name="label_TotalAmount">' + TotalAmount + '</label></td>'
+                + '<td><input value="' + Payment + '" type="hidden" name="Payment" class="form-control" style="width:90px;"/><label name="label_Payment">' + Payment + '</label></td>'
+                + '<td><input value="' + Remarks + '" type="hidden" name="Remarks" class="form-control" style="width:90px;"/><label name="label_Remarks">' + Remarks + '</label></td>'
                 + '<td>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 + '<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
@@ -1015,6 +981,8 @@
 
 
     $('#ModalDetailSave').click(function () {
+        var isAllValid = true;
+
         var ModalProjectId = $('#ModalProjectId option:selected').val();
         var ModalProjectName = $('#ModalProjectId option:selected').text();
         var ModalSiteId = $('#ModalSiteId option:selected').val();
@@ -1027,7 +995,6 @@
         var ModalItemName = $('#ModalItemName option:selected').text();
         var ModalReqQty = $('#ModalReqQty').val();
         var ModalUnitId = $('#ModalUnitName').val();
-
         var ModalUnitName = $('#ModalUnitName').val();
         var ModalChallanNo = $('#ModalChallanNo  option:selected').val();
         var ModalChallanNoName = $('#ModalChallanNo option:selected').text();
@@ -1037,27 +1004,114 @@
         var ModalRemarks = $('#ModalRemarks').val();
 
 
+        if (ModalProjectName.trim() == '' || ModalProjectName.trim() == "--Select--") {
+            $('#ModalProjectId_Error').text("Project required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalProjectId_Error').hide();
+        }
+        if (ModalSiteName.trim() == '' || ModalSiteName.trim() == "--Select--") {
+            $('#ModalSiteId_Error').text("Site required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalSiteId_Error').hide();
+        }
+        if (ModalReqName.trim() == '' || ModalReqName.trim() == "--Select--") {
+            $('#ModalReq_Error').text("Req No. required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalReq_Error').hide();
+        }
+        if (ModalPOName.trim() == '' || ModalPOName.trim() == "--Select--") {
+            $('#ModalPO_Error').text("PO No. required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalPO_Error').hide();
+        }
+        if (ModalItemName.trim() == '' || ModalItemName.trim() == "--Select--") {
+            $('#ModalItemId_Error').text("PO No. required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalItemId_Error').hide();
+        }
+        if (ModalChallanNo.trim() == '' || ModalChallanNo.trim() == "--Select--") {
+            $('#ModalChallan_Error').text("Challan No. required").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalChallan_Error').hide();
+        }
+        if (ModalBillNo.length > 50) {
+            $('#ModalBillNo_Error').text("Bill No. cannot be greater than 50 characters!").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalBillNo_Error').hide();
+        }
 
-        selRow.find('input[name=ProjectName]').val(ModalProjectName);
-        selRow.find('input[name=ProjectId]').val(ModalProjectId);
-        selRow.find('input[name=SiteName]').val(ModalSiteName);
-        selRow.find('input[name=SiteId]').val(ModalSiteId);
-        selRow.find('input[name=ReqNo]').val(ModalReqNo);
-        selRow.find('input[name=ReqNoName]').val(ModalReqName);
-        selRow.find('input[name=PONo]').val(ModalPONo);
-        selRow.find('input[name=PONoName]').val(ModalPOName);
-        selRow.find('input[name=ItemId]').val(ModalItemId);
-        selRow.find('input[name=ItemName]').val(ModalItemName);
-        selRow.find('input[name=ReqQty]').val(ModalReqQty);
-        selRow.find('input[name=UnitId]').val(ModalUnitId);
-        selRow.find('input[name=UnitName]').val(ModalUnitName);
-        selRow.find('input[name=ChallanNo]').val(ModalChallanNo);
-        selRow.find('input[name=BillNo]').val(ModalBillNo);
-        selRow.find('input[name=TotalAmount]').val(ModalTotalAmount);
-        selRow.find('input[name=Payment]').val(ModalPayment);
-        selRow.find('input[name=Remarks]').val(ModalRemarks);
+        if (ModalPayment.trim() == '' ) {
+            $('#ModalPayment_Error').text("Payment required").show();
+            isAllValid = false;
+        }
+        else {
+            if (isNaN(ModalPayment)) {
+                $('#ModalPayment_Error').text("Payment must be a numeric value!").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalPayment_Error').hide();
+            }           
+        }
+        if (ModalRemarks.length > 50) {
+            $('#ModalRemarks').text("Remarks cannot be greater than 50 characters!").show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalRemarks').hide();
+        }
 
-        $('#detailForm').modal('hide');
+        if (isAllValid) {
+            selRow.find('input[name=ProjectName]').val(ModalProjectName);
+            selRow.find('input[name=ProjectId]').val(ModalProjectId);
+            selRow.find('input[name=SiteName]').val(ModalSiteName);
+            selRow.find('input[name=SiteId]').val(ModalSiteId);
+            selRow.find('input[name=ReqNo]').val(ModalReqNo);
+            selRow.find('input[name=ReqNoName]').val(ModalReqName);
+            selRow.find('input[name=PONo]').val(ModalPONo);
+            selRow.find('input[name=PONoName]').val(ModalPOName);
+            selRow.find('input[name=ItemId]').val(ModalItemId);
+            selRow.find('input[name=ItemName]').val(ModalItemName);
+            selRow.find('input[name=ReqQty]').val(ModalReqQty);
+            selRow.find('input[name=UnitId]').val(ModalUnitId);
+            selRow.find('input[name=UnitName]').val(ModalUnitName);
+            selRow.find('input[name=ChallanNo]').val(ModalChallanNo);
+            selRow.find('input[name=BillNo]').val(ModalBillNo);
+            selRow.find('input[name=TotalAmount]').val(ModalTotalAmount);
+            selRow.find('input[name=Payment]').val(ModalPayment);
+            selRow.find('input[name=Remarks]').val(ModalRemarks);
+
+            selRow.find('label[name=label_ProjectName]').text(ModalProjectName);
+            selRow.find('label[name=label_SiteName]').text(ModalSiteName);
+            selRow.find('label[name=label_RCodeName]').text(ModalReqName);
+            selRow.find('label[name=label_POName]').text(ModalPOName);
+            selRow.find('label[name=label_ItemName]').text(ModalItemName);
+            selRow.find('label[name=label_ReqQty]').text(ModalReqQty);
+            selRow.find('label[name=label_UnitName]').text(ModalUnitName);
+            selRow.find('label[name=label_ChallanNo]').text(ModalChallanNo);
+            selRow.find('label[name=label_BillNo]').text(ModalBillNo);
+            selRow.find('label[name=label_TotalAmount]').text(ModalTotalAmount);
+            selRow.find('label[name=label_Payment]').text(ModalPayment);
+            selRow.find('label[name=label_Remarks]').text(ModalRemarks);
+
+            $('#detailForm').modal('hide');
+        }
+
+
     });
 
 
