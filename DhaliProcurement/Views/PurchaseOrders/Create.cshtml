@@ -23,6 +23,7 @@
                             <td>PO No</td>
                             <td>
                                 @Html.TextBox("PONo", "", new { @class = "form-control" })
+                                <span class="error" id="PONo_Error"></span>
                             </td>
                             <td>PO Date</td>
                             <td>
@@ -57,6 +58,7 @@
                             <td class="col-lg-2">Address</td>
                             <td class="col-lg-8" colspan="5">
                                 @Html.TextBox("PurchaseAddress", "", new { @class = "form-control" })
+                                <span class="error" id="PurchaseAddress_Error"></span>
                             </td>
                         </tr>
 
@@ -81,11 +83,12 @@
                             <td>Attention</td>
                             <td>
                                 @Html.TextBox("VContactPerson", null, new { @class = "form-control" })
-                                @*<input id="VContactPerson" type="text" class="form-control"/>*@
+                                <span class="error" id="VContactPerson_Error"></span>
                             </td>
                             <td>To</td>
                             <td>
                                 @Html.TextBox("ProjectManager", null, new { @class = "form-control" })
+                                <span class="error" id="ProjectManager_Error"></span>
                             </td>
                         </tr>
 
@@ -93,10 +96,12 @@
                             <td>Cell</td>
                             <td>
                                 @Html.TextBox("Cell", null, new { @id = "AttnCell", @class = "form-control" })
+                                <span class="error" id="Cell_Error"></span>
                             </td>
                             <td>Email</td>
                             <td>
                                 @Html.TextBox("Email", null, new { @class = "form-control" })
+                                <span class="error" id="Email_Error"></span>
                             </td>
                         </tr>
 
@@ -104,6 +109,7 @@
                             <td class="col-lg-2">Subject</td>
                             <td class="col-lg-8" colspan="5">
                                 @Html.TextBox("Subject", null, new { @class = "form-control" })
+                                <span class="error" id="Subject_Error"></span>
                             </td>
 
                         </tr>
@@ -111,6 +117,7 @@
                             <td class="col-lg-2">Lead Time</td>
                             <td class="col-lg-2" colspan="1">
                                 @Html.TextBox("LeadTime", null, new { @class = "form-control" })
+                                <span class="error" id="LeadTime_Error"></span>
                             </td>
                         </tr>
 
@@ -118,6 +125,7 @@
                             <td class="col-lg-1">Content</td>
                             <td class="col-lg-8" colspan="5">
                                 @Html.TextArea("Content", null, new { @class = "form-control" })
+                                <span class="error" id="Content_Error"></span>
                             </td>
                         </tr>
 
@@ -125,10 +133,12 @@
                             <td class="col-lg-1">Receive Concern Person</td>
                             <td class="col-lg-2" colspan="1">
                                 @Html.TextBox("RcvConcenPerson", null, new { @class = "form-control" })
+                                <span class="error" id="RcvConcenPerson_Error"></span>
                             </td>
                             <td>Cell</td>
                             <td>
                                 @Html.TextBox("Cell", null, new { @id = "RcvPersonCell", @class = "form-control" })
+                                <span class="error" id="RcvPersonCell_Error"></span>
                             </td>
                         </tr>
                     </table>
@@ -259,7 +269,8 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
-                            </div>
+                                <span class="error" id="ModalItemName_Error"></span>
+                              </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -295,6 +306,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalPOQuantity", null, new { @class = "form-control" })
+                                <span class="error" id="ModalPOQuantity_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -308,7 +320,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                             </div>
                         </div>
                     </div>
@@ -361,44 +373,40 @@
         event.preventDefault();
         counter++;
         var ItemId = $('#ItemName option:selected').val();
-        //alert('Item ' + ItemId);
-
         var ItemName = $('#ItemName option:selected').text();
-        //alert('Item ' + ItemName);
         var UnitName = $('#UnitName').val();
-        //alert('nameee ' + UnitName);
-
         var UnitId = $('#UnitId').val();
-        //alert('uiddddddd ' + UnitId);
         var Size = $('#Size').val();
-        //alert('size ' + Size);
-
         var UnitPrice = $('#UnitPrice').val();
         var RequisitionQty = $('#RequisitionQty').val();
-
-        //alert('UnitPrice ' + UnitPrice);
         var POQuantity = $('#POQuantity1').val();
-        //alert('POQuantity ' + POQuantity);
         var TotalPrice = $('#TotalPrice1').val();
-        //alert('TotalPrice ' + TotalPrice);
-        //new
         var isValidItem = true;
 
         if ($('#ItemName').val().trim() == '') {
             $('#ItemName_Error').show();
             isValidItem = false;
-            //$('#ItemName').siblings('span.error').css('visibility', 'visible');
         }
         else {
             $('#ItemName_Error').hide();
         }
 
-        if (!($('#POQuantity1').val().trim() != '' && !isNaN($('#POQuantity1').val().trim()))) {
+        if ($('#POQuantity1').val().trim() == '') {
             isValidItem = false;
-            $('#POQuantity_Error').show();
+            $('#POQuantity_Error').text("PO Quantity required").show();
         }
         else {
             $('#POQuantity_Error').hide();
+        }
+
+        if ($('#POQuantity1').val().trim() != "") {
+            if (isNaN($('#POQuantity1').val().trim())) {
+                isValidItem = false;
+                $('#POQuantity_Error').text("PO Quantity must be a numeric value!").show();
+            }
+            else {
+                $('#POQuantity_Error').hide();
+            }
         }
 
         $('table.Resource-list tr').each(function () {
@@ -412,13 +420,13 @@
         if (isValidItem) {
 
             var newRow = jQuery('<tr>'
-              + '<td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName"/></td>'
-              + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + UnitName + '" readonly="true" type="text" name="UnitName"/></td>'
-              + '<td><input class="form-control" value="' + Size + '" type="text" name="Size" disabled="disabled"/></td>'
-              + '<td><input class="form-control UnitPriceNew" value="' + UnitPrice + '"  type="text" name="UnitPrice" disabled="disabled"/></td>'
-               + '<td><input class="form-control RequisitionQty" value="' + RequisitionQty + '" type="text" name="RequisitionQty" disabled="disabled"/></td>'
-              + '<td><input class="form-control POQuantityNew" value="' + POQuantity + '" type="text" name="POQuantity"/></td>'
-              + '<td><input class="form-control TotalPriceNew" value="' + TotalPrice + '" type="text" readonly="true" name="TotalPrice"/></td>'
+              + '<td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"/></td>'
+              + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
+              + '<td><input class="form-control" value="' + Size + '" type="hidden" name="Size" disabled="disabled"/><label name="label_Size">' + Size + '</label></td>'
+              + '<td><input class="form-control UnitPriceNew" value="' + UnitPrice + '"  type="hidden" name="UnitPrice" disabled="disabled"/><label name="label_UnitPrice">' + UnitPrice + '</label></td>'
+               + '<td><input class="form-control RequisitionQty" value="' + RequisitionQty + '" type="hidden" name="RequisitionQty" disabled="disabled"/><label name="label_RequisitionQty">' + RequisitionQty + '</label></td>'
+              + '<td><input class="form-control POQuantityNew" value="' + POQuantity + '" type="hidden" name="POQuantity"/><label name="label_POQuantity">' + POQuantity + '</label></td>'
+              + '<td><input class="form-control TotalPriceNew" value="' + TotalPrice + '" type="hidden" readonly="true" name="TotalPrice"/><label name="label_TotalPrice">' + TotalPrice + '</label></td>'
               //+ '<td><button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td>'
 
                  + '<td> '
@@ -734,7 +742,7 @@
         var SiteId = $('#SiteId').val();
         $.ajax({
             type: "post",
-            url: "/PurchaseOrders/cc",
+            url: "/PurchaseOrders/GetSiteLocation",
             data: { SiteId },
             datatype: "json",
             traditional: true,
