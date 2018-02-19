@@ -304,7 +304,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                             </div>
                         </div>
                     </div>
@@ -757,6 +757,14 @@
         }
     });
 
+    $('#ModalClose').click(function () {
+        $('#ModalItemName_Error').hide();
+        $('#ModalQty_Error').hide();
+        $('#ModalCurrentStock_Error').hide();
+        $('#ModalBrand_Error').hide();
+        $('#ModalSize_Error').hide();
+        $('#ModalRemarks_Error').hide();
+    });
 
     $('#SaveItem').click(function (e) {
         //alert('Length:' + $('.Resource-list tr').length)

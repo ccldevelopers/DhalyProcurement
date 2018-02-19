@@ -25,6 +25,7 @@
                             <td>Tender No.</td>
                             <td>
                                 @Html.TextBox("TNo", "", new { @class = "form-control " })
+                                <span class="error" id="TNo_Error"></span>
                                 @*@Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2", @style = "width: 500px !important" })*@
                                 @*@Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })*@
                             </td>
@@ -49,12 +50,14 @@
                             <td>Specification</td>
                             <td>
                                 @Html.TextBox("Specs", null, new { @class = "form-control" })
+                                <span class="error" id="Specs_Error"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>Remarks</td>
                             <td>
                                 @Html.TextBox("TenderRemarks", "", new { @class = "form-control" })
+                                <span class="error" id="TenderRemarks_Error"></span>
                             </td>
                         </tr>
                     </table>
@@ -244,6 +247,7 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("ProjectId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
+                                <span class="error" id="ModalProjectName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -251,7 +255,7 @@
                             <div class="col-md-10">
                                 @*<input type="hidden" id="modalunitId" />*@
                                 @Html.DropDownList("SiteId", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
-
+                                <span class="error" id="ModalSiteName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -260,6 +264,7 @@
                             <div class="col-md-10">
                                 <input type="hidden" id="ModalProc_RequisitionDetId" />
                                 @Html.DropDownList("RCode", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalRequisition" })
+                                <span class="error" id="ModalReqNo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -267,13 +272,14 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Qty", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.TextBox("ModalQty", null, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.TextBox("ModalQty", null, new { @class = "form-control", @disabled = "disabled" })                           
                             </div>
                         </div>
                         <div class="form-group">
@@ -289,6 +295,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.DropDownList("VendorId", null, "Select Vendor", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalVendor" })
+                                <span class="error" id="ModalVendorName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -296,6 +303,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalQtnNo", null, new { @class = "form-control" })
+                                <span class="error" id="ModalQtnNo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -310,6 +318,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalUnitPrice", null, new { @class = "form-control" })
+                                <span class="error" id="ModalUnitPrice_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -345,6 +354,9 @@
         $("#RCode").attr("disabled", "true");
         $("#ItemName").attr("disabled", "true");
 
+        $('#TNo_Error').hide();
+        $('#Specs_Error').hide();
+        $('#TenderRemarks_Error').hide();
 
         $('#ProjectName_Error').hide();
         $('#SiteName_Error').hide();
@@ -353,6 +365,14 @@
         $('#VendorName_Error').hide();
         $('#QtnNo_Error').hide();
         $('#UnitPrice_Error').hide();
+
+        $('#ModalProjectName_Error').hide();
+        $('#ModalSiteName_Error').hide();
+        $('#ModalReqNo_Error').hide();
+        $('#ModalItemName_Error').hide();
+        $('#ModalVendorName_Error').hide();
+        $('#ModalQtnNo_Error').hide();
+        $('#ModalUnitPrice_Error').hide();
 
         $("input[name=TQDate]").datepicker({
             format: 'dd/mm/yyyy',
@@ -620,8 +640,8 @@
 
         if (isAllValid) {
             var newRow = jQuery('<tr>'
-                + '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId" disabled="disabled"/><input class="form-control" value="' + ProjectName + '" type="text" name="ProjectName" disabled="disabled" style="width:110px;"/></td>'
-                + '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><input class="form-control" value="' + SiteName + '" type="text" name="SiteName" disabled="disabled" style="width:110px;"/></td>'
+                + '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId" disabled="disabled"/><label name="label_ProjectName">' + ProjectName + '</label><input class="form-control" value="' + ProjectName + '" type="hidden" name="ProjectName" disabled="disabled" style="width:110px;"/></td>'
+                + '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName" disabled="disabled" style="width:110px;"/></td>'
                 + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:90px;"/><input value="' + RCodeName + '" type="text" name="RCodeName" class="form-control" style="width:90px;"/><input value="' + Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
                 + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><input class="form-control" value="' + ItemName + '" type="text" name="ItemName" disabled="disabled" style="width:80px;"/>'
                 + '<td><input value="' + Qty + '" type="text" name="Qty" class="form-control Qty" style="width:90px;"/></td>'
