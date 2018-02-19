@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Project Information Costing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <!-- Basic layout-->
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-stack-plus position-left"></i> Project List Report</h5><hr />
+                <div class="heading-elements">
+                    <ul class="icons-list">
+                        <li><a data-action="collapse"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("ProjectList", "Report", FormMethod.Post, htmlAttributes: new { @target = "_blank" }))
+                {
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+
+                            <!--New-->
+
+                            <div class="form-group">
+                                @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+
+                                    @Html.DropDownList("ProjectId", null, "--Select--", new { @class = "form-control select2", @Id = "ProjectId" })
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Site", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.DropDownList("SiteId", new SelectList(string.Empty, "Value", "Text"), "--Select--", new { @class = "form-control select2", @Id = "SiteId" })
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-4">
+                            <button type="submit" class="btn btn-primary"><i class="icon-add position-left"></i>  Generate Report</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script src="~/Plugins/select2/select2.min.js"></script>
+    <script>
+        $(".select2").select2();
+    </script>
+
+
+
+
+    <script>
+        $(document).ready(
+     function (Id) {
+
+         $("#ProjectId").change(function () {
+
+             $.ajax({
+                 type: "post",
+                 url: "/Projects/Sites",
+                 data: { ProjectId: $('#ProjectId').val() },
+                 datatype: "json",
+                 traditional: true,
+                 success: function (data) {
+                     var sites = "<select id='sites'>";
+                     sites = sites + '<option value="">--Select--</option>';
+                     for (var i = 0; i < data.length; i++) {
+                         sites = sites + '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                     }
+                     sites = sites + '</select>';
+                     $('#SiteId').html(sites);
+                 }
+             });
+
+         });
+
+     });
+
+    </script>
+}
+
+
+
+
