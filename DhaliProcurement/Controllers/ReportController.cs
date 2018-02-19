@@ -1935,6 +1935,7 @@ namespace DhaliProcurement.Controllers
 
             var TenderMasters = (from TenderDet in db.Proc_TenderDet
                                  join TenderMas in db.Proc_TenderMas on TenderDet.Proc_TenderMasId equals TenderMas.Id
+                                 where TenderMas.isApproved == "A"
                                  select new
                                  {
                                      TenderId = TenderMas.Id,
@@ -2000,7 +2001,7 @@ namespace DhaliProcurement.Controllers
                                   join items in db.Item on procItem.ItemId equals items.Id
                                   join units in db.Unit on procItem.UnitId equals units.Id
                                   join vendor in db.Vendor on TenderDet.VendorId equals vendor.Id
-                                  where TenderMas.Id == TenderMaster.TenderId && items.Id == ReqDet.ItemId
+                                  where TenderMas.Id == TenderMaster.TenderId && items.Id == ReqDet.ItemId && TenderDet.Status=="A"
                                   select new
                                   {
                                       TenderMasId = TenderMas.Id,
