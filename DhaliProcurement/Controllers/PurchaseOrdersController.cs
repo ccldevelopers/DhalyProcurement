@@ -694,6 +694,15 @@ namespace DhaliProcurement.Controllers
 
                 }
             }
+            else
+            {
+                result = new
+                {
+
+                    flag = false,
+                    message = "PO already exists!"
+                };
+            }
                 return Json(result, JsonRequestBehavior.AllowGet);
         }
 
