@@ -214,6 +214,7 @@
 
 
                                         @*<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "ProjectInformationCosting" ? "active" : "")"><a href="@Url.Action("ProjectInformationCosting", "Report")" target="_blank">Project Information Costing Report</a></li>*@                                
+                                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "ProjectList" ? "active" : "")"><a href="@Url.Action("ProjectList", "Report")">Project List</a></li>
                                         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "ProjectInfoCosting" ? "active" : "")"><a href="@Url.Action("ProjectInfoCosting", "Report")" >Project Information Costing</a></li>
                                         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "MaterialRequisition" ? "active" : "")"><a href="@Url.Action("MaterialRequisition", "Report")" >Material Requisition</a></li>
                                         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Report" && ViewContext.RouteData.Values["Action"].ToString() == "MaterialRequisitionList" ? "active" : "")"><a href="@Url.Action("MaterialRequisitionList", "Report")">Requisition List</a></li>

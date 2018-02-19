@@ -2583,12 +2583,12 @@ namespace DhaliProcurement.Controllers
       
 
             var projectLists = (from projSite in db.ProjectSite
-                               join proj in db.Project on projSite.Id equals proj.Id
+                               join proj in db.Project on projSite.ProjectId equals proj.Id
                                join projRes in db.ProjectResource on proj.Id equals projRes.ProjectId
                                join projSiteRes in db.ProjectSiteResource on projSite.Id equals projSiteRes.ProjectSiteId
                                join compRes in db.CompanyResource on projRes.CompanyResourceId equals compRes.Id 
                                join compResSite in db.CompanyResource on projSiteRes.CompanyResourceId equals compResSite.Id
-                               where projSite.Id == proj.Id
+                              // where projSite.ProjectId == proj.Id
                                select new
                                    {
                                    ProjectId= proj.Id,
@@ -2597,7 +2597,8 @@ namespace DhaliProcurement.Controllers
                                    SiteName= projSite.Name,
                                    SiteLocation= projSite.Location,
                                    ProjectManager= projRes.CompanyResource.Name,
-                                   SiteEngineer= projSiteRes.CompanyResource.Name                                  
+                                   SiteEngineer= projSiteRes.CompanyResource.Name,
+                                   ProjectRemarks= proj.Remarks                                  
                                    }).Distinct().ToList();
 
 
@@ -2622,7 +2623,8 @@ namespace DhaliProcurement.Controllers
                    item.SiteName,
                    item.SiteLocation,
                    item.ProjectManager,
-                   item.SiteEngineer
+                   item.SiteEngineer,
+                   item.ProjectRemarks
                     );
             }
 

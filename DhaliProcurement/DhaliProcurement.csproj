@@ -262,12 +262,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Reports\ProjectList.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProjectList.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ViewModel\VendorPaymentEdit.cs" />
     <Compile Include="ViewModel\VMVenderPayment.cs" />
     <Compile Include="Views\CustomRoleProvider.cs" />
@@ -1778,10 +1772,7 @@
     <EmbeddedResource Include="Migrations\201802150454244_15Feb_2018.resx">
       <DependentUpon>201802150454244_15Feb_2018.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ProjectList.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ProjectList.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Content Include="Reports\ProjectList.rpt" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
