@@ -598,9 +598,16 @@
             var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();
             console.log('UnitPrice: ' + cost);
             var result = parseFloat(quantity) * parseFloat(cost);
-            ItemTotalCost = parseFloat(ItemTotalCost + result);
+            if (isNaN(result)) {
+                $('#totalCost').val("");
+            }
+            else {
+                ItemTotalCost = parseFloat(ItemTotalCost + result);
+                $('#totalCost').val(ItemTotalCost);
+            }
+           
         }
-        $('#totalCost').val(ItemTotalCost);
+      
     }
 
     $(document).ready(function () {

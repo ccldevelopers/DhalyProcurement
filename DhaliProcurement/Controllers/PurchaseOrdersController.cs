@@ -740,8 +740,8 @@ namespace DhaliProcurement.Controllers
             master.PONo = PONo;
             master.PODate = PODate;
             master.VendorId = VendorId;
-            master.OrderTo = VendorAttention;
-            master.Attention = AttnManager;
+            master.OrderTo = AttnManager;
+            master.Attention =  VendorAttention;
             master.AttnCell = AttnCell;
             master.AttnEmail = Email;
             master.Subject = Subject;
