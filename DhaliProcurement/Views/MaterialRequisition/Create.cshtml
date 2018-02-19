@@ -137,14 +137,13 @@
                                     <td style="font-weight: bold;">Brand/Quantity</td>
                                     <td>
                                         <input type="text" id="Brand" class="form-control" />
+                                        <span class="error" id="Brand_Error"></span>
                                     </td>
                                     <td style="font-weight: bold;">Size</td>
                                     <td>
                                         <input type="text" id="Size" class="form-control" />
+                                        <span class="error" id="Size_Error"></span>
                                     </td>
-                                    @*<td>
-                        <input type="text" id="Qty" class="form-control" />
-                    </td>*@
                                     <td style="font-weight: bold;">Remarks</td>
                                     <td>
                                         <input type="text" id="ItemRemarks" class="form-control" />
@@ -333,6 +332,9 @@
         $('#CurrentStock_Error').hide();       
         $('#ReqQty_Error').hide();
         $('#ReqQty_Error2').hide();
+        $('#Brand_Error').hide();
+        $('#Size_Error').hide();
+        $('#ItemRemarks_Error').hide();
 
         //RebindDatePicker();
         
@@ -457,23 +459,14 @@
         counter++;
         var isAllValid = true;
         var ItemId = $('#ItemName option:selected').val();
-        //alert(ItemId);
         var ItemName = $('#ItemName option:selected').text();
-        //alert(ItemName);
-        //var Qty = $('#Qty').val();
         var Unit = $('#UnitName').val();
-        //var Unit = $('#Unit option:selected').text();
-
         var UnitId = $('#UnitId').val();
-        //alert(Unit);
-        //var UnitId = $('#Unit option:selected').val();
-        //alert(UnitId);
         var TotalRequired = $('#TotalRequired').val();
         var TotalReceived = $('#TotalReceived').val();
         var RemainingBalance = $('#RemainingBalance').val();
         var CurrentStock = $('#CurrentStock').val();
         var ReqQty = $('#ReqQty').val();
-        //alert(ReqQty);
         var Brand = $('#Brand').val();
         var Size = $('#Size').val();
         var requiredDate = $('#RequiredDate').val();
@@ -485,7 +478,7 @@
             isAllValid = false;
         }
         else {
-            //$('#ItemName_Error').css('visibility', 'hidden');
+            
             $('#ItemName_Error').hide();
         }
         
@@ -493,6 +486,9 @@
             if (isNaN(CurrentStock)) {
                 $('#CurrentStock_Error').show();
                 isAllValid = false;
+            }
+            else {
+                $('#CurrentStock_Error').hide();
             }
         }
         else {
@@ -511,6 +507,20 @@
         }
         else {
             $('#ReqQty_Error').hide();
+        }
+        if (Brand.trim().length > 50) {
+            isAllValid = false;
+            $('#Brand_Error').text("Brand cannot be greater than 50 characters!").show();
+        }
+        else {
+            $('#Brand_Error').hide();
+        }
+        if (Size.trim().length > 50) {
+            isAllValid = false;
+            $('#Size_Error').text("Size cannot be greater than 50 characters!").show();
+        }
+        else {
+            $('#Size_Error').hide();
         }
         if (ItemRemarks.trim().length > 50) {
             isAllValid = false;
@@ -665,6 +675,9 @@
                 isValidItem = false;
                 $('#ModalCurrentStock_Error').text("Current Stock must be a numeric value").show();
             }
+            else {
+                $('#ModalCurrentStock_Error').hide();
+            }
         }
         else {
             $('#ModalCurrentStock_Error').hide();
@@ -683,6 +696,9 @@
             if (isNaN(Qty.trim())) {
                 isValidItem = false;
                 $('#ModalQty_Error').text("Req Qty must be a numeric value").show();
+            }
+            else {
+                $('#ModalQty_Error').hide();
             }
         }
         if (ModalBrand.trim().length > 50) {
@@ -725,6 +741,16 @@
             selRow.find('input[name=ItemRemarks]').val(Remarks);
 
             selRow.find('label[name=label_ItemName]').text(ItemName);
+            selRow.find('label[name=label_ItemUnit]').text(UnitName);
+            selRow.find('label[name=label_TotalRequired]').text(ModalTotalRequired);
+            selRow.find('label[name=label_TotalReceived]').text(ModalTotalReceived);
+            selRow.find('label[name=label_RemainingBalance]').text(ModalRemainingBalance);
+            selRow.find('label[name=label_CurrentStock]').text(ModalCurrentStock);
+            selRow.find('label[name=label_ReqQty]').text(Qty);
+            selRow.find('label[name=label_RequiredDate]').text(ModalRequiredDate);
+            selRow.find('label[name=label_Brand]').text(ModalBrand);
+            selRow.find('label[name=label_Size]').text(ModalSize);
+            selRow.find('label[name=label_ItemRemarks]').text(Remarks);
 
             $('#detailForm').modal('hide');
             totalItemCost();
