@@ -613,6 +613,7 @@ namespace DhaliProcurement.Controllers
 
         [HttpPost]
         public JsonResult PurchaseCreateOrder(IEnumerable<VMPurchaseOrder> AddedDetItems, string PONo, DateTime PODate, int VendorId, int TenderId, string VContactPerson, string ProjectManager, string AttnCell, string Email, string Subject, int LeadTime, string Content, string RcvConcenPerson, string RcvPersonCell, decimal POTotalAmt)
+
         {
             var result = new
             {

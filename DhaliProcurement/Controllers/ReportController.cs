@@ -2735,8 +2735,7 @@ namespace DhaliProcurement.Controllers
             }
 
 
-            Dictionary<string, int> shoppingDictionary = new Dictionary<string, int>();
-
+           
 
             decimal[] array = new decimal[50];
             int[] poarray = new int[50];
