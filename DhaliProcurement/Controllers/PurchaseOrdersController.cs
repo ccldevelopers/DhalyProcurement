@@ -552,7 +552,7 @@ namespace DhaliProcurement.Controllers
                                   join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
                                   join Site in db.ProjectSite on procProj.ProjectSiteId equals Site.Id
                                   join proj in db.Project on Site.ProjectId equals proj.Id
-                                  where procProj.ProjectSiteId == Site.Id && tendarMas.isApproved == "A"
+                                  where procProj.ProjectSiteId == Site.Id && tendarMas.isApproved == "A" && tenderDet.Status=="A"
                                   select Site).ToList();
 
             List<ProjectSite> sites = new List<ProjectSite>();

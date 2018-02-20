@@ -488,7 +488,14 @@
                 isAllValid = false;
             }
             else {
-                $('#CurrentStock_Error').hide();
+                if (CurrentStock.length > 18) {
+                    isAllValid = false;
+                    $('#CurrentStock_Error').text("Current stock cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#CurrentStock_Error').hide();
+                }
+               
             }
         }
         else {
@@ -679,18 +686,27 @@
         else {
             $('#ModalItemName_Error').hide();
         }
+
         if (ModalCurrentStock.trim() != "") {
             if (isNaN(ModalCurrentStock.trim())) {
                 isValidItem = false;
                 $('#ModalCurrentStock_Error').text("Current Stock must be a numeric value").show();
             }
             else {
-                $('#ModalCurrentStock_Error').hide();
+
+                if (ModalCurrentStock.length > 18) {
+                    isAllValid = false;
+                    $('#ModalCurrentStock_Error').text("Current stock cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#ModalCurrentStock_Error').hide();
+                }               
             }
         }
         else {
             $('#ModalCurrentStock_Error').hide();
         }
+
 
         if (Qty.trim() == "") {
                 isValidItem = false;

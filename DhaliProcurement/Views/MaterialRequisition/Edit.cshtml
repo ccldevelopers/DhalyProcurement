@@ -557,12 +557,19 @@
                 isAllValid = false;
             }
             else {
-                $('#CurrentStock_Error').hide();
+                if (CurrentStock.length > 18) {
+                    isAllValid = false;
+                    $('#CurrentStock_Error').text("Current stock cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#CurrentStock_Error').hide();
+                }            
             }
         }
         else {
             $('#CurrentStock_Error').hide();
         }
+
         if (ReqQty == "") {
             $('#ReqQty_Error2').show();
             isAllValid = false;
@@ -795,19 +802,26 @@
         else {
             $('#ModalItemName_Error').hide();
         }
+
         if (ModalCurrentStock.trim() != "") {
             if (isNaN(ModalCurrentStock.trim())) {
                 isValidItem = false;
                 $('#ModalCurrentStock_Error').text("Current Stock must be a numeric value").show();
             }
             else {
-                $('#ModalCurrentStock_Error').hide();
+
+                if (ModalCurrentStock.length > 18) {
+                    isAllValid = false;
+                    $('#ModalCurrentStock_Error').text("Current stock cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#ModalCurrentStock_Error').hide();
+                }
             }
         }
         else {
             $('#ModalCurrentStock_Error').hide();
         }
-
         if (Qty.trim() == "") {
             isValidItem = false;
             $('#ModalQty_Error').text("Qty required").show();
@@ -870,7 +884,7 @@
             selRow.find('label[name=label_TotalRequired]').text(ModalTotalRequired);
             selRow.find('label[name=label_TotalReceived]').text(ModalTotalReceived);
             selRow.find('label[name=label_RemainingBalance]').text(ModalRemainingBalance);
-            selRow.find('label[name=label_CurrentStock]').text(ModalCurrentStock);
+            selRow.find('label[name=label_CStockQty]').text(ModalCurrentStock);
             selRow.find('label[name=label_ReqQty]').text(Qty);
             selRow.find('label[name=label_RequiredDate]').text(ModalRequiredDate);
             selRow.find('label[name=label_Brand]').text(ModalBrand);

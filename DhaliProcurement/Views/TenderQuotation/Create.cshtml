@@ -622,7 +622,15 @@
             isAllValid = false;
         }
         else {
-            $('#UnitPrice_Error').hide();
+            if (TQPrice.trim().length > 18)
+            {
+                isAllValid = false;
+                $('#UnitPrice_Error').text("Unit price can not be greater than 18 characters!").show();
+            }
+            else {
+                $('#UnitPrice_Error').hide();
+            }
+            
         }
         if (TQNo.trim().length > 50) {
             $('#QtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
@@ -780,8 +788,17 @@
             isAllValid = false;
         }
         else {
+            if (ModalUnitPrice.trim().length > 18) {
+                isAllValid = false;
+                $('#ModalUnitPrice_Error').text("Unit price can not be greater than 18 characters!").show();
+            }
+            else {
+                $('#ModalUnitPrice_Error').hide();
+            }
             $('#ModalUnitPrice_Error').hide();
         }
+       
+
         if (ModalQtnNo.trim().length > 50) {
             $('#ModalQtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
             isAllValid = false;
