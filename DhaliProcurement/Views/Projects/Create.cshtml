@@ -106,11 +106,11 @@
                         <table class="Resource-list table table-bordered" id="Item-list">
                             <thead>
                                 <tr class="bg-grey">
-                                    <th>SL No.</th>
-                                    <th>Site Name</th>
-                                    <th>Location</th>
-                                    <th>Site Engineer</th>
-                                    <th></th>
+                                    @*<th>SL No.</th>*@
+                                    <th class="col-lg-4">Site Name</th>
+                                    <th class="col-lg-4">Location</th>
+                                    <th class="col-lg-2">Site Engineer</th>
+                                    <th class="col-lg-2"></th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -261,7 +261,7 @@
                             <div class="modal-footer">
                                 <div class="col-md-offset-2 col-md-10">
                                     <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -354,9 +354,9 @@
                 $('#SiteEngineer_Error').hide();
             }
 
-            $('table.Resource-list tr').each(function () {
+            $('table.Resource-list tbody tr').each(function () {
                 var name = $(this).find("td input[name=SiteName]").val();
-                if (SiteName == name) {
+                if (SiteName.trim().toUpperCase() == name.trim().toUpperCase()) {
                     alert('This Site already exists!');
                     isValidSite = false;
                 }
@@ -367,8 +367,8 @@
             if (isValidSite) {
                 counter++;
                 var newRow = jQuery('<tr>'
-                    + '<td><label>' + counter + '</label><input type="hidden" name="TaskId" value="' + counter + '"/></td>'
-                    + '<td><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName"/><label name="label_SiteName">' + SiteName + '</label></td>'
+                    //+ '<td><label>' + counter + '</label><input type="hidden" name="TaskId" value="' + counter + '"/></td>'
+                    + '<td><input type="hidden" name="TaskId" value="' + counter + '"/><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName"/><label name="label_SiteName">' + SiteName + '</label></td>'
                     + '<td><input class="form-control" value="' + SiteLocation + '" type="hidden" name="SiteLocation"/><label name="label_SiteLocation">' + SiteLocation + '</label></td>'
                     + '<td><input value="' + SiteEngineerId + '" type="hidden" name="SiteEngineerId"/><input class="form-control" value="' + SiteEngineer + '"  type="hidden" name="SiteEngineer" disabled="disabled"/><label name="label_SiteEngineer">' + SiteEngineer + '</label></td>'
                     + '<td>'
@@ -419,32 +419,36 @@
             var SiteEngineerName = $('#ModalSiteEngineer option:selected').text();
 
             //validation for Modal fields
-            if (SiteName.trim().length > 256) {
-                $('#ModalSiteName_Error').text("Site Name can not be greater than 256 characters!").show();
+            if (SiteName == "") {
+                $('#ModalSiteName_Error').text("Site required").show();
                 isValidSite = false;
             }
             else {
-                $('#ModalSiteName_Error').hide();
+                if (SiteName.trim().length > 256) {
+                    $('#ModalSiteName_Error').text("Site Name can not be greater than 256 characters!").show();
+                    isValidSite = false;
+                }
+                else {
+                    $('#ModalSiteName_Error').hide();
+                }
             }
 
-            if (Location.trim().length > 256) {
-                $('#ModalLocation_Error').text("Location can not be greater than 256 characters!").show();
+            if (Location.trim() == "") {
+                $('#ModalLocation_Error').text("Location required").show();
                 isValidSite = false;
             }
             else {
-                $('#ModalLocation_Error').hide();
-            }
-            if (Location.trim().length > 256) {
-                $('#ModalLocation_Error').text("Location can not be greater than 256 characters!").show();
-                isValidSite = false;
-            }
-            else {
-                $('#ModalLocation_Error').hide();
+                if (Location.trim().length > 256) {
+                    $('#ModalLocation_Error').text("Location can not be greater than 256 characters!").show();
+                    isValidSite = false;
+                }
+                else {
+                    $('#ModalLocation_Error').hide();
+                }
             }
             if (SiteEngineerName.trim() === '' || SiteEngineerName.trim() === "--Select--") {
-
                 isValidSite = false;
-                $('#ModalSiteEngineer_Error').show();
+                $('#ModalSiteEngineer_Error').text("Site Engineer required").show();
             }
             else {
                 $('#ModalSiteEngineer_Error').hide();
@@ -463,9 +467,6 @@
                         alert('This Site already exists!');
                         isValidSite = false;
                     }
-                    //else {
-                    //    alert('This Site doesnot exist!');
-                    //}
                 }
             });
 
@@ -484,6 +485,13 @@
             }
 
         });
+
+        $('#ModalClose').click(function () {
+            $('#ModalSiteName_Error').hide();
+            $('#ModalLocation_Error').hide();
+            $('#ModalSiteEngineer_Error').hide();
+        });
+
 
         //Modal save ends
     </script>
