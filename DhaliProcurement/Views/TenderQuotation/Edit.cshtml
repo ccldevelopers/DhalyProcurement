@@ -1344,6 +1344,8 @@
 
         function CreateSitePlanTask() {
 
+            var isValid = true;
+
             $(':checkbox').each(function (i) {
                 if($(this).is(':checked') ){
                     $(this).closest('tr').find("td:eq(11) input.Status").val('A');
@@ -1362,7 +1364,29 @@
             var Specs = $("#Specs").val();
             var TenderRemarks = $("#TenderRemarks").val();
 
+            if (TNo.trim().length > 50) {
+                isValid = false;
+                $('#TNo_Error').text("Tender No. cannot be greater than 50 characters!").show();
+            }
+            else {
+                $('#TNo_Error').hide();
+            }
 
+            if (Specs.trim().length > 100) {
+                isValid = false;
+                $('#Specs_Error').text("Specification cannot be greater than 100 characters!").show();
+            }
+            else {
+                $('#Specs_Error').hide();
+            }
+
+            if (TenderRemarks.trim().length > 100) {
+                isValid = false;
+                $('#TenderRemarks_Error').text("Remarks cannot be greater than 100 characters!").show();
+            }
+            else {
+                $('#TenderRemarks_Error').hide();
+            }
 
             //===========Detail Form===========
             var RCode = document.getElementsByName("ReqCode");
@@ -1376,70 +1400,70 @@
 
             var TenderItems = [];
 
+            if (isValid) {
+                var tableCounter = $('#RequisitionDetails tr').length - 1;
 
-            var tableCounter = $('#RequisitionDetails tr').length - 1;
+                for (var i = 0; i < tableCounter; i++) {
+                    TenderItems.push({
+                        TenderDetailId:TenderDetailId[i].value,
+                        RCode: RCode[i].value,
+                        Proc_RequisitionDetId: Proc_RequisitionDetId[i].value,
+                        VendorId: VendorId[i].value,
+                        TQNo: TQNo[i].value,
+                        TQDate: TQDate[i].value,
+                        TQPrice: TQPrice[i].value,
+                        Status: Status[i].value
+                    });
+                    console.log('---------->');
+                    console.log('RCode: ' + TenderItems[i].RCode);
+                    console.log('Proc_RequisitionDetId: ' + TenderItems[i].Proc_RequisitionDetId);
+                    console.log('VendorId: ' + TenderItems[i].VendorId);
+                    console.log('TQNo: ' + TenderItems[i].TQNo);
+                    console.log('TQDate: ' + TenderItems[i].TQDate);
+                    console.log('TQPrice: ' + TenderItems[i].TQPrice);
+                    console.log('Status: ' + TenderItems[i].Status);
+                    console.log('---------->');
 
-            for (var i = 0; i < tableCounter; i++) {
-                TenderItems.push({
-                    TenderDetailId:TenderDetailId[i].value,
-                    RCode: RCode[i].value,
-                    Proc_RequisitionDetId: Proc_RequisitionDetId[i].value,
-                    VendorId: VendorId[i].value,
-                    TQNo: TQNo[i].value,
-                    TQDate: TQDate[i].value,
-                    TQPrice: TQPrice[i].value,
-                    Status: Status[i].value
-                });
-                console.log('---------->');
-                console.log('RCode: ' + TenderItems[i].RCode);
-                console.log('Proc_RequisitionDetId: ' + TenderItems[i].Proc_RequisitionDetId);
-                console.log('VendorId: ' + TenderItems[i].VendorId);
-                console.log('TQNo: ' + TenderItems[i].TQNo);
-                console.log('TQDate: ' + TenderItems[i].TQDate);
-                console.log('TQPrice: ' + TenderItems[i].TQPrice);
-                console.log('Status: ' + TenderItems[i].Status);
-                console.log('---------->');
-
-            }
-
-            TaskDetails = JSON.stringify({
-                TenderItems: TenderItems,
-                DeleteItems:deleteList,
-                TenderId:TenderId,
-                TNo: TNo,
-                TDate: TDate,
-                Specs: Specs,
-                TenderRemarks: TenderRemarks
-            });
-
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: '/TenderQuotation/EditTender',
-                data: TaskDetails,
-                success: function (result) {
-                    console.log(result);
-                    if (result.flag === true) {
-                        alert("Record save successfully!");
-
-                        $('#TNo').val("");
-                        $('#TDate').val("");
-                        $('#Specs').val("");
-                        $('#TenderRemarks').val("");
-
-                        window.location.replace("/TenderQuotation/Index");
-                    }
-                    else {
-                        alert(result.message);
-                    }
-
-                },
-                failure: function (response) {
-                    alert('error');
                 }
-            });
 
+                TaskDetails = JSON.stringify({
+                    TenderItems: TenderItems,
+                    DeleteItems:deleteList,
+                    TenderId:TenderId,
+                    TNo: TNo,
+                    TDate: TDate,
+                    Specs: Specs,
+                    TenderRemarks: TenderRemarks
+                });
+
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '/TenderQuotation/EditTender',
+                    data: TaskDetails,
+                    success: function (result) {
+                        console.log(result);
+                        if (result.flag === true) {
+                            alert("Record save successfully!");
+
+                            $('#TNo').val("");
+                            $('#TDate').val("");
+                            $('#Specs').val("");
+                            $('#TenderRemarks').val("");
+
+                            window.location.replace("/TenderQuotation/Index");
+                        }
+                        else {
+                            alert(result.message);
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert('error');
+                    }
+                });
+            }
         }
 
 
