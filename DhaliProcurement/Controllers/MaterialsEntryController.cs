@@ -73,8 +73,11 @@ namespace DhaliProcurement.Controllers
                                 join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
                                 join site in db.ProjectSite on procProject.ProjectSiteId equals site.Id
                                 join project in db.Project on site.ProjectId equals project.Id
-                                where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId && tenderDet.Status=="A"
+                                where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId && tenderDet.Status == "A"
                                 select project).Distinct().ToList();
+
+
+
 
             var procprojects = db.ProcProject.ToList();
             List<ProjectSite> sites = new List<ProjectSite>();

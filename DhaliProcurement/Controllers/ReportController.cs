@@ -2693,6 +2693,7 @@ namespace DhaliProcurement.Controllers
 
 
             var EntryProject = (from purchaseMas in db.Proc_PurchaseOrderMas
+                                join purDet in db.Proc_PurchaseOrderDet on purchaseMas.Id equals purDet.Proc_PurchaseOrderMasId
                                 join tenderMas in db.Proc_TenderMas on purchaseMas.Proc_TenderMasId equals tenderMas.Id
                                 join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
                                 join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
