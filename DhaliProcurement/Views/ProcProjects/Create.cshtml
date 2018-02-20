@@ -320,13 +320,17 @@
                 $('#QuantityMax_Error').text("Qty should be a numeric value").show()
             }
             else {
-                $('#QuantityMax_Error').hide();
+                if (Qty.length > 18) {
+                    isValidItem = false;
+                    $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
+                }
+                else {
+                    $('#QuantityMax_Error').hide();
+                }
+              
             }
 
-            if (Qty.length > 18) {
-                isValidItem = false;
-                $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
-            }
+
 
             if ($('#Unit').val().trim() == '') {
                 isValidItem = false;
@@ -350,12 +354,13 @@
                 $('#CostMax_Error').text("Cost should be a numeric value").show()
             }
             else {
-                $('#CostMax_Error').hide();
-            }
-
-            if (Cost.length > 18) {
-                isValidItem = false;
-                $('#CostMax_Error').text("Cost must be less than 18 characters!").show()
+                if (Cost.length > 18) {
+                    isValidItem = false;
+                    $('#CostMax_Error').text("Cost must be less than 18 characters!").show()
+                }
+                else {
+                    $('#CostMax_Error').hide();
+                }             
             }
 
             if (ItemRemarks.trim().length > 50) {
@@ -499,16 +504,19 @@
                 $('#ModalCost_Error').text("Cost required").show();
             }
             else {
-                $('#ModalCost_Error').hide();
-            }
-            if (Cost.trim() != "") {
                 if (isNaN(Cost.trim())) {
                     isValidItem = false;
                     $('#ModalCost_Error').text("Cost must be a numeric value").show();
                 }
-            }
-            else {
-                $('#ModalCost_Error').hide();
+                else {
+                    if (Cost.length > 18) {
+                        isValidItem = false;
+                        $('#ModalCost_Error').text("Cost must be less than 18 characters!").show()
+                    }
+                    else {
+                        $('#ModalCost_Error').hide();
+                    }
+                }
             }
             if (Remarks.trim().length > 50) {
                 isValidItem = false;

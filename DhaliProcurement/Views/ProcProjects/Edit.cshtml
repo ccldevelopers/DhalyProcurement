@@ -472,14 +472,28 @@
             else {
                 $('#ModalQty_Error').hide();
             }
-            if (Qty.trim()!="") {
-                if(isNaN(Qty.trim())){
-                    isValidItem = false;
-                    $('#ModalQtyMax_Error').text("Qty must be a numeric value").show();
-                }
+            //if (Qty.trim()!="") {
+            //    if(isNaN(Qty.trim())){
+            //        isValidItem = false;
+            //        $('#ModalQtyMax_Error').text("Qty must be a numeric value").show();
+            //    }
+            //}
+            //else {
+            //    $('#ModalQtyMax_Error').hide();
+            //}
+            if (isNaN(Qty.trim())) {
+                isValidItem = false;
+                $('#ModalQtyMax_Error').text("Qty should be a numeric value").show()
             }
             else {
-                $('#ModalQtyMax_Error').hide();
+                if (Qty.length > 18) {
+                    isValidItem = false;
+                    $('#ModalQtyMax_Error').text("Qty must be less than 18 characters!").show()
+                }
+                else {
+                    $('#ModalQtyMax_Error').hide();
+                }
+              
             }
             if (UnitName.trim() == "Select unit") {
                 isValidItem = false;
@@ -493,15 +507,21 @@
                 $('#ModalCost_Error').text("Cost required").show();
             }
             else {
-                $('#ModalCost_Error').hide();
-            }
-            if (Cost.trim() != "") {             
-                if(isNaN(Cost.trim() )){
+                if (isNaN(Cost.trim())) {
                     isValidItem = false;
                     $('#ModalCost_Error').text("Cost must be a numeric value").show();
                 }
-
+                else {
+                    if (Cost.length > 18) {
+                        isValidItem = false;
+                        $('#ModalCost_Error').text("Cost must be less than 18 characters!").show()
+                    }
+                    else {
+                        $('#ModalCost_Error').hide();
+                    }
+                }
             }
+
             if (Remarks.trim().length > 50) {
                 isValidItem = false;
                 $('#ModalRemarks_Error').text("Remarks can not be greater than 50 characters!").show();
@@ -700,7 +720,6 @@
             if (ItemName == 'Select item') {
                 $('#ItemName_Error').show();
                 isValidItem = false;
-                //$('#ItemName').siblings('span.error').css('visibility', 'visible');
             }
             else {
                 $('#ItemName_Error').hide();
@@ -720,8 +739,15 @@
                 $('#QuantityMax_Error').text("Qty should be a numeric value").show()
             }
             else {
-                $('#QuantityMax_Error').hide();
+                if ($('#Qty').val().trim().length > 18) {
+                    isValidItem = false;
+                    $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
+                }
+                else{
+                    $('#QuantityMax_Error').hide();
+                }
             }
+
 
             if ($('#Unit').val().trim() == '') {
                 isValidItem = false;
@@ -745,7 +771,13 @@
                 $('#CostMax_Error').text("Cost should be a numeric value").show()
             }
             else {
-                $('#CostMax_Error').hide();
+                if (Cost.length > 18) {
+                    isValidItem = false;
+                    $('#CostMax_Error').text("Cost must be less than 18 characters!").show()
+                }
+                else {
+                    $('#CostMax_Error').hide();
+                }             
             }
 
             if (ItemRemarks.trim().length > 50) {
