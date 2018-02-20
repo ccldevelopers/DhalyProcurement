@@ -2699,14 +2699,14 @@ namespace DhaliProcurement.Controllers
                                             join entryMas in db.Proc_MaterialEntryMas on entryDet.Proc_MaterialEntryMasId equals entryMas.Id
                                             join purDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purDet.Id
                                             join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
-                                            join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
-                                            join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
-                                            join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
-                                            join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
-                                            join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                                          //  join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                                          //  join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                         //   join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                                         //   join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                                            join procProj in db.ProcProject on entryMas.ProcProjectId equals procProj.Id
                                             join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
                                             join proj in db.Project on projSite.ProjectId equals proj.Id
-                                            where procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id
+                                           // where procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id
                                             orderby proj.Id, projSite.Id ascending
                                             select new
                                             {
