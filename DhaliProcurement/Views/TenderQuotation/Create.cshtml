@@ -647,7 +647,7 @@
                 + '<td><input value="' + TotalPrice + '" type="hidden" name="TotalPrice" class="form-control TotalPrice" style="width:90px;" disabled="disabled"/><label name="label_TotalPrice">' + TotalPrice + '</label></td>'
                 + '<td><input value="' + Status + '" type="hidden" name="Status"/>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-                + ' <button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
+                + ' <button class="btn text-warning-600 btn-flat btn-icon btn-rounded delete_btn"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button>'
                 + '</td></tr>');
 
 
@@ -1145,6 +1145,12 @@
         //}
 
     }
+
+
+    $(".delete_btn").click(function () {
+        alert("test");
+    });
+
 </script>
 
 <style>

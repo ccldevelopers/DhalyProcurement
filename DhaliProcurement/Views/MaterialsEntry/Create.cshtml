@@ -50,7 +50,7 @@
                                     @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
                                     <td style="font-weight: bold;" class="col-lg-1">Required Material</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
+                                        @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName" })
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Unit</td>
                                     <td class="col-lg-3">
@@ -59,7 +59,7 @@
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Req. No.</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
+                                        @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ReqNo" })
                                         <input type="hidden" value="" id="RCode" />
                                     </td>
 
@@ -75,7 +75,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
+                                        @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo" })
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Vendor Name</td>
                                     <td class="col-lg-3">
@@ -218,7 +218,8 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
+                                <span class="error" id="ModalItemName_Error"></span> 
                             </div>
                         </div>
                         <div class="form-group">
@@ -232,7 +233,8 @@
                         <div class="form-group">
                             @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("ReqNo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
+                                @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
+                                <span class="error" id="ModalReqNo_Error"></span> 
                             </div>
                         </div>
                         <div class="form-group">
@@ -240,7 +242,8 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("PONo", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
+                                @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
+                                <span class="error" id="ModalPONo_Error"></span> 
                             </div>
                         </div>
                         <div class="form-group">
@@ -269,7 +272,7 @@
                             @Html.Label("Remaining Qty", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.TextBox("ModalRemainingQty", null, new { @class = "form-control" })
+                                @Html.TextBox("ModalRemainingQty", null, new { @class = "form-control", @disabled = "disabled" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -277,6 +280,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalChallanNo", null, new { @class = "form-control" })
+                                <span class="error" id="ModalChallanNo_Error"></span> 
                             </div>
                         </div>
                         <div class="form-group">
@@ -291,6 +295,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalMaterialEntry", null, new { @class = "form-control" })
+                                <span class="error" id="ModalMaterialEntry_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -547,6 +552,28 @@
     });
 
 
+
+    $(document).on({
+        'change': function () {
+            var entry = $(this).val();
+            //PO Receive calculation
+            //var PoQty = $('#POQty').val();
+            //var POPrev = $('#PORcv').val();
+            //var newPOQuantity = parseInt(POPrev) + parseInt(entry);
+            var unitprice = $('#ModalUnitPrice').val();
+            var totalPrice = entry * unitprice;
+            if (isNaN(totalPrice)) {
+                //alert('Material Entry must be a numeric value!!')
+                $('#ModalMaterialEntry').val("");
+                $('#ModalCost').val("");
+            }
+            else {
+                $('#ModalCost').val(totalPrice);
+            }
+
+        }
+    }, 'input[name=ModalMaterialEntry]');
+
     $(document).on({
         'change': function () {
             var entry = $(this).val();
@@ -600,6 +627,7 @@
     }, 'input[name=MaterialEntry]');
 
 
+
     //add new row
     $('#addNewRow').click(function (event) {
         event.preventDefault();
@@ -648,7 +676,7 @@
         var UnitPrice = $('#UnitPrice').val();
         var Cost = $('#Cost').val();
 
-        if (ItemName == "" || ItemName == "Select item") {
+        if (ItemName == "" || ItemName == "--Select--") {
             $('#ItemName_Error').show();
             isAllValid = false;
         }
@@ -656,14 +684,14 @@
             $('#ItemName_Error').hide();
         }
 
-        if (RCode == "" || RCode == "Select item") {
+        if (RCode == "" || RCode == "--Select--") {
             $('#ReqNo_Error').show();
             isAllValid = false;
         }
         else {
             $('#ReqNo_Error').hide();
         }
-        if (PONo == "" || PONo == "Select item") {
+        if (PONo == "" || PONo == "--Select--") {
             $('#PONo_Error').show();
             isAllValid = false;
         }
@@ -676,6 +704,16 @@
         }
         else {
             $('#ChallanNo_Error').hide();
+        }
+        if (ChallanNo != "") {
+            if(ChallanNo.length>50)
+            {
+                $('#ChallanNo_Error').text("Challan No. cannot be greater than 50 characters!").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ChallanNo_Error').hide();
+            }
         }
         //if (RemainingQty <= 0) {
         //    alert('This material has been received completely! Add another item!');
@@ -693,6 +731,24 @@
         }
         else {
             $('#MaterialEntry_Error').hide();
+        }
+
+        if (MaterialEntry != "") {
+            if (isNaN(MaterialEntry)) {
+                $('#MaterialEntry_Error').text("Material Entry must be a numeric value!").show();
+                isAllValid = false;
+            }
+            else {
+                if (MaterialEntry.length > 18)
+                {
+                    $('#MaterialEntry_Error').text("Material Entry cannot be greater than 18 characters!").show();
+                    isAllValid = false;
+                }
+                else {
+                    $('#MaterialEntry_Error').hide();
+                }
+               
+            }
         }
         //if (POQuantity - MaterialEntry<0) {
         //    alert('Material entry can not be greater than PO quantity');
@@ -714,19 +770,19 @@
             var newRow = jQuery('<tr>'
                 //+ '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId"/><label>' + ProjectName + '<label></td>'
                 //+ '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label>' + SiteName + '<label></td>'
-                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><input class="form-control" value="' + ItemName + '" readonly="true" type="text" name="ItemName"  style="width:90px;"/>'
-                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control" value="' + UnitName + '" readonly="true" type="text" name="UnitName"  style="width:90px;"/></td>'
-                + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:90px;"/><input value="' + RCodeName + '" type="text" name="RCodeName" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + PONo + '" type="text" name="PayOrderNo" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + VendorId + '" type="hidden" name="VendorId"/><input class="form-control" value="' + VendorName + '" readonly="true" type="text" name="VendorName"  style="width:90px;"/></td>'
-                + '<td><input value="' + TotalMaterial + '" type="text" name="TotalMaterial" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + PreviousQty + '" type="text" name="PreviousQty" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + RemainingQty + '" type="text" name="RemainingQty" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + ChallanNo + '" type="text" name="ChallanNo" class="form-control" style="width:90px;"/></td>'
-                + '<td><input value="' + ChallanDate + '" type="text" name="ChallanDate" class="form-control datepicker" style="width:90px;"/></td>'
-                + '<td><input value="' + MaterialEntry + '" type="text" name="MaterialEntry" class="form-control MaterialEntry" style="width:90px;" disabled="disabled"/></td>'
-                + '<td><input value="' + UnitPrice + '" type="text" name="UnitPrice" class="form-control UnitPrice" style="width:90px;"/></td>'
-                + '<td><input value="' + Cost + '" type="text" name="Cost" class="form-control Cost"  style="width:90px;" disabled="disabled"/></td>'
+                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;"/>'
+                + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;"/></td>'
+                + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:90px;"/><label name="label_RCodeName">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" name="RCodeName" class="form-control" style="width:90px;"/></td>'
+                + '<td><input value="' + PONo + '" type="hidden" name="PayOrderNo" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONo + '</label></td>'
+                + '<td><input value="' + VendorId + '" type="hidden" name="VendorId"/><label name="label_VendorName">' + VendorName + '</label><input class="form-control" value="' + VendorName + '" readonly="true" type="hidden" name="VendorName"  style="width:90px;"/></td>'
+                + '<td><input value="' + TotalMaterial + '" type="hidden" name="TotalMaterial" class="form-control" style="width:90px;"/><label name="label_TotalMaterial">' + TotalMaterial + '</label></td>'
+                + '<td><input value="' + PreviousQty + '" type="hidden" name="PreviousQty" class="form-control" style="width:90px;"/><label name="label_PreviousQty">' + PreviousQty + '</label></td>'
+                + '<td><input value="' + RemainingQty + '" type="hidden" name="RemainingQty" class="form-control" style="width:90px;"/><label name="label_RemainingQty">' + RemainingQty + '</label></td>'
+                + '<td><input value="' + ChallanNo + '" type="hidden" name="ChallanNo" class="form-control" style="width:90px;"/><label name="label_ChallanNo">' + ChallanNo + '</label></td>'
+                + '<td><input value="' + ChallanDate + '" type="hidden" name="ChallanDate" class="form-control datepicker" style="width:90px;"/><label name="label_ChallanDate">' + ChallanDate + '</label></td>'
+                + '<td><input value="' + MaterialEntry + '" type="hidden" name="MaterialEntry" class="form-control MaterialEntry" style="width:90px;" disabled="disabled"/><label name="label_MaterialEntry">' + MaterialEntry + '</label></td>'
+                + '<td><input value="' + UnitPrice + '" type="hidden" name="UnitPrice" class="form-control UnitPrice" style="width:90px;"/><label name="label_UnitPrice">' + UnitPrice + '</label></td>'
+                + '<td><input value="' + Cost + '" type="hidden" name="Cost" class="form-control Cost"  style="width:90px;" disabled="disabled"/><label name="label_Cost">' + Cost + '</label></td>'
                 + '<td>'
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 + '<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
@@ -916,6 +972,8 @@
 
 
     $('#ModalDetailSave').click(function () {
+        var isAllValid = true;
+
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -934,24 +992,107 @@
         var ModalTotalPrice = ModalUnitPrice * ModalMaterialEntry;
 
 
-        selRow.find('input[name=ItemName]').val(ItemName);
-        selRow.find('input[name=ItemId]').val(ItemId);
-        selRow.find('input[name=UnitName]').val(UnitName);
-        selRow.find('input[name=UnitId]').val(Unitid);
-        selRow.find('input[name=RCode]').val(ReqNo);
-        selRow.find('input[name=PayOrderNo]').val(ModalPONo);
-        selRow.find('input[name=VendorName]').val(ModalVendorName);
-        selRow.find('input[name=VendorId]').val(ModalVendorId);
-        selRow.find('input[name=TotalMaterial]').val(ModalTotalMaterial);
-        selRow.find('input[name=PreviousQty]').val(ModalPreviousQty);
-        selRow.find('input[name=RemainingQty]').val(ModalRemainingQty);
-        selRow.find('input[name=ChallanNo]').val(ModalChallanNo);
-        selRow.find('input[name=ChallanDate]').val(ModalChallanDate);
-        selRow.find('input[name=MaterialEntry]').val(ModalMaterialEntry);
-        selRow.find('input[name=UnitPrice]').val(ModalUnitPrice);
-        selRow.find('input[name=Cost]').val(ModalTotalPrice);
+        if (ItemName == "" || ItemName == "--Select--") {
+            $('#ModalItemName_Error').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalItemName_Error').hide();
+        }
 
-        $('#detailForm').modal('hide');
+        if (ReqNo == "" || ReqNo == "--Select--") {
+            $('#ModalReqNo_Error').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalReqNo_Error').hide();
+        }
+        if (ModalPONo == "" || ModalPONo == "--Select--") {
+            $('#ModalPONo_Error').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalPONo_Error').hide();
+        }
+        if (ModalChallanNo == "") {
+            $('#ModalChallanNo_Error').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalChallanNo_Error').hide();
+        }
+        if (ModalChallanNo != "") {
+            if (ChallanNo.length > 50) {
+                $('#ModalChallanNo_Error').text("Challan No. cannot be greater than 50 characters!").show();
+                isAllValid = false;
+            }
+            else {
+                $('#ModalChallanNo_Error').hide();
+            }
+        }
+
+        if (ModalMaterialEntry == "") {
+            $('#ModalMaterialEntry_Error').show();
+            isAllValid = false;
+        }
+        else {
+            $('#ModalMaterialEntry_Error').hide();
+        }
+       
+
+        if (ModalMaterialEntry != "") {
+            if (isNaN(ModalMaterialEntry)) {
+                $('#ModalMaterialEntry_Error').text("Material Entry must be a numeric value!").show();
+                isAllValid = false;
+            }
+            else {
+                if (ModalMaterialEntry.length > 18) {
+                    $('#MaterialEntry_Error').text("Material Entry cannot be greater than 18 characters!").show();
+                    isAllValid = false;
+                }
+                else {
+                    $('#ModalMaterialEntry_Error').hide();
+                }
+
+            }
+        }
+
+        if (isAllValid) {
+            selRow.find('input[name=ItemName]').val(ItemName);
+            selRow.find('input[name=ItemId]').val(ItemId);
+            selRow.find('input[name=UnitName]').val(UnitName);
+            selRow.find('input[name=UnitId]').val(Unitid);
+            selRow.find('input[name=RCode]').val(ReqNo);
+            selRow.find('input[name=PayOrderNo]').val(ModalPONo);
+            selRow.find('input[name=VendorName]').val(ModalVendorName);
+            selRow.find('input[name=VendorId]').val(ModalVendorId);
+            selRow.find('input[name=TotalMaterial]').val(ModalTotalMaterial);
+            selRow.find('input[name=PreviousQty]').val(ModalPreviousQty);
+            selRow.find('input[name=RemainingQty]').val(ModalRemainingQty);
+            selRow.find('input[name=ChallanNo]').val(ModalChallanNo);
+            selRow.find('input[name=ChallanDate]').val(ModalChallanDate);
+            selRow.find('input[name=MaterialEntry]').val(ModalMaterialEntry);
+            selRow.find('input[name=UnitPrice]').val(ModalUnitPrice);
+            selRow.find('input[name=Cost]').val(ModalTotalPrice);
+
+            selRow.find('label[name=label_ItemName]').text(ItemName);
+            selRow.find('label[name=label_UnitName]').text(UnitName);
+            selRow.find('label[name=label_RCodeName]').text(ReqNo);
+            selRow.find('label[name=label_PONo]').text(ModalPONo);
+            selRow.find('label[name=label_VendorName]').text(ModalVendorName);
+            selRow.find('label[name=label_TotalMaterial]').text(ModalTotalMaterial);
+            selRow.find('label[name=label_PreviousQty]').text(ModalPreviousQty);
+            selRow.find('label[name=label_RemainingQty]').text(ModalRemainingQty);
+            selRow.find('label[name=label_ChallanNo]').text(ModalChallanNo);
+            selRow.find('label[name=label_ChallanDate]').text(ModalChallanDate);
+            selRow.find('label[name=label_MaterialEntry]').text(ModalMaterialEntry);
+            selRow.find('label[name=label_UnitPrice]').text(ModalUnitPrice);
+            selRow.find('label[name=label_Cost]').text(ModalTotalPrice);
+
+            $('#detailForm').modal('hide');
+        }
+
+
         //totalItemCost();
     });
 
