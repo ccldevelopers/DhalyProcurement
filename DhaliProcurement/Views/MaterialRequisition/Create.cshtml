@@ -509,7 +509,10 @@
                     $('#ReqQty_Error').text("Req Qty cannot be greater than 18 characters!").show();
                     isAllValid = false;
                 }
-                $('#ReqQty_Error').hide();
+                else {
+                    $('#ReqQty_Error').hide();
+                }
+               
             }
             $('#ReqQty_Error2').hide();
         }
@@ -695,18 +698,24 @@
             
         }
         else {
-            $('#ModalQty_Error').hide();
+            if (Qty.trim() != "") {
+                if (isNaN(Qty.trim())) {
+                    isValidItem = false;
+                    $('#ModalQty_Error').text("Req Qty must be a numeric value").show();
+                }
+                else {
+                    if (Qty.trim().length > 18) {
+                        isValidItem = false;
+                        $('#ModalQty_Error').text("Req Qty cannot be greater than 18 characters!").show();
+                    }
+                    else {
+                        $('#ModalQty_Error').hide();
+                    }
+             
+                }
+            }
         }
 
-        if (Qty.trim() != "") {
-            if (isNaN(Qty.trim())) {
-                isValidItem = false;
-                $('#ModalQty_Error').text("Req Qty must be a numeric value").show();
-            }
-            else {
-                $('#ModalQty_Error').hide();
-            }
-        }
         if (ModalBrand.trim().length > 50) {
             isValidItem = false;
             $('#ModalBrand_Error').text("Brand cannot be greater than 50 characters!").show();
