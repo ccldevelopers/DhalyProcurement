@@ -323,9 +323,9 @@
                 $('#QuantityMax_Error').hide();
             }
 
-            if (Qty.length > 14) {
+            if (Qty.length > 18) {
                 isValidItem = false;
-                $('#QuantityMax_Error').text("Qty must be less than 14 characters!").show()
+                $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
             }
 
             if ($('#Unit').val().trim() == '') {
@@ -353,9 +353,9 @@
                 $('#CostMax_Error').hide();
             }
 
-            if (Cost.length > 14) {
+            if (Cost.length > 18) {
                 isValidItem = false;
-                $('#CostMax_Error').text("Cost must be less than 14 characters!").show()
+                $('#CostMax_Error').text("Cost must be less than 18 characters!").show()
             }
 
             if (ItemRemarks.trim().length > 50) {
