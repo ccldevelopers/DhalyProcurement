@@ -72,7 +72,7 @@
                                     @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
                                     <td style="font-weight: bold;">Required Materials</td>
                                     <td>
-                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                        @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                     </td>
                                     <td style="font-weight: bold;">Unit</td>
                                     <td>
@@ -221,7 +221,7 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
-                                @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
+                                @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                               <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
@@ -304,7 +304,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose" >Close</button>
                             </div>
                         </div>
                     </div>
@@ -397,7 +397,7 @@
 
                 var listOfitems = data.Items.length;
                 var items = "<select id='ItemName'>";
-                items = items + '<option value="">Select item</option>';
+                items = items + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfitems; i++) {
                     items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
                 }
@@ -406,7 +406,7 @@
 
 
                 var items = "<select id='ModalItemName'>";
-                items = items + '<option value="">Select item</option>';
+                items = items + '<option value="">--Select--</option>';
                 for (var i = 0; i < listOfitems; i++) {
                     items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
                 }
@@ -473,7 +473,7 @@
         var ItemRemarks = $('#ItemRemarks').val();
         var Status = "N";
 
-        if (ItemName == "" || ItemName == "Select item") {
+        if (ItemName == "" || ItemName == "--Select--") {
             $('#ItemName_Error').text("Item required").show();
             isAllValid = false;
         }
@@ -494,20 +494,26 @@
         else {
             $('#CurrentStock_Error').hide();
         }
+
         if (ReqQty == "") {
             $('#ReqQty_Error2').show();
             isAllValid = false;
         }
         else {
+            if (isNaN(ReqQty)) {
+                $('#ReqQty_Error').show();
+                isAllValid = false;
+            }
+            else {
+                if (ReqQty.length > 18) {
+                    $('#ReqQty_Error').text("Req Qty cannot be greater than 18 characters!").show();
+                    isAllValid = false;
+                }
+                $('#ReqQty_Error').hide();
+            }
             $('#ReqQty_Error2').hide();
         }
-        if (isNaN(ReqQty)) {
-            $('#ReqQty_Error').show();
-            isAllValid = false;
-        }
-        else {
-            $('#ReqQty_Error').hide();
-        }
+
         if (Brand.trim().length > 50) {
             isAllValid = false;
             $('#Brand_Error').text("Brand can not be greater than 50 characters!").show();
@@ -663,7 +669,7 @@
         var ModalSize = $('#ModalSize').val();
         var Remarks = $('#ModalRemarks').val();
 
-        if (ItemName.trim() == "Select item") {
+        if (ItemName.trim() == "--Select--") {
             isValidItem = false;
             $('#ModalItemName_Error').text("Item Name required").show();
         }

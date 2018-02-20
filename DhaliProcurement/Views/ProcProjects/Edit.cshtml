@@ -100,6 +100,7 @@
                             <td>
                                 @*@Html.TextBox("ProjectStatus", null, new { @class = "form-control" })*@
                                 <input type="text" value="@ViewBag.PStatus" id="ProjectStatus" class="form-control" />
+                                <span class="error" id="ProjectStatus_Error"></span>
                             </td>
                         </tr>
                         <tr>
@@ -921,6 +922,13 @@
             }
             else {
                 $('#Remarks_Error').hide();
+            }
+            if (ProjectStatus.trim().length > 50) {
+                isValid = false;
+                $('#ProjectStatus_Error').text("Status cannot be greater than 50 characters!").show();
+            }
+            else {
+                $('#ProjectStatus_Error').hide();
             }
 
             //if ($('.Resource-list tr').length < 3) {

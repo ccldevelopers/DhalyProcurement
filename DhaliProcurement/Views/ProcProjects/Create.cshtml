@@ -86,6 +86,7 @@
                             <td>Status</td>
                             <td>
                                 @Html.TextBox("ProjectStatus", null, new { @class = "form-control" })
+                                <span class="error" id="ProjectStatus_Error"></span>
                             </td>
                         </tr>
                         <tr>
@@ -749,7 +750,7 @@
             var ProjectType = $('#ProjectType').val();
             var ProjectStatus = $('#ProjectStatus').val();
             var ProjectRemarks = $('#ProjectRemarks ').val();
-
+            
             if (BOQNo.trim().length > 100) {
                 $('#BOQNo_Error').text("BOQ No. can not be greater than 100 characters!").show();
                 isValid = false;
@@ -777,7 +778,13 @@
             else {
                 $('#Remarks_Error').hide();
             }
-
+            if (ProjectStatus.trim().length > 50) {
+                isValid = false;
+                $('#ProjectStatus_Error').text("Status cannot be greater than 50 characters!").show();
+            }
+            else {
+                $('#ProjectStatus_Error').hide();
+            }
 
 
             var ItemId = document.getElementsByName("ItemId");
