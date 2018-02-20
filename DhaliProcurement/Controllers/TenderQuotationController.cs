@@ -298,6 +298,7 @@ namespace DhaliProcurement.Controllers
             };
             var flag = false;
             var TenderDate = DateTime.ParseExact(TDate, "dd/mm/yyyy", CultureInfo.CurrentCulture);
+            //var tenderList = db.Proc_TenderMas.Where(x => x.TNo.Trim().ToUpper() == TNo.Trim().ToUpper()).ToList();
             var tenderList = db.Proc_TenderMas.Where(x => x.TNo.Trim() == TNo.Trim()).ToList();
             if (tenderList.Count == 0)
             {
@@ -366,6 +367,15 @@ namespace DhaliProcurement.Controllers
                         };
                     }
                 }
+            }
+            else
+            {
+                result = new
+                {
+                    flag = false,
+                    message = "Tender No. already exists!"
+                    //message = ex.Message
+                };
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);

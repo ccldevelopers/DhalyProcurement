@@ -131,92 +131,92 @@ namespace DhaliProcurement.Controllers
                 message = "Saving failed"
             };
 
-            if (ProjectName.Trim() != "")
+            var check = db.Project.Where(x => x.Name.Trim().ToUpper() == ProjectName.Trim().ToUpper()).ToList();
+
+            if (check.Count == 0)
             {
-                Project project = new Project();
-                ProjectResource projectResource = new ProjectResource();
-
-                using (var dbContextTransaction = db.Database.BeginTransaction())
+                if (ProjectName.Trim() != "")
                 {
-                    try
+                    Project project = new Project();
+                    ProjectResource projectResource = new ProjectResource();
+
+                    using (var dbContextTransaction = db.Database.BeginTransaction())
                     {
-                        project.Name = ProjectName;
-                        project.StartDate = StartDate;
-                        project.EndDate = EndDate;
-                        project.Remarks = Remarks;
-                        //projectResource.ProjectId = project.Id;
-                        projectResource.CompanyResourceId = RName;
-
-                        db.Project.Add(project);
-                        db.ProjectResource.Add(projectResource);
-                        db.SaveChanges();
-
-                        var projectId = project.Id;
-
-                        ViewBag.ProjectId = projectId;
-
-                        //ProjectSite projectSite = new ProjectSite();
-                        //ProjectSiteResource projectSiteResource = new ProjectSiteResource();
-
-                        //projectSite.ProjectId = project.Id;
-                        // projectSite.Name = SiteName;
-                        //projectSite.Location = SiteLocation;
-                        //projectSiteResource.ProjectSiteId = projectSite.Id;
-
-                        //db.ProjectSite.Add(projectSite);
-                        //db.ProjectSiteResource.Add(projectSiteResource);
-                        //db.SaveChanges();
-
-
-
-                        if (SiteResourceDetails != null)
+                        try
                         {
-                            foreach (var item in SiteResourceDetails)
+                            project.Name = ProjectName;
+                            project.StartDate = StartDate;
+                            project.EndDate = EndDate;
+                            project.Remarks = Remarks;
+                            //projectResource.ProjectId = project.Id;
+                            projectResource.CompanyResourceId = RName;
+
+                            db.Project.Add(project);
+                            db.ProjectResource.Add(projectResource);
+                            db.SaveChanges();
+
+                            var projectId = project.Id;
+                            ViewBag.ProjectId = projectId;
+
+
+                            if (SiteResourceDetails != null)
                             {
-                                ProjectSite projectSite = new ProjectSite();
-                                ProjectSiteResource projectSiteResource = new ProjectSiteResource();
+                                foreach (var item in SiteResourceDetails)
+                                {
+                                    ProjectSite projectSite = new ProjectSite();
+                                    ProjectSiteResource projectSiteResource = new ProjectSiteResource();
 
-                                projectSite.ProjectId = projectId;
-                                projectSite.Name = item.SiteName;
-                                projectSite.Location = item.SiteLocation;
+                                    projectSite.ProjectId = projectId;
+                                    projectSite.Name = item.SiteName;
+                                    projectSite.Location = item.SiteLocation;
+                                    projectSiteResource.CompanyResourceId = item.SiteEngineerId;
 
-                                projectSiteResource.CompanyResourceId = item.SiteEngineerId;
-
-                                db.ProjectSite.Add(projectSite);
-                                db.ProjectSiteResource.Add(projectSiteResource);
-                                db.SaveChanges();
+                                    db.ProjectSite.Add(projectSite);
+                                    db.ProjectSiteResource.Add(projectSiteResource);
+                                    db.SaveChanges();
+                                }
                             }
+                            dbContextTransaction.Commit();
+                            //end
+                            result = new
+                            {
+                                flag = true,
+                                message = "Project saving successful!"
+                            };
                         }
-                        dbContextTransaction.Commit();
-                        //end
-                        result = new
+                        catch (Exception ex)
                         {
-                            flag = true,
-                            message = "Project saving successful!"
-                        };
-                    }
-                    catch(Exception ex)
-                    {
-                        dbContextTransaction.Rollback();
-                        result = new
-                        {
+                            dbContextTransaction.Rollback();
+                            result = new
+                            {
 
-                            flag = false,
-                            message = "Saving failed! Error occurred."
-                            //message = ex.Message
-                        };
+                                flag = false,
+                                message = "Saving failed! Error occurred."
+                                //message = ex.Message
+                            };
+                        }
                     }
                 }
-            }
 
+                else
+                {
+                    result = new
+                    {
+                        flag = false,
+                        message = "Saving failed!\nProject name required."
+                    };
+                }
+            }
             else
             {
                 result = new
                 {
                     flag = false,
-                    message = "Saving failed!\nProject name required."
+                    message = "Project already exists!"
                 };
             }
+
+
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
