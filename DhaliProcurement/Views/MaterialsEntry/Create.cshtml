@@ -720,36 +720,25 @@
         //    isAllValid = false;
         //}
         if (MaterialEntry == "") {
-            //if(isNaN(MaterialEntry)) {
-            //    alert('Material Entry must be a numeric value!!')
-            //}
-            //else {
-            //    $('#MaterialEntry_Error').show();
-            //}
             $('#MaterialEntry_Error').show();
             isAllValid = false;
         }
         else {
-            $('#MaterialEntry_Error').hide();
-        }
-
-        if (MaterialEntry != "") {
             if (isNaN(MaterialEntry)) {
                 $('#MaterialEntry_Error').text("Material Entry must be a numeric value!").show();
                 isAllValid = false;
             }
             else {
-                if (MaterialEntry.length > 18)
-                {
+                if (MaterialEntry.length > 18) {
                     $('#MaterialEntry_Error').text("Material Entry cannot be greater than 18 characters!").show();
                     isAllValid = false;
                 }
                 else {
                     $('#MaterialEntry_Error').hide();
                 }
-               
             }
         }
+
         //if (POQuantity - MaterialEntry<0) {
         //    alert('Material entry can not be greater than PO quantity');
         //    isAllValid = false;

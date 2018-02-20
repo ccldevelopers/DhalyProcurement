@@ -684,7 +684,14 @@
                 $('#Payment_Error').text("Payment must be a numeric value!").show();
             }
             else {
-                $('#Payment_Error').hide();
+                if ($('#Payment').val().trim().length > 18) {
+                    isAllValid = false;
+                    $('#Payment_Error').text("Payment cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#Payment_Error').hide();
+                }
+
             }
            
         }
@@ -1064,7 +1071,14 @@
                 isAllValid = false;
             }
             else {
-                $('#ModalPayment_Error').hide();
+                if (ModalPayment.length > 18) {
+                    $('#ModalPayment_Error').text("Payment mcannot be greater than 18 characters!").show();
+                    isAllValid = false;
+                }
+                else {
+                    $('#ModalPayment_Error').hide();
+                }
+
             }           
         }
         if (ModalRemarks.length > 50) {
