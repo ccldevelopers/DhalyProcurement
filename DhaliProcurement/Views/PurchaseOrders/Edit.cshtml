@@ -344,8 +344,8 @@
             var quantity = $('#POQuantity1').val();
             var totalPrice = price * quantity;
             if (isNaN(totalPrice)) {
-                $('#POQuantity_Error').text('Unit Price must be a numeric value!').show();
-                $('#POQuantity1').val("");
+                //$('#POQuantity_Error').text('Unit Price must be a numeric value!').show();
+                //$('#POQuantity1').val("");
                 $('#TotalPrice1').val("");
             }
             else {
@@ -378,7 +378,7 @@
             var totalPrice = price * quantity;
             if (isNaN(totalPrice)) {
                 $('#ModalPOQuantity_Error').text('Unit Price must be a numeric value!').show();
-                $('#ModalPOQuantity').val("");
+                //$('#ModalPOQuantity').val("");
                 $('#ModalTotalPrice').val("");
             }
             else {
@@ -450,16 +450,19 @@
             $('#POQuantity_Error').text("PO Quantity required").show();
         }
         else {
-            $('#POQuantity_Error').hide();
-        }
-
-        if ($('#POQuantity1').val().trim() != "") {
             if (isNaN($('#POQuantity1').val().trim())) {
                 isValidItem = false;
                 $('#POQuantity_Error').text("PO Quantity must be a numeric value!").show();
             }
             else {
-                $('#POQuantity_Error').hide();
+                if ($('#POQuantity1').val().trim().length > 18) {
+                    isValidItem = false;
+                    $('#POQuantity_Error').text("PO Quantity cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#POQuantity_Error').hide();
+                }
+
             }
         }
 
@@ -764,22 +767,28 @@
         else {
             $('#ModalItemName_Error').hide();
         }
-        if (ModalPOQuantity.trim() == "") {
-            $('#ModalPOQuantity_Error').text("PO Quantity required").show();
+
+        if (ModalPOQuantity.trim() == '') {
             isAllValid = false;
+            $('#ModalPOQuantity_Error').text("PO Quantity required").show();
         }
         else {
-            $('#ModalPOQuantity_Error').hide();
-        }
-        if (ModalPOQuantity.trim() != "") {
             if (isNaN(ModalPOQuantity.trim())) {
                 isAllValid = false;
                 $('#ModalPOQuantity_Error').text("PO Quantity must be a numeric value!").show();
             }
             else {
-                $('#ModalPOQuantity_Error').hide();
+                if (ModalPOQuantity.trim().length > 18) {
+                    isAllValid = false;
+                    $('#ModalPOQuantity_Error').text("PO Quantity cannot be greater than 18 characters!").show();
+                }
+                else {
+                    $('#ModalPOQuantity_Error').hide();
+                }
+
             }
         }
+
 
         if (isAllValid) {
             selRow.find('input[name=ItemName]').val(ItemName);
@@ -804,6 +813,12 @@
             totalItemCost();
         }
     });
+
+    $('#ModalClose').click(function () {
+        $('#ModalItemName_Error').hide();
+        $('#ModalPOQuantity_Error').hide();
+    });
+
 
 
     $('#SaveItem').click(function (e) {
@@ -916,12 +931,25 @@
         else {
             $('#Subject_Error').hide();
         }
-        if (isNaN(LeadTime)) {
+        if (LeadTime.trim() == "") {
             isValid = false;
-            $('#LeadTime_Error').text("Lead Time must be a numeric value!").show();
+            $('#LeadTime_Error').text("Lead Time required!").show();
         }
         else {
-            $('#LeadTime_Error').hide();
+            if (isNaN(LeadTime)) {
+                isValid = false;
+                $('#LeadTime_Error').text("Lead Time must be a numeric value!").show();
+            }
+            else {
+                if (LeadTime.trim() < 0 || LeadTime.trim().length > 4) {
+                    isValid = false;
+                    $('#LeadTime_Error').text("Lead Time cannot be greater than 4 characters or negative!").show();
+                }
+                else {
+                    $('#LeadTime_Error').hide();
+                }
+
+            }
         }
         if (Content.trim().length > 800) {
             isValid = false;
