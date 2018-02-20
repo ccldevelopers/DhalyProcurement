@@ -99,11 +99,11 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><span class="error" id="ProjectName_Error">Project required</span></td>
+                                    <td><span class="error" id="ProjectName_Error" style="padding-left:10px;">Project required</span></td>
                                     <td></td>
-                                    <td><span class="error" id="SiteName_Error">Site required</span></td>
+                                    <td><span class="error" id="SiteName_Error" style="padding-left:10px;">Site required</span></td>
                                     <td></td>
-                                    <td><span class="error" id="ReqNo_Error">Req No. required</span></td>
+                                    <td><span class="error" id="ReqNo_Error" style="padding-left:10px;">Req No. required</span></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">Item</td>
@@ -129,7 +129,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-lg-1"></td>
-                                    <td class="col-lg-3"><span class="error" id="ItemName_Error">Item required</span></td>
+                                    <td class="col-lg-3"><span class="error" id="ItemName_Error" style="padding-left:10px;">Item required</span></td>
                                     <td class="col-lg-1"></td>
                                     <td class="col-lg-3"></td>
                                     <td class="col-lg-1"></td>
@@ -155,9 +155,9 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><span class="error" id="VendorName_Error">Vendor required</span></td>
+                                    <td><span class="error" id="VendorName_Error" style="padding-left:10px;">Vendor required</span></td>
                                     <td></td>
-                                    <td><span class="error" id="QtnNo_Error">Qtn No. required</span></td>
+                                    <td><span class="error" id="QtnNo_Error"  style="padding-left:10px;">Qtn No. required</span></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -179,7 +179,7 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><span class="error" id="UnitPrice_Error">Unit Price required</span></td>
+                                    <td><span class="error" id="UnitPrice_Error"  style="padding-left:10px;">Unit Price required</span></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -733,22 +733,43 @@
             else {
                 $('#ModalVendorName_Error').hide();
             }
+            //if (ModalUnitPrice.trim() == "") {
+            //    $('#ModalUnitPrice_Error').text("Unit Price required").show();
+            //    isAllValid = false;
+            //}
+            //else {
+            //    $('#ModalUnitPrice_Error').hide();
+            //}
+            //if(ModalUnitPrice.trim()!=""){
+            //    if(isNaN(ModalUnitPrice.trim())){
+            //        $('#ModalUnitPrice_Error').text("Unit Price must be a numeric value!").show();
+            //        isAllValid = false;
+            //    }
+            //    else{
+            //        $('#ModalUnitPrice_Error').hide();
+            //    }
+            //}
+
             if (ModalUnitPrice.trim() == "") {
                 $('#ModalUnitPrice_Error').text("Unit Price required").show();
                 isAllValid = false;
             }
             else {
-                $('#ModalUnitPrice_Error').hide();
-            }
-            if(ModalUnitPrice.trim()!=""){
                 if(isNaN(ModalUnitPrice.trim())){
                     $('#ModalUnitPrice_Error').text("Unit Price must be a numeric value!").show();
                     isAllValid = false;
                 }
                 else{
-                    $('#ModalUnitPrice_Error').hide();
+                    if (ModalUnitPrice.trim().length > 18) {
+                        isAllValid = false;
+                        $('#ModalUnitPrice_Error').text("Unit price can not be greater than 18 characters!").show();
+                    }
+                    else {
+                        $('#ModalUnitPrice_Error').hide();
+                    }
                 }
             }
+
             if (ModalQtnNo.trim().length > 50) {
                 $('#ModalQtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
                 isAllValid = false;
@@ -1188,7 +1209,20 @@
                 isAllValid = false;
             }
             else {
-                $('#UnitPrice_Error').hide();
+                if(isNaN(TQPrice.trim())){
+                    isAllValid = false;
+                    $('#UnitPrice_Error').text("Unit Price must be a numeric value!").show();
+                }
+                else{
+                    if(TQPrice.trim().length>18){
+                        isAllValid = false;
+                        $('#UnitPrice_Error').text("Unit Pricecannot be greater than 18 characters!").show();
+                    }
+                    else{
+                        $('#UnitPrice_Error').hide();
+                    }
+                }
+            
             }
             if (TQNo.trim().length > 50) {
                 $('#QtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();

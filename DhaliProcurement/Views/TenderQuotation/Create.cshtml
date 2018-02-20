@@ -617,21 +617,27 @@
         else {
             $('#VendorName_Error').hide();
         }
+
         if (TQPrice.trim() == "") {
             $('#UnitPrice_Error').show();
             isAllValid = false;
         }
         else {
-            if (TQPrice.trim().length > 18)
-            {
+            if (isNaN(TQPrice.trim())) {
                 isAllValid = false;
-                $('#UnitPrice_Error').text("Unit price can not be greater than 18 characters!").show();
+                $('#UnitPrice_Error').text("Unit price must be a numeric value!").show();
             }
             else {
-                $('#UnitPrice_Error').hide();
-            }
-            
+                if (TQPrice.trim().length > 18) {
+                    isAllValid = false;
+                    $('#UnitPrice_Error').text("Unit price can not be greater than 18 characters!").show();
+                }
+                else {
+                    $('#UnitPrice_Error').hide();
+                }
+            }         
         }
+
         if (TQNo.trim().length > 50) {
             $('#QtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
             isAllValid = false;
