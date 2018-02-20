@@ -149,7 +149,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                     @*<span class="error">Item name required</span>*@
                                 </td>
                                 <td>
@@ -157,7 +157,7 @@
                                     @*<span class="error">Valid quantity required</span>*@
                                 </td>
                                 <td>
-                                    @Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })
+                                    @Html.DropDownList("Unit", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @style = "width: 150px;" })
                                     @*<span class="error">Unit required</span>*@
                                 </td>
                                 <td>
@@ -237,7 +237,7 @@
                             <div class="form-group">
                                 @Html.Label("Item Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;", @disabled = "disabled" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;", @disabled = "disabled" })
                                     <span class="error" id="ModalItemName_Error"></span>
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                                 @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     <input type="hidden" id="modalSiteEng" />
-                                    @Html.DropDownList("Unit", null, "Select unit", htmlAttributes: new { @class = "form-control select2", @id = "ModalUnit", @data_required = "required", @style = "width: 150px;" })
+                                    @Html.DropDownList("Unit", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @id = "ModalUnit", @data_required = "required", @style = "width: 150px;" })
                                     <span class="error" id="ModalUnit_Error"></span>
                                  </div>
                             </div>
@@ -277,7 +277,7 @@
                             <div class="modal-footer">
                                 <div class="col-md-offset-2 col-md-10">
                                     <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="ModalClose">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -458,7 +458,7 @@
             var Cost = $('#ModalCost').val();
             var Remarks = $('#ModalRemarks').val();
 
-            if (ItemName.trim() == "Select item") {
+            if (ItemName.trim() == "--Select--") {
                 isValidItem = false;
                 $('#ModalItemName_Error').text("Item Name required").show();
             }
@@ -467,41 +467,31 @@
             }
             if (Qty.trim() == "") {
                 isValidItem = false;
-                $('#ModalQty_Error').text("Qty required").show();
+                $('#ModalQtyMax_Error').text("Qty required").show();
             }
             else {
-                $('#ModalQty_Error').hide();
-            }
-            //if (Qty.trim()!="") {
-            //    if(isNaN(Qty.trim())){
-            //        isValidItem = false;
-            //        $('#ModalQtyMax_Error').text("Qty must be a numeric value").show();
-            //    }
-            //}
-            //else {
-            //    $('#ModalQtyMax_Error').hide();
-            //}
-            if (isNaN(Qty.trim())) {
-                isValidItem = false;
-                $('#ModalQtyMax_Error').text("Qty should be a numeric value").show()
-            }
-            else {
-                if (Qty.length > 18) {
+                if (isNaN(Qty.trim())) {
                     isValidItem = false;
-                    $('#ModalQtyMax_Error').text("Qty must be less than 18 characters!").show()
+                    $('#ModalQtyMax_Error').text("Qty should be a numeric value").show()
                 }
                 else {
-                    $('#ModalQtyMax_Error').hide();
-                }
-              
+                    if (Qty.length > 18) {
+                        isValidItem = false;
+                        $('#ModalQtyMax_Error').text("Qty must be less than 18 characters!").show()
+                    }
+                    else {
+                        $('#ModalQtyMax_Error').hide();
+                    }
+                }               
             }
-            if (UnitName.trim() == "Select unit") {
+            if (UnitName.trim() == "--Select--") {
                 isValidItem = false;
                 $('#ModalUnit_Error').text("Unit required").show();
             }
             else {
                 $('#ModalUnit_Error').hide();
             }
+
             if (Cost.trim() == "") {
                 isValidItem = false;
                 $('#ModalCost_Error').text("Cost required").show();
@@ -564,6 +554,15 @@
             }
         });
 
+
+        
+        $('#ModalClose').click(function () {
+            $('#ModalItemName_Error').hide();
+            $('#ModalQtyMax_Error').hide();
+            $('#ModalUnit_Error').hide();
+            $('#ModalCost_Error').hide();
+            $('#ModalRemarks_Error').hide();
+        });
 
         function RemoveTask(e)
         {
@@ -717,7 +716,7 @@
 
             var isValidItem = true;
 
-            if (ItemName == 'Select item') {
+            if (ItemName == '--Select--') {
                 $('#ItemName_Error').show();
                 isValidItem = false;
             }
@@ -725,27 +724,46 @@
                 $('#ItemName_Error').hide();
             }
 
-            if ($('#Qty').val().trim() == '') {
+            //if ($('#Qty').val().trim() == '') {
+            //    isValidItem = false;
+            //    $('#Quantity_Error').show();
+            //}
+            //else {
+            //    $('#Quantity_Error').hide();
+
+            //}
+            //if (isNaN($('#Qty').val().trim())) {
+            //    isValidItem = false;
+            //    $('#QuantityMax_Error').text("Qty should be a numeric value").show()
+            //}
+            //else {
+            //    if ($('#Qty').val().trim().length > 18) {
+            //        isValidItem = false;
+            //        $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
+            //    }
+            //    else{
+            //        $('#QuantityMax_Error').hide();
+            //    }
+            //}
+
+            if (Qty.trim() == "") {
                 isValidItem = false;
-                $('#Quantity_Error').show();
+                $('#QuantityMax_Error').text("Qty required").show();
             }
             else {
-                $('#Quantity_Error').hide();
-
-            }
-
-            if (isNaN($('#Qty').val().trim())) {
-                isValidItem = false;
-                $('#QuantityMax_Error').text("Qty should be a numeric value").show()
-            }
-            else {
-                if ($('#Qty').val().trim().length > 18) {
+                if (isNaN(Qty.trim())) {
                     isValidItem = false;
-                    $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
+                    $('#QuantityMax_Error').text("Qty should be a numeric value").show()
                 }
-                else{
-                    $('#QuantityMax_Error').hide();
-                }
+                else {
+                    if (Qty.length > 18) {
+                        isValidItem = false;
+                        $('#QuantityMax_Error').text("Qty must be less than 18 characters!").show()
+                    }
+                    else {
+                        $('#QuantityMax_Error').hide();
+                    }
+                }               
             }
 
 
@@ -760,25 +778,24 @@
 
             if ($('#Cost').val().trim() == '') {
                 isValidItem = false;
-                $('#Costing_Error').show();
+                $('#CostMax_Error').text('Cost required').show();
             }
             else {
-                $('#Costing_Error').hide();
-
-            }
-            if (isNaN($('#Cost').val().trim())) {
-                isValidItem = false;
-                $('#CostMax_Error').text("Cost should be a numeric value").show()
-            }
-            else {
-                if (Cost.length > 18) {
+                if (isNaN($('#Cost').val().trim())) {
                     isValidItem = false;
-                    $('#CostMax_Error').text("Cost must be less than 18 characters!").show()
+                    $('#CostMax_Error').text("Cost should be a numeric value").show()
                 }
                 else {
-                    $('#CostMax_Error').hide();
-                }             
-            }
+                    if ($('#Cost').val().trim().length > 18) {
+                        isValidItem = false;
+                        $('#CostMax_Error').text("Cost must be less than 18 characters!").show()
+                    }
+                    else {
+                        $('#CostMax_Error').hide();
+                    }
+                }
+            } 
+            
 
             if (ItemRemarks.trim().length > 50) {
                 isValidItem = false;
