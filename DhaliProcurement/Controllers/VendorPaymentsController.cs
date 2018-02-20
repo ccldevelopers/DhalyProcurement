@@ -759,8 +759,8 @@ namespace DhaliProcurement.Controllers
             {
                 result = new
                 {
-                    flag = true,
-                    message = "Vebdor Payment already exists!"
+                    flag = false,
+                    message = "This Vendor and Date already exists!"
                 };
             }
 
