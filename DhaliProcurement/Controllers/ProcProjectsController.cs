@@ -154,70 +154,79 @@ namespace DhaliProcurement.Controllers
                 message = "Saving failed"
             };
 
-            using (var dbContextTransaction = db.Database.BeginTransaction())
+            var check = db.ProcProject.Where(x => x.ProjectSiteId == ProjectSiteId).ToList();
+            if (check.Count == 0)
             {
-                try
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    ProcProject procProject = new ProcProject();
-                    //procProject.Id = ProjectId;
-                    procProject.ProjectSiteId = ProjectSiteId;
-
-
-                    procProject.BOQDate = BOQDate;
-                    procProject.BOQNo = BOQNo;
-                    procProject.NOADate = NOADate;
-                    procProject.NOANo = NOANo;
-                    procProject.Status = ProjectStatus;
-                    procProject.Remarks = ProjectRemarks;
-                    procProject.ProjectType = ProjectType;
-
-                    db.ProcProject.Add(procProject);
-                    db.SaveChanges();
-
-                    foreach (var item in ResourceDetails)
+                    try
                     {
+                        ProcProject procProject = new ProcProject();
+                        //procProject.Id = ProjectId;
+                        procProject.ProjectSiteId = ProjectSiteId;
 
-                        ProcProjectItem procitem = new ProcProjectItem();
 
-                        //  var checkeingDuplicate= db.ProcProjectItem.Where(x => x.ProjectId == item.ProjectId && x.ProjectSiteId == item.ProjectSiteId && x.ItemISLNO == item.ItemISLNO);
+                        procProject.BOQDate = BOQDate;
+                        procProject.BOQNo = BOQNo;
+                        procProject.NOADate = NOADate;
+                        procProject.NOANo = NOANo;
+                        procProject.Status = ProjectStatus;
+                        procProject.Remarks = ProjectRemarks;
+                        procProject.ProjectType = ProjectType;
 
-                        //var procProjId = db.ProcProject.SingleOrDefault(x => x.ProjectSiteId == ProjectSiteId);
-                        //procitem.ProcProjectId = procProjId.Id;
-                        //  procitem.ProjectSiteId = item.ProjectSiteId;
-
-                        procitem.ProcProjectId = procProject.Id;
-                        procitem.ItemId = item.ItemISLNO;
-                        procitem.UnitId = item.UnitUSLNO;
-                        procitem.PQuantity = item.PQuantity;
-                        //procitem.Unit = (Unit)Enum.Parse(typeof(Unit), item.UnitUSLNO.ToString());
-                        procitem.PCost = item.PCost;
-                        procitem.Remarks = item.Remarks;
-
-                        db.ProcProjectItem.Add(procitem);
+                        db.ProcProject.Add(procProject);
                         db.SaveChanges();
 
+                        foreach (var item in ResourceDetails)
+                        {
+
+                            ProcProjectItem procitem = new ProcProjectItem();
+                            procitem.ProcProjectId = procProject.Id;
+                            procitem.ItemId = item.ItemISLNO;
+                            procitem.UnitId = item.UnitUSLNO;
+                            procitem.PQuantity = item.PQuantity;
+                            //procitem.Unit = (Unit)Enum.Parse(typeof(Unit), item.UnitUSLNO.ToString());
+                            procitem.PCost = item.PCost;
+                            procitem.Remarks = item.Remarks;
+
+                            db.ProcProjectItem.Add(procitem);
+                            db.SaveChanges();
+
+                        }
+                        dbContextTransaction.Commit();
+
+
+                        result = new
+                        {
+                            flag = true,
+                            message = "Project cost saving successful."
+                        };
                     }
-                    dbContextTransaction.Commit();
-
-
-                    result = new
+                    catch (Exception ex)
                     {
-                        flag = true,
-                        message = "Project Cost saving successful."
-                    };
-                }
-                catch (Exception ex)
-                {
-                    dbContextTransaction.Rollback();
-                    result = new
-                    {
+                        dbContextTransaction.Rollback();
+                        result = new
+                        {
 
-                        flag = false,
-                        message = "Saving failed! Error occurred."
-                        //message = ex.Message
-                    };
+                            flag = false,
+                            message = "Saving failed! Error occurred."
+                            //message = ex.Message
+                        };
+                    }
                 }
             }
+            else
+            {
+                result = new
+                {
+
+                    flag = false,
+                    message = "Site cost already exists!"
+                    //message = ex.Message
+                };
+            }
+
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
