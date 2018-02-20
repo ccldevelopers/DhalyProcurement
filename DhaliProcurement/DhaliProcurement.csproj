@@ -262,6 +262,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ReportDataset\VendorPaymentProject.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorPaymentProject.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\VendorPaymentEdit.cs" />
     <Compile Include="ViewModel\VMVenderPayment.cs" />
     <Compile Include="Views\CustomRoleProvider.cs" />
@@ -841,6 +846,17 @@
     </None>
     <Content Include="ReportDataset\VendorPaymentItemWiseDS.xss">
       <DependentUpon>VendorPaymentItemWiseDS.xsd</DependentUpon>
+    </Content>
+    <Content Include="ReportDataset\VendorPaymentProject.xsc">
+      <DependentUpon>VendorPaymentProject.xsd</DependentUpon>
+    </Content>
+    <None Include="ReportDataset\VendorPaymentProject.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>VendorPaymentProject.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="ReportDataset\VendorPaymentProject.xss">
+      <DependentUpon>VendorPaymentProject.xsd</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
@@ -1736,6 +1752,7 @@
     <Content Include="Views\VendorPayments\Edit - PreviousDesign.cshtml" />
     <Content Include="Views\MaterialsEntry\Edit - previous code.cshtml" />
     <Content Include="Views\Report\ProjectList.cshtml" />
+    <Content Include="Views\Report\VendorPaymentProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1773,6 +1790,7 @@
       <DependentUpon>201802150454244_15Feb_2018.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="Reports\ProjectList.rpt" />
+    <Content Include="Reports\VendorPaymentProject.rpt" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

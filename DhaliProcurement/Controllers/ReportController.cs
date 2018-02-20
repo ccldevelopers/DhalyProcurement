@@ -2654,6 +2654,260 @@ namespace DhaliProcurement.Controllers
 
 
 
+        [HttpGet]
+        public ActionResult VendorPaymentProject()
+        {
+
+
+            ViewBag.ProjectId = new SelectList(db.Project, "Id", "Name");
+            ViewBag.SiteId = new SelectList(db.ProjectSite, "Id", "Name");
+
+            var vendors = (from vendorMas in db.Proc_VendorPaymentMas
+                           join vendor in db.Vendor on vendorMas.VendorId equals vendor.Id
+                           select vendor
+                           ).Distinct().ToList();
+
+
+
+            ViewBag.VendorId = new SelectList(vendors, "Id", "Name");
+            //List<SelectListItem> items = new List<SelectListItem>();
+            //items.Add(new SelectListItem { Text = "Approved", Value = "0" });
+            //items.Add(new SelectListItem { Text = "Pending", Value = "1" });
+            //ViewBag.Status = items;
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult VendorPaymentProject(int? ProjectId, int? SiteId)
+        {
+            var companyInfo = db.CompanyInformation.SingleOrDefault();
+            VendorPaymentProject dsVendorPaymentProject = new VendorPaymentProject();
+
+
+            dsVendorPaymentProject.CompanyInfo.AddCompanyInfoRow(companyInfo.Name,
+                                                         companyInfo.Address,
+                                                         companyInfo.Phone,
+                                                         companyInfo.Web,
+                                                         companyInfo.Email,
+                                                         companyInfo.Id);
+
+            var projVendorPaymentMasters = (from vendorDet in db.Proc_VendorPaymentDet
+                                            join vendorMas in db.Proc_VendorPaymentMas on vendorDet.Proc_VendorPaymentMasId equals vendorMas.Id
+                                            join entryDet in db.Proc_MaterialEntryDet on vendorDet.Proc_MaterialEntryDetId equals entryDet.Id
+                                            join entryMas in db.Proc_MaterialEntryMas on entryDet.Proc_MaterialEntryMasId equals entryMas.Id
+                                            join purDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purDet.Id
+                                            join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
+                                            join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                                            join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                            join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                                            join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                                            join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                                            join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+                                            join proj in db.Project on projSite.ProjectId equals proj.Id
+                                            where procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id
+                                            orderby proj.Id, projSite.Id ascending
+                                            select new
+                                            {
+                                                ProjectId = proj.Id,
+                                                ProjectName = proj.Name,
+                                                SiteId = projSite.Id,
+                                                SiteName = projSite.Name,
+                                                VendorPayId = vendorMas.Id,
+                                                PoTotalAmt = purMas.POTotalAmt,
+                                                purMasId = purMas.Id
+                                            }).Distinct().ToList();
+
+
+            if (ProjectId != null && SiteId != null)
+            {
+                projVendorPaymentMasters = projVendorPaymentMasters.Where(x => x.ProjectId == ProjectId && x.SiteId == SiteId).ToList();
+            }
+            //else if (ProjectId != null && SiteId != null)
+            //{
+            //    projVendorPaymentMasters = projVendorPaymentMasters.Where(x => x.ProjectId == ProjectId && x.SiteId == SiteId).ToList();
+            //}
+            else if (ProjectId != null)
+            {
+
+                projVendorPaymentMasters = projVendorPaymentMasters.Where(x => x.ProjectId == ProjectId).Distinct().ToList();
+            }
+
+
+            Dictionary<string, int> shoppingDictionary = new Dictionary<string, int>();
+
+
+            decimal[] array = new decimal[50];
+            int[] poarray = new int[50];
+            decimal[] dueAmt = new decimal[50];
+            int[] duePoarray = new int[50];
+            for (int i = 0; i < 50; i++)
+            {
+                array[i] = 0;
+                poarray[i] = 0;
+                dueAmt[i] = 0;
+                duePoarray[i] = 0;
+            }
+
+            foreach (var vendorMaster in projVendorPaymentMasters)
+            {
+
+                if (poarray[vendorMaster.purMasId] == 0)
+                {
+                    array[vendorMaster.ProjectId] = array[vendorMaster.ProjectId] + vendorMaster.PoTotalAmt;
+                    poarray[vendorMaster.purMasId] = 1;
+                }
+
+
+
+                //ndorMaster.
+                dsVendorPaymentProject.VendorProject.AddVendorProjectRow(vendorMaster.ProjectId,
+                                           vendorMaster.ProjectName,
+                                           vendorMaster.SiteId,
+                                           vendorMaster.SiteName,
+                                           vendorMaster.VendorPayId,
+                                           vendorMaster.PoTotalAmt,
+                                           array[vendorMaster.ProjectId]
+                                           );
+
+
+
+
+                var vendorPayDet = (from vendorDet in db.Proc_VendorPaymentDet
+                                    join vendorMas in db.Proc_VendorPaymentMas on vendorDet.Proc_VendorPaymentMasId equals vendorMas.Id
+                                    join entryDet in db.Proc_MaterialEntryDet on vendorDet.Proc_MaterialEntryDetId equals entryDet.Id
+                                    join entryMas in db.Proc_MaterialEntryMas on entryDet.Proc_MaterialEntryMasId equals entryMas.Id
+                                    join purDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purDet.Id
+                                    join purMas in db.Proc_PurchaseOrderMas on purDet.Proc_PurchaseOrderMasId equals purMas.Id
+                                    join tenderMas in db.Proc_TenderMas on purMas.Proc_TenderMasId equals tenderMas.Id
+                                    join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                                    join reqDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals reqDet.Id
+                                    join reqMas in db.Proc_RequisitionMas on reqDet.Proc_RequisitionMasId equals reqMas.Id
+                                    join procProj in db.ProcProject on reqMas.ProcProjectId equals procProj.Id
+                                    join projSite in db.ProjectSite on procProj.ProjectSiteId equals projSite.Id
+                                    join proj in db.Project on projSite.ProjectId equals proj.Id
+                                    join vendor in db.Vendor on vendorMas.VendorId equals vendor.Id
+                                    where vendorMas.Id == vendorMaster.VendorPayId
+                                    orderby purMas.Id ascending
+
+                                    //&& procProj.ProjectSite.ProjectId == proj.Id && procProj.ProjectSiteId == projSite.Id
+                                    //&& tenderDet.VendorId == vendorMas.VendorId
+                                    //&&  vendorMas.Id==vendorMaster.VendorPayId                                                                    
+                                    //&& entryMas.ProcProject.ProjectSiteId == projSite.Id
+                                    select new
+                                    {
+                                        VendorPayMasId = vendorMas.Id,
+                                        VendorPayVPDate = vendorMas.VPDate,
+                                        VendorId = vendor.Id,
+                                        VendorName = vendor.Name,
+                                        PurchaseMasId = purMas.Id,
+                                        PurchasePONo = purMas.PONo,
+                                        EntryDetId = entryDet.Id,
+                                        EntryDetQty = entryDet.EntryQty,
+                                        TotalPayable = purMas.POTotalAmt,
+                                        VendorDetId = vendorDet.Id,
+                                        VendorDetPay = vendorDet.PayAmt,
+                                        VendorProjectId = proj.Id
+                                    }).Distinct().ToList();
+
+
+                decimal PayableAmt = 0;
+
+                decimal totalAmt = 0;
+
+                var vendorpayMas = 0;
+                var Date = "";
+                var vndorId = 0;
+                var VendorNm = "";
+                var PurMasId = 0;
+                var purPoNo = "";
+                var entId = 0;
+                Decimal entQty = 0;
+                var venDetId = 0;
+                var projId = 0;
+
+
+                foreach (var item in vendorPayDet)
+                {
+                    totalAmt = totalAmt + item.VendorDetPay;
+
+                    vendorpayMas = item.VendorPayMasId;
+                    Date = NullHelper.DateToString(item.VendorPayVPDate);
+                    vndorId = item.VendorId;
+                    VendorNm = item.VendorName;
+                    PurMasId = item.PurchaseMasId;
+                    purPoNo = item.PurchasePONo;
+                    entId = item.EntryDetId;
+                    entQty = item.EntryDetQty;
+                    PayableAmt = item.TotalPayable;
+                    venDetId = item.VendorDetId;
+                    projId = item.VendorProjectId;
+
+
+
+
+                }
+
+
+                if (duePoarray[PurMasId] == 0)
+                {
+                    dueAmt[PurMasId] = PayableAmt - totalAmt;
+                    duePoarray[PurMasId] = 1;
+
+                }
+                else
+                {
+                    dueAmt[PurMasId] = dueAmt[PurMasId] - totalAmt;
+                }
+
+
+
+                dsVendorPaymentProject.VendorPayment.AddVendorPaymentRow(vendorpayMas,
+                            Date,
+                            vndorId,
+                            VendorNm,
+                            PurMasId,
+                            purPoNo,
+                            entId,
+                            entQty,
+                            PayableAmt,
+                            venDetId,
+                            totalAmt,
+                            dueAmt[PurMasId],
+                             projId
+
+                            );
+
+
+
+            }
+
+
+            ReportDocument rd = new ReportDocument();
+
+            rd.Load(Path.Combine(Server.MapPath("~/Reports"), "VendorPaymentProject.rpt"));
+
+            rd.SetDataSource(dsVendorPaymentProject);
+
+            Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            Byte[] fileBuffer = ms.ToArray();
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-length", fileBuffer.Length.ToString());
+            Response.BinaryWrite(fileBuffer);
+            return null;
+
+
+        }
+
+
+
 
 
     }
