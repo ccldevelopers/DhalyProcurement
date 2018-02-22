@@ -48,14 +48,14 @@
                         </tr>
                         <tr>
                             <td>Specification</td>
-                            <td>
+                            <td colspan="3">
                                 @Html.TextBox("Specs", Model.proc_TenderMas.Specs, new { @class = "form-control" })
                                 <span class="error" id="Specs_Error"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>Remarks</td>
-                            <td>
+                            <td colspan="3">
                                 @Html.TextBox("TenderRemarks", Model.proc_TenderMas.Remarks, new { @class = "form-control" })
                                 <span class="error" id="TenderRemarks_Error"></span>
                             </td>
@@ -130,7 +130,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-lg-1"></td>
-                                    <td class="col-lg-3"><span class="error" id="ItemName_Error" style="padding-left:10px;">Item required</span></td>
+                                    <td class="col-lg-3"><span class="error" id="ItemName_Error">Item required</span></td>
                                     <td class="col-lg-1"></td>
                                     <td class="col-lg-3"></td>
                                     <td class="col-lg-1"></td>

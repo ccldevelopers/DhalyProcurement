@@ -35,39 +35,39 @@
 
                         <tr>
                             <td>Project</td>
-                            <td>
-                                <input type="text" value="@ViewBag.ProjectName" class="form-control datepicker" disabled="disabled" id="ProjectName" />
+                            <td colspan="3">
+                                <input type="text" value="@ViewBag.ProjectName" class="form-control" disabled="disabled" id="ProjectName" />
                                 <input type="hidden" value="@ViewBag.ProjectId" id="ProjectId" />
                             </td>
                         </tr>
                         <tr>
                             <td>Site Name</td>
-                            <td>
-                                <input type="text" value="@ViewBag.SiteName" class="form-control datepicker" disabled="disabled" id="SiteName" />
+                            <td colspan="3">
+                                <input type="text" value="@ViewBag.SiteName" class="form-control" disabled="disabled" id="SiteName" />
                                 <input type="hidden" value="@ViewBag.SiteId" id="SiteId" />
                             </td>
                         </tr>
 
                         <tr>
                             <td>Address</td>
-                            <td>
+                            <td colspan="3">
 
-                                <input type="text" value="@ViewBag.PurchaseAddress" class="form-control datepicker" disabled="disabled" id="PurchaseAddress" />
+                                <input type="text" value="@ViewBag.PurchaseAddress" class="form-control" disabled="disabled" id="PurchaseAddress" />
                                 <span class="error" id="PurchaseAddress_Error"></span>
                             </td>
                         </tr>
 
                         <tr>
                             <td>Vendor</td>
-                            <td>
-                                @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2", disabled = "disabled" })
+                            <td colspan="3">
+                                @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control", disabled = "disabled" })
                                 @Html.ValidationMessage("VendorId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
                         <tr>
                             <td>Tender No</td>
-                            <td>
-                                @Html.DropDownList("TenderId", null, "--Select--", htmlAttributes: new { @id = "TenderId", @class = "form-control select2", disabled = "disabled" })
+                            <td colspan="3">
+                                @Html.DropDownList("TenderId", null, "--Select--", htmlAttributes: new { @id = "TenderId", @class = "form-control", disabled = "disabled" })
                                 @Html.ValidationMessage("TenderId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -113,8 +113,9 @@
 
                         <tr>
                             <td>Content</td>
-                            <td>
-                                <input type="text" value="@ViewBag.Content" class="form-control" id="Content" />
+                            <td colspan="3">
+                                @*<input type="text" value="@ViewBag.Content" class="form-control" id="Content" />*@
+                                <textarea  class="form-control" id="Content" >@ViewBag.Content</textarea>
                                 <span class="error" id="Content_Error"></span>
                             </td>
                         </tr>

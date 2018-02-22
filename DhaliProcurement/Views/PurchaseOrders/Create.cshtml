@@ -39,41 +39,41 @@
                                     @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
 
                                 </td>*@
-                            <td class="col-lg-2">Project</td>
-                            <td class="col-lg-8" colspan="5">
-                                @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control select2" })
+                            <td >Project</td>
+                            <td colspan="3">
+                                @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @id = "ProjectId", @class = "form-control" })
                                 @Html.ValidationMessage("ProjectId", "", new { @class = "text-danger" })
                             </td>
 
                         </tr>
                         <tr>
-                            <td class="col-lg-2">Site Name</td>
-                            <td class="col-lg-8" colspan="5">
-                                @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @id = "SiteId", @class = "form-control select2" })
+                            <td>Site Name</td>
+                            <td colspan="3">
+                                @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @id = "SiteId", @class = "form-control" })
                                 @Html.ValidationMessage("SiteId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="col-lg-2">Address</td>
-                            <td class="col-lg-8" colspan="5">
+                            <td>Address</td>
+                            <td colspan="3">
                                 @Html.TextBox("PurchaseAddress", "", new { @class = "form-control" })
                                 <span class="error" id="PurchaseAddress_Error"></span>
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="col-lg-2">Tender No</td>
-                            <td class="col-lg-8" colspan="5">
-                                @Html.DropDownList("TenderId", null, "--Select--", htmlAttributes: new { @id = "TenderId", @class = "form-control select2" })
+                            <td >Tender No</td>
+                            <td colspan="3">
+                                @Html.DropDownList("TenderId", null, "--Select--", htmlAttributes: new { @id = "TenderId", @class = "form-control" })
                                 @Html.ValidationMessage("TenderId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
 
                         <tr>
                             <td>Vendor</td>
-                            <td class="col-lg-8" colspan="5">
-                                @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control select2" })
+                            <td colspan="3">
+                                @Html.DropDownList("VendorId", null, "--Select--", htmlAttributes: new { @id = "VendorId", @class = "form-control" })
                                 @Html.ValidationMessage("VendorId", "", new { @class = "text-danger" })
                             </td>
                         </tr>
@@ -106,32 +106,31 @@
                         </tr>
 
                         <tr>
-                            <td class="col-lg-2">Subject</td>
-                            <td class="col-lg-8" colspan="5">
+                            <td>Subject</td>
+                            <td>
                                 @Html.TextBox("Subject", null, new { @class = "form-control" })
                                 <span class="error" id="Subject_Error"></span>
                             </td>
 
-                        </tr>
-                        <tr>
-                            <td class="col-lg-2">Lead Time</td>
-                            <td class="col-lg-2" colspan="1">
+
+                            <td>Lead Time</td>
+                            <td>
                                 @Html.TextBox("LeadTime", null, new { @class = "form-control" })
                                 <span class="error" id="LeadTime_Error"></span>
                             </td>
-                        </tr>
 
+                        </tr>
                         <tr>
-                            <td class="col-lg-1">Content</td>
-                            <td class="col-lg-8" colspan="5">
+                            <td>Content</td>
+                            <td colspan="3">
                                 @Html.TextArea("Content", null, new { @class = "form-control" })
                                 <span class="error" id="Content_Error"></span>
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="col-lg-1">Receive Concern Person</td>
-                            <td class="col-lg-2" colspan="1">
+                            <td >Receive Concern Person</td>
+                            <td>
                                 @Html.TextBox("RcvConcenPerson", null, new { @class = "form-control" })
                                 <span class="error" id="RcvConcenPerson_Error"></span>
                             </td>
@@ -153,7 +152,7 @@
                             <tr>
                                 <td style="font-weight: bold;" class="col-lg-1">Item</td>
                                 <td class="col-lg-2">
-                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                    @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                 </td>
                                 <td style="font-weight: bold;" class="col-lg-1">Unit</td>
                                 <td class="col-lg-2">
