@@ -703,6 +703,8 @@
     <Content Include="Scripts\buttons\hover_dropdown.min.js" />
     <Content Include="Scripts\buttons\ladda.min.js" />
     <Content Include="Scripts\buttons\spin.min.js" />
+    <Content Include="Scripts\data Table\datatables_advanced.js" />
+    <Content Include="Scripts\data Table\jquery.dataTables.min.js" />
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\imgdemo.js" />
     <Content Include="Scripts\inputs\typeahead\handlebars.min.js" />
