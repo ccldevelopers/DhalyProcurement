@@ -378,6 +378,7 @@
 
                 jQuery('table.Resource-list tbody').append(newRow);
 
+                RebindSiteEngineer();
 
                 //$('#SiteRName').val("");
                 $('#SiteName').val("");
@@ -661,6 +662,28 @@
 
         };
 
+        function RebindSiteEngineer() {
+           $.ajax({
+                type: "post",
+                url: "/CompanyResources/GetStaff",
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+
+                    $('#SiteRName').empty();
+                    var listOfitems = data.CompanyResources.length;
+                    var items = "<select id='SiteRName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.CompanyResources[i].Value + '>' + data.CompanyResources[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#SiteRName').html(items);
+
+                }
+
+            });
+        }
 
 
     </script>

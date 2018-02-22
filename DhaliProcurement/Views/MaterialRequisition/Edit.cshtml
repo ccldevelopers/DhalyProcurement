@@ -5,6 +5,8 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
     DhaliProcurement.Models.DCPSContext db = new DhaliProcurement.Models.DCPSContext();
+
+    var taskCounter = 0;
 }
 <div class="row">
     <div class="col-md-12">
@@ -94,7 +96,7 @@
                                     @*<td style="font-size: 15px; font-weight: bold;">Sl. No.</td>*@
                                     <td style="font-weight: bold;">Required Materials</td>
                                     <td>
-                                        @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
+                                        @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ItemName", @style = "width: 150px;" })
                                     </td>
                                     <td style="font-weight: bold;">Unit</td>
                                     <td>
@@ -181,125 +183,131 @@
                             <br />
                             <div class="table-responsive scrolling">
                                 <table class="Resource-list table table-bordered" id="RequisitionDetails">
-                                    <tr class="bg-grey">
-                                        @*<th>Sl. No.</th>*@
-                                        <th>Required Materials</th>
-                                        <th>Unit</th>
-                                        <th>Total Required</th>
-                                        <th>Total Received</th>
-                                        <th>Remaining</th>
-                                        <th>Current Stock</th>
-                                        <th>Req. Qty</th>
-                                        <th>Required Before(Date)</th>
-                                        <th>Brand/Quantity</th>
-                                        <th>Size</th>
-                                        <th>Remarks</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                    @foreach (var item in Model.requisitionDetail)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @*<input type="hidden" value="@item.Id" name="RequisitionDetId"/>*@
-                                                <input type="hidden" value="@item.Id" name="TaskId" />
-                                                @{
-                                                    var itemName = db.Item.SingleOrDefault(x => x.Id == item.ItemId);
-                                                }
-                                                <label name="label_ItemName" style="width:200px;">@itemName.Name</label>
-                                                <input class="form-control" value="@itemName.Name" type="hidden" name="ItemName" style="width:90px;" disabled="disabled" />
-                                                <input type="hidden" value="@item.ItemId" class="form-control" name="ItemId" />
-                                            </td>
-                                            <td>
-                                                @{
-                                                    var unit = (from requisitionDet in db.Proc_RequisitionDet
-                                                                join ProcProjectItem in db.ProcProjectItem on requisitionDet.ItemId equals ProcProjectItem.ItemId
-                                                                join units in db.Unit on ProcProjectItem.UnitId equals units.Id
-                                                                where ProcProjectItem.ItemId == item.ItemId
-                                                                select units).FirstOrDefault();
-                                                }
-                                                <label name="label_ItemUnit">@unit.Name</label>
-                                                <input type="hidden" value="@unit.Name" class="form-control" name="ItemUnit" style="width:80px;" disabled="disabled" />
-                                                <input type="hidden" value="@unit.Id" class="form-control" name="UnitId" />
-                                            </td>
-                                            <td>
-                                                @{
-                                                    int sid = ViewBag.SiteId;
-                                                    int pid = ViewBag.ProjectId;
-                                                    int itemid = item.ItemId;
-                                                    var totalRequired = (from procProjectItem in db.ProcProjectItem
-                                                                         join procproject in db.ProcProject on procProjectItem.ProcProjectId equals procproject.Id
-                                                                         join site in db.ProjectSite on procproject.ProjectSiteId equals site.Id
-                                                                         join project in db.Project on site.ProjectId equals project.Id
-                                                                         where procProjectItem.ItemId == itemid && project.Id == pid && site.Id == sid
-                                                                         select procProjectItem).FirstOrDefault();
-                                                }
-                                                <label name="label_TotalRequired">@totalRequired.PQuantity</label>
-                                                <input type="hidden" value="@totalRequired.PQuantity" class="form-control" name="TotalRequired" disabled="disabled" style="width:90px;" />
-                                            </td>
-                                            <td>
-                                                @{
-                                                    decimal total = 0;
-                                                    var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
-                                                                         join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
-                                                                         join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
-                                                                         join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
-                                                                         where purchaseDet.ItemId == item.ItemId
-                                                                         select entryDet.EntryQty).Distinct().ToList();
-
-                                                    foreach (var i in totalReceived)
-                                                    {
-                                                        total = total + i;
-                                                    }
-                                                }
-                                                <label name="label_TotalReceived">@total</label>
-                                                <input type="hidden" value="@total" class="form-control" name="TotalReceived" disabled="disabled" style="width:90px;" />
-                                                @*<input type="text" value="@totalReceived.EntryQty" class="form-control" name="TotalReceived" disabled="disabled" />*@
-                                            </td>
-                                            <td>
-                                                @{
-
-
-                                                    var remaining = totalRequired.PQuantity - total;
-                                                }
-                                                <label name="label_RemainingBalance">@remaining</label>
-                                                <input type="hidden" value="@remaining" class="form-control" name="RemainingBalance" disabled="disabled" style="width:90px;" />
-                                            </td>
-                                            <td>
-                                                <label name="label_CStockQty">@item.CStockQty</label>
-                                                <input type="hidden" value="@item.CStockQty" class="form-control" name="CStockQty" style="width:80px;" />
-                                            </td>
-                                            <td>
-                                                <label name="label_ReqQty">@item.ReqQty</label>
-                                                <input type="hidden" value="@item.ReqQty" class="form-control" name="ReqQty" style="width:80px;" />
-                                            </td>
-                                            <td>
-                                                @{
-                                                    var requiredDate = NullHelper.DateToString(item.RequiredDate);
-                                                }
-                                                <label name="label_RequiredDate">@requiredDate</label>
-                                                <input type="hidden" value="@requiredDate" class="form-control datepicker" name="RequiredDate" style="width:80px;" />
-                                            </td>
-                                            <td>
-                                                <label name="label_Brand">@item.Brand</label>
-                                                <input type="hidden" value="@item.Brand" class="form-control" name="Brand" style="width:90px;" />
-                                            </td>
-                                            <td>
-                                                <label name="label_Size">@item.Size</label>
-                                                <input type="hidden" value="@item.Size" class="form-control" name="Size" style="width:80px;" />
-                                            </td>
-                                            <td>
-                                                <label name="label_ItemRemarks">@item.Remarks</label>
-                                                <input type="hidden" value="@item.Remarks" class="form-control" name="ItemRemarks" style="width:80px;" />
-                                            </td>
-                                            <td>
-                                                <button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>
-                                                <button type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded deleteRequisitionItem"><i class="icon-cross"></i></button>
-                                                @*<input type="button" class="btn btn-danger btn-xs deleteRequisitionItem" value="Delete"/>*@
-                                                @*<input type="button" class="btn btn-danger btn-xs deleteItem" value="Delete" onclick="$(this).parent().parent().remove();" />*@
-                                                @*<span class="btn text-warning-600 btn-flat btn-icon btn-rounded" onclick="RemoveTask(@item.Id)"><i class="icon-cross"></i></span>*@
-                                            </td>
+                                    <thead>
+                                        <tr class="bg-grey">
+                                            @*<th>Sl. No.</th>*@
+                                            <th>Required Materials</th>
+                                            <th>Unit</th>
+                                            <th>Total Required</th>
+                                            <th>Total Received</th>
+                                            <th>Remaining</th>
+                                            <th>Current Stock</th>
+                                            <th>Req. Qty</th>
+                                            <th>Required Before(Date)</th>
+                                            <th>Brand/Quantity</th>
+                                            <th>Size</th>
+                                            <th>Remarks</th>
+                                            <th>&nbsp;</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.requisitionDetail)
+                                        {
+                                            taskCounter++;
+                                            <tr>
+
+                                                <td>
+                                                    <input type="hidden" value="@taskCounter" name="TaskIdForDuplicateCheck" />
+                                                    <input type="hidden" value="@item.Id" name="TaskId" />
+                                                    @{
+                                                        var itemName = db.Item.SingleOrDefault(x => x.Id == item.ItemId);
                                                     }
+                                                    <label name="label_ItemName" style="width:200px;">@itemName.Name</label>
+                                                    <input class="form-control" value="@itemName.Name" type="hidden" name="ItemName" style="width:90px;" disabled="disabled" />
+                                                    <input type="hidden" value="@item.ItemId" class="form-control" name="ItemId" />
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var unit = (from requisitionDet in db.Proc_RequisitionDet
+                                                                    join ProcProjectItem in db.ProcProjectItem on requisitionDet.ItemId equals ProcProjectItem.ItemId
+                                                                    join units in db.Unit on ProcProjectItem.UnitId equals units.Id
+                                                                    where ProcProjectItem.ItemId == item.ItemId
+                                                                    select units).FirstOrDefault();
+                                                    }
+                                                    <label name="label_ItemUnit">@unit.Name</label>
+                                                    <input type="hidden" value="@unit.Name" class="form-control" name="ItemUnit" style="width:80px;" disabled="disabled" />
+                                                    <input type="hidden" value="@unit.Id" class="form-control" name="UnitId" />
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        int sid = ViewBag.SiteId;
+                                                        int pid = ViewBag.ProjectId;
+                                                        int itemid = item.ItemId;
+                                                        var totalRequired = (from procProjectItem in db.ProcProjectItem
+                                                                             join procproject in db.ProcProject on procProjectItem.ProcProjectId equals procproject.Id
+                                                                             join site in db.ProjectSite on procproject.ProjectSiteId equals site.Id
+                                                                             join project in db.Project on site.ProjectId equals project.Id
+                                                                             where procProjectItem.ItemId == itemid && project.Id == pid && site.Id == sid
+                                                                             select procProjectItem).FirstOrDefault();
+                                                    }
+                                                    <label name="label_TotalRequired">@totalRequired.PQuantity</label>
+                                                    <input type="hidden" value="@totalRequired.PQuantity" class="form-control" name="TotalRequired" disabled="disabled" style="width:90px;" />
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        decimal total = 0;
+                                                        var totalReceived = (from entryDet in db.Proc_MaterialEntryDet
+                                                                             join purchaseDet in db.Proc_PurchaseOrderDet on entryDet.Proc_PurchaseOrderDetId equals purchaseDet.Id
+                                                                             join purchaseMas in db.Proc_PurchaseOrderMas on purchaseDet.Proc_PurchaseOrderMasId equals purchaseMas.Id
+                                                                             join tenderDet in db.Proc_TenderDet on purchaseMas.Proc_TenderMasId equals tenderDet.Proc_TenderMasId
+                                                                             where purchaseDet.ItemId == item.ItemId
+                                                                             select entryDet.EntryQty).Distinct().ToList();
+
+                                                        foreach (var i in totalReceived)
+                                                        {
+                                                            total = total + i;
+                                                        }
+                                                    }
+                                                    <label name="label_TotalReceived">@total</label>
+                                                    <input type="hidden" value="@total" class="form-control" name="TotalReceived" disabled="disabled" style="width:90px;" />
+                                                    @*<input type="text" value="@totalReceived.EntryQty" class="form-control" name="TotalReceived" disabled="disabled" />*@
+                                                </td>
+                                                <td>
+                                                    @{
+
+
+                                                        var remaining = totalRequired.PQuantity - total;
+                                                    }
+                                                    <label name="label_RemainingBalance">@remaining</label>
+                                                    <input type="hidden" value="@remaining" class="form-control" name="RemainingBalance" disabled="disabled" style="width:90px;" />
+                                                </td>
+                                                <td>
+                                                    <label name="label_CStockQty">@item.CStockQty</label>
+                                                    <input type="hidden" value="@item.CStockQty" class="form-control" name="CStockQty" style="width:80px;" />
+                                                </td>
+                                                <td>
+                                                    <label name="label_ReqQty">@item.ReqQty</label>
+                                                    <input type="hidden" value="@item.ReqQty" class="form-control" name="ReqQty" style="width:80px;" />
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var requiredDate = NullHelper.DateToString(item.RequiredDate);
+                                                    }
+                                                    <label name="label_RequiredDate">@requiredDate</label>
+                                                    <input type="hidden" value="@requiredDate" class="form-control datepicker" name="RequiredDate" style="width:80px;" />
+                                                </td>
+                                                <td>
+                                                    <label name="label_Brand">@item.Brand</label>
+                                                    <input type="hidden" value="@item.Brand" class="form-control" name="Brand" style="width:90px;" />
+                                                </td>
+                                                <td>
+                                                    <label name="label_Size">@item.Size</label>
+                                                    <input type="hidden" value="@item.Size" class="form-control" name="Size" style="width:80px;" />
+                                                </td>
+                                                <td>
+                                                    <label name="label_ItemRemarks">@item.Remarks</label>
+                                                    <input type="hidden" value="@item.Remarks" class="form-control" name="ItemRemarks" style="width:80px;" />
+                                                </td>
+                                                <td>
+                                                    <button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>
+                                                    <button type="button" class="btn  text-warning-600 btn-flat btn-icon btn-rounded deleteRequisitionItem"><i class="icon-cross"></i></button>
+                                                    @*<input type="button" class="btn btn-danger btn-xs deleteRequisitionItem" value="Delete"/>*@
+                                                    @*<input type="button" class="btn btn-danger btn-xs deleteItem" value="Delete" onclick="$(this).parent().parent().remove();" />*@
+                                                    @*<span class="btn text-warning-600 btn-flat btn-icon btn-rounded" onclick="RemoveTask(@item.Id)"><i class="icon-cross"></i></span>*@
+                                                </td>
+                                            </tr>
+                                                        }
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -357,6 +365,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -460,6 +469,7 @@
 <script>
     var counter = 0;
     var selRow;
+    var TaskCounter = 0;
 
     $(document).ready(function () {
         RebindDatePicker();
@@ -483,6 +493,9 @@
         $('#ModalBrand_Error').hide();
         $('#ModalSize_Error').hide();
         $('#ModalRemarks_Error').hide();
+
+        TaskCounter = @taskCounter;
+        //alert(TaskCounter);
     });
 
     $("#ItemName").change(function () {
@@ -522,6 +535,7 @@
     $('#addNewRow').click(function (event) {
         event.preventDefault();
         counter++;
+
         var isAllValid = true;
         var ItemId = $('#ItemName option:selected').val();
         //alert(ItemId);
@@ -542,7 +556,7 @@
         var requiredDate = $('#RequiredDate').val();
         var ItemRemarks = $('#ItemRemarks').val();
 
-        if (ItemName == "" || ItemName == "Select item") {
+        if (ItemName == "" || ItemName == "--Select--") {
             $('#ItemName_Error').text("Item required").show();
             isAllValid = false;
         }
@@ -606,12 +620,23 @@
             $('#ItemRemarks_Error').hide();
         }
 
-        $('table.Resource-list tr').each(function () {
-            var name = $(this).find("td input[name=ItemName]").val();
+        //$('table.Resource-list tr').each(function () {
+        //    var name = $(this).find("td input[name=ItemName]").val();
+        //    //alert(name);
+        //    ItemName = $('#ItemName option:selected').text();
+        //    //alert('This name: ' + ItemName);
+        //    if (ItemName == name) {
+        //        alert('This item already exists!');
+        //        isAllValid = false;
+        //    }
+
+        //});
+
+        
+        $('table.Resource-list tbody tr').each(function () {
+            var name = $(this).find("td input[name=ItemId]").val();
             //alert(name);
-            ItemName = $('#ItemName option:selected').text();
-            //alert('This name: ' + ItemName);
-            if (ItemName == name) {
+            if (ItemId.trim() == name.trim()) {
                 alert('This item already exists!');
                 isAllValid = false;
             }
@@ -620,8 +645,9 @@
 
 
         if (isAllValid) {
+            TaskCounter++;
             var newRow = jQuery('<tr>'
-                    + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName">' + ItemName + '</label> <input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName"  style="width:80px;"/><input type="hidden" value="0" name="TaskId"></td>'
+                    + '<td><input type="hidden" name="TaskIdForDuplicateCheck" value="' + TaskCounter + '"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName">' + ItemName + '</label> <input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName"  style="width:80px;"/><input type="hidden" value="0" name="TaskId"></td>'
                     //+ '<td><input type="hidden" value="' + UnitId + '" type="text" name="UnitId"/></td>'
                     + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_ItemUnit">' + Unit + '</label> <input class="form-control" value="' + Unit + '" type="hidden" name="ItemUnit"  style="width:80px;"/></td>'
                     + '<td><input class="form-control" value="' + TotalRequired + '"  type="hidden" name="TotalRequired"/><label name="label_TotalRequired">' + TotalRequired + '</label></td>'
@@ -640,7 +666,9 @@
                      + '</td></tr>');
 
 
-            jQuery('table.Resource-list').append(newRow);
+            jQuery('table.Resource-list tbody').append(newRow);
+
+            RebindItemName();
 
             $('#ItemName').val("");
             $('#UnitName').val("");
@@ -660,6 +688,7 @@
             $('.editSite').click(function () {
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
+                var TaskId = row.find('input[name=TaskIdForDuplicateCheck]').val();
                 var itemName = row.find('input[name=ItemName]').val();
                 var itemId = row.find('input[name=ItemId]').val();
                 var ItemUnit = row.find('input[name=ItemUnit]').val();
@@ -674,6 +703,8 @@
                 var Size = row.find('input[name=Size]').val();
                 var ItemRemarks = row.find('input[name=ItemRemarks]').val();
                 //$('#ModalItemName').val(SiteName);
+
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalItemName').val(itemId).change();
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(ItemUnit);
@@ -711,6 +742,8 @@
     $('.editSite').click(function () {
         var row = $(this).closest('tr');
         selRow = $(this).closest('tr');
+
+        var TaskId = row.find('input[name=TaskIdForDuplicateCheck]').val();
         var itemName = row.find('input[name=ItemName]').val();
         var itemId = row.find('input[name=ItemId]').val();
         var ItemUnit = row.find('input[name=ItemUnit]').val();
@@ -725,6 +758,8 @@
         var Size = row.find('input[name=Size]').val();
         var ItemRemarks = row.find('input[name=ItemRemarks]').val();
         //$('#ModalItemName').val(SiteName);
+
+        $('#ModalTaskId').val(TaskId);
         $('#ModalItemName').val(itemId).change();
         $('#modalunitId').val(UnitId);
         $('#ModalUnitName').val(ItemUnit);
@@ -781,6 +816,7 @@
     $('#ModalDetailSave').click(function () {
         var isValidItem = true;
 
+        var TaskId = $('#ModalTaskId').val();
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -861,6 +897,20 @@
         else {
             $('#ModalRemarks_Error').hide();
         }
+
+        //validation for checking duplicate item
+        $('table.Resource-list tbody tr').each(function () {
+            var name = $(this).find("td input[name=ItemId]").val();
+            var task = $(this).find("td input[name=TaskIdForDuplicateCheck]").val();
+
+            
+            if (task != TaskId.trim()) {
+                if (ItemId.trim() == name.trim()) {
+                    alert('This item already exists!');
+                    isValidItem = false;
+                }
+            }
+        });
 
         if (isValidItem) {
 
@@ -1185,6 +1235,33 @@
             todayBtn: true,
         });
 
+    }
+
+    function RebindItemName() {
+        var SiteId = $('#SiteId').val();
+        var ProjectId = $('#ProjectId').val();
+
+        $.ajax({
+            type: "post",
+            url: "/MaterialRequisition/RebindItemName",
+            datatype: "json",
+            data: {SiteId, ProjectId},
+            traditional: true,
+            success: function (data) {
+
+                $('#ItemName').empty();
+                var listOfitems = data.Items.length;
+                var items = "<select id='ItemName'>";
+                items = items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                items = items + '</select>';
+                $('#ItemName').html(items);
+
+            }
+
+        });
     }
 </script>
 

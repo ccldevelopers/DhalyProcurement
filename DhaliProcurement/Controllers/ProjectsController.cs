@@ -268,47 +268,47 @@ namespace DhaliProcurement.Controllers
                     {
                         var checkdata = db.Project.Where(x => x.Id == ProjectId).SingleOrDefault();
 
-                if (checkdata != null)
-                {
-                    ProjectResource pres = new ProjectResource();
-                    checkdata.Name = ProjectName;
-                    checkdata.StartDate = StartDate;
-                    checkdata.EndDate = EndDate;
-                    checkdata.Remarks = Remarks;
-                    pres.ProjectId = ProjectId;
-                    //pres.CompanyResourceId = RName;
-                    try
-                    {
-                        db.Entry(checkdata).State = EntityState.Modified;
-                        //var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId == );
-                        var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
-                        //projectResouce.CompanyResourceId = RName;
-
-                        db.Entry(projectResouce).State = EntityState.Modified;
-
-                    }
-                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                    {
-                        //dbContextTransaction.Rollback();
-                        Exception raise = dbEx;
-                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        if (checkdata != null)
                         {
-                            foreach (var validationError in validationErrors.ValidationErrors)
+                            ProjectResource pres = new ProjectResource();
+                            checkdata.Name = ProjectName;
+                            checkdata.StartDate = StartDate;
+                            checkdata.EndDate = EndDate;
+                            checkdata.Remarks = Remarks;
+                            pres.ProjectId = ProjectId;
+                            //pres.CompanyResourceId = RName;
+                            try
                             {
-                                string message = string.Format("{0}:{1}",
-                                   validationErrors.Entry.Entity.ToString(),
-                                    validationError.ErrorMessage);
-                                // raise a new exception nesting
-                                // the current instance as InnerException
-                                raise = new InvalidOperationException(message, raise);
+                                db.Entry(checkdata).State = EntityState.Modified;
+                                //var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId && x.CompanyResourceId == );
+                                var projectResouce = db.ProjectResource.SingleOrDefault(x => x.ProjectId == ProjectId);
+                                //projectResouce.CompanyResourceId = RName;
+
+                                db.Entry(projectResouce).State = EntityState.Modified;
+
                             }
-                        }
-                        throw raise;
-                    }
+                            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                            {
+                                //dbContextTransaction.Rollback();
+                                Exception raise = dbEx;
+                                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                                {
+                                    foreach (var validationError in validationErrors.ValidationErrors)
+                                    {
+                                        string message = string.Format("{0}:{1}",
+                                           validationErrors.Entry.Entity.ToString(),
+                                            validationError.ErrorMessage);
+                                        // raise a new exception nesting
+                                        // the current instance as InnerException
+                                        raise = new InvalidOperationException(message, raise);
+                                    }
+                                }
+                                throw raise;
+                            }
 
 
 
-                    flag = db.SaveChanges() > 0;
+                            flag = db.SaveChanges() > 0;
                             if (flag == true)
                             {
                                 if (SiteResourceDetails != null)

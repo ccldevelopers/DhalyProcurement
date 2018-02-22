@@ -375,6 +375,7 @@ namespace DhaliProcurement.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+
         [HttpPost]
         public JsonResult GetItems(int VendorId)
         {
@@ -435,6 +436,34 @@ namespace DhaliProcurement.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+
+
+
+        public JsonResult RebindItemName(int VendorId, int Tenderid)
+        {
+        
+            var items = (from tenderMas in db.Proc_TenderMas
+                         join tenderDet in db.Proc_TenderDet on tenderMas.Id equals tenderDet.Proc_TenderMasId
+                         join requisitionDet in db.Proc_RequisitionDet on tenderDet.Proc_RequisitionDetId equals requisitionDet.Id
+                         join requisitionMas in db.Proc_RequisitionMas on requisitionDet.Proc_RequisitionMasId equals requisitionMas.Id
+                         join procProject in db.ProcProject on requisitionMas.ProcProjectId equals procProject.Id
+                         join procProjectItem in db.ProcProjectItem on procProject.Id equals procProjectItem.ProcProjectId
+                         join item in db.Item on procProjectItem.ItemId equals item.Id
+                         where tenderDet.VendorId == VendorId && requisitionDet.ItemId == item.Id && tenderDet.Status == "A" && tenderMas.Id == Tenderid
+                         select item).Distinct().ToList();
+
+            List<SelectListItem> itemList = new List<SelectListItem>();
+            foreach (var x in items)
+            {
+                //var itemName = db.Proc_TenderMas.SingleOrDefault(m => m.Id == x.Id);
+                itemList.Add(new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            }
+            var result = new
+            {
+                Items = itemList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public JsonResult GetVendorContactPerson(int VendorId, int Tenderid)

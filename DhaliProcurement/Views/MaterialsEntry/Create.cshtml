@@ -161,23 +161,26 @@
                             <br />
                             <div class="table-responsive scrolling">
                                 <table class="Resource-list table table-bordered" id="RequisitionDetails">
-                                    <tr class="bg-grey">
-                                        @*<th>Sl. No.</th>*@
-                                        <th>Required Material</th>
-                                        <th>Unit</th>
-                                        <th>Req. No.</th>
-                                        <th>PO No.</th>
-                                        <th>Vendor Name</th>
-                                        <th>Total Material</th>
-                                        <th>Previous Received Qty</th>
-                                        <th>Remaining Qty</th>
-                                        <th>Challan No.</th>
-                                        <th>Challan Date</th>
-                                        <th>Material Entry(Qty)</th>
-                                        <th>Unit Price</th>
-                                        <th>Cost</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
+                                    <thead>
+                                        <tr class="bg-grey">
+                                            @*<th>Sl. No.</th>*@
+                                            <th>Required Material</th>
+                                            <th>Unit</th>
+                                            <th>Req. No.</th>
+                                            <th>PO No.</th>
+                                            <th>Vendor Name</th>
+                                            <th>Total Material</th>
+                                            <th>Previous Received Qty</th>
+                                            <th>Remaining Qty</th>
+                                            <th>Challan No.</th>
+                                            <th>Challan Date</th>
+                                            <th>Material Entry(Qty)</th>
+                                            <th>Unit Price</th>
+                                            <th>Cost</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -211,6 +214,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -328,6 +332,8 @@
 <script>
     var counter = 0;
     var selRow;
+    var taskCounter = 0;
+
     $(document).ready(function () {
         //$(".datepicker").datepicker({
         //    dateFormat: 'dd/mm/yyyy',
@@ -746,7 +752,7 @@
 
 
 
-        $('table.Resource-list tr').each(function () {
+        $('table.Resource-list tbody tr').each(function () {
             var Item = $(this).find("td input[name=ChallanNo]").val();
             //var VName = $(this).find("td input[name=VendorName]").val();
             if (ChallanNo == Item) {
@@ -756,10 +762,11 @@
         });
 
         if (isAllValid) {
+            taskCounter++;
             var newRow = jQuery('<tr>'
                 //+ '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId"/><label>' + ProjectName + '<label></td>'
                 //+ '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label>' + SiteName + '<label></td>'
-                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;"/>'
+                + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;"/>'
                 + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;"/></td>'
                 + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:90px;"/><label name="label_RCodeName">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" name="RCodeName" class="form-control" style="width:90px;"/></td>'
                 + '<td><input value="' + PONo + '" type="hidden" name="PayOrderNo" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONo + '</label></td>'
@@ -776,7 +783,7 @@
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 + '<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
 
-            jQuery('table.Resource-list').append(newRow);
+            jQuery('table.Resource-list tbody').append(newRow);
 
             //$('#ProjectId').val("");
             //$('#SiteId').val("");
@@ -803,6 +810,7 @@
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
 
+                var TaskId = row.find('input[name=TaskId]').val();
                 var itemName = row.find('input[name=ItemName]').val();
                 var itemId = row.find('input[name=ItemId]').val();
                 var UnitName = row.find('input[name=UnitName]').val();
@@ -821,6 +829,7 @@
                 var Cost = row.find('input[name=Cost]').val();
 
                 //$('#ModalItemName').val(SiteName);
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalItemName').val(itemId);
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
@@ -963,6 +972,7 @@
     $('#ModalDetailSave').click(function () {
         var isAllValid = true;
 
+        var TaskId = $('#ModalTaskId').val();
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -1045,6 +1055,19 @@
 
             }
         }
+
+        $('table.Resource-list tbody tr').each(function () {
+            var Itemname = $(this).find("td input[name=ChallanNo]").val();
+            var task = $(this).find("td input[name=TaskId]").val();
+
+            //alert(task + "-->" + TaskId);
+            if (task != TaskId.trim()) {
+                if (ModalChallanNo.trim() == Itemname.trim()) {
+                    alert('This Challan No.already exists!');
+                    isAllValid = false;
+                }
+            }
+        });
 
         if (isAllValid) {
             selRow.find('input[name=ItemName]').val(ItemName);

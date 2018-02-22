@@ -168,11 +168,12 @@
                         <div class="form-horizontal">
 
                             <div class="form-group">
+                                <input type="hidden" id="ModalTaskId" />
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
 
                             <div class="form-group">
-                                <input type="hidden" id="ModalTaskId" />
+                           
                                 @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 <div class="col-md-10">
@@ -634,6 +635,8 @@
                 +'</td></tr>');
 
             jQuery('table.Resource-list tbody').append(newRow);
+
+            RebindSiteEngineer();
             $('#SiteName').val("");
             $('#SiteLocation').val("");
         }
@@ -872,6 +875,28 @@
    
     };
 
+    function RebindSiteEngineer() {
+        $.ajax({
+            type: "post",
+            url: "/CompanyResources/GetStaff",
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+
+                $('#SiteRName').empty();
+                var listOfitems = data.CompanyResources.length;
+                var items = "<select id='SiteRName'>";
+                items = items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    items = items + '<option value=' + data.CompanyResources[i].Value + '>' + data.CompanyResources[i].Text + '</option>';
+                }
+                items = items + '</select>';
+                $('#SiteRName').html(items);
+
+            }
+
+        });
+    }
 
 
 </script>

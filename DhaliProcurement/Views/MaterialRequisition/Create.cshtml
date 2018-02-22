@@ -214,6 +214,7 @@
 
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -318,6 +319,7 @@
 <script>
     var counter = 0; //counter for the serial
     var selRow;
+    var taskCounter = 0;
 
     $(document).ready(function () {
         //$(".datepicker").datepicker({ dateFormat: 'dd/mm/yyyy', changeYear: true });
@@ -547,9 +549,9 @@
         }
 
         $('table.Resource-list tbody tr').each(function () {
-            var name = $(this).find("td input[name=ItemName]").val();
+            var name = $(this).find("td input[name=ItemId]").val();
             //alert(name);
-            if (ItemName == name) {
+            if (ItemId.trim() == name.trim()) {
                 alert('This item already exists!');
                 isAllValid = false;
             }
@@ -558,8 +560,9 @@
 
 
         if (isAllValid) {
+            taskCounter++;
             var newRow = jQuery('<tr>'
-                + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName" style="width:80px;" disabled="disabled"/><label name="label_ItemName" style="width:200px;">' + ItemName + '</label></td>'
+                + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName" style="width:80px;" disabled="disabled"/><label name="label_ItemName" style="width:200px;">' + ItemName + '</label></td>'
                 + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input class="form-control"  value="' + Unit + '" type="hidden" name="ItemUnit" disabled="disabled" style="width:80px;"/><label name="label_ItemUnit">' + Unit + '</label></td>'
                 + '<td><input class="form-control" value="' + TotalRequired + '"  type="hidden" name="TotalRequired" disabled="disabled"/><label name="label_TotalRequired">' + TotalRequired + '</label></td>'
                 + '<td><input class="form-control" value="' + TotalReceived + '"  type="hidden" name="TotalReceived" disabled="disabled"/><label name="label_TotalReceived">' + TotalReceived + '</label></td>'
@@ -577,6 +580,8 @@
 
 
             jQuery('table.Resource-list tbody').append(newRow);
+
+            RebindItemName();
 
             //$('#ItemName').val("");
             $('#UnitName').val("");
@@ -596,6 +601,8 @@
             $('.editSite').click(function () {
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
+
+                var TaskId = row.find('input[name=TaskId]').val();
                 var itemName = row.find('input[name=ItemName]').val();
                 var itemId = row.find('input[name=ItemId]').val();
                 var ItemUnit = row.find('input[name=ItemUnit]').val();
@@ -610,6 +617,8 @@
                 var Size = row.find('input[name=Size]').val();
                 var ItemRemarks = row.find('input[name=ItemRemarks]').val();
                 //$('#ModalItemName').val(SiteName);
+
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalItemName').val(itemId).change();
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(ItemUnit);
@@ -664,7 +673,7 @@
 
     $('#ModalDetailSave').click(function () {
         var isValidItem = true;
-
+        var TaskId = $('#ModalTaskId').val();
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -754,7 +763,19 @@
             $('#ModalRemarks_Error').hide();
         }
         
-        
+        //validation for checking duplicate item
+        $('table.Resource-list tbody tr').each(function () {
+            var name = $(this).find("td input[name=ItemId]").val();
+            var task = $(this).find("td input[name=TaskId]").val();
+
+            
+            if (task != TaskId.trim()) {
+                if (ItemId.trim() == name.trim()) {
+                    alert('This item already exists!');
+                    isValidItem = false;
+                }
+            }
+        });
 
         if (isValidItem) {
             selRow.find('input[name=ItemName]').val(ItemName);
@@ -967,6 +988,33 @@
         //    return this.optional(element) || moment(value, "DD/MM/YYYY", true).isValid();
         //}
 
+    }
+
+    function RebindItemName() {
+        var SiteId = $('#SiteId').val();
+        var ProjectId = $('#ProjectId option:selected').val();
+
+        $.ajax({
+            type: "post",
+            url: "/MaterialRequisition/RebindItemName",
+            datatype: "json",
+            data: {SiteId, ProjectId},
+            traditional: true,
+            success: function (data) {
+
+                $('#ItemName').empty();
+                var listOfitems = data.Items.length;
+                var items = "<select id='ItemName'>";
+                items = items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                items = items + '</select>';
+                $('#ItemName').html(items);
+
+            }
+
+        });
     }
 
 </script>

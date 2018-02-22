@@ -202,19 +202,21 @@
                             </table>
                             <br />
                             <table class="Resource-list table table-bordered" id="Item-list">
-                                <tr class="bg-grey">
-                                    <th>Item Name</th>
-                                    <th>Unit</th>
-                                    <th>Size</th>
-                                    <th>Unit Price</th>
-                                    <th> Requisition Qty</th>
-                                    <th>PO Quantity</th>
-                                    <th>Total Price</th>
-                                    <th></th>
-                                </tr>
-                                @*<tbody></tbody>*@
+                                <thead>
+                                    <tr class="bg-grey">
+                                        <th>Item Name</th>
+                                        <th>Unit</th>
+                                        <th>Size</th>
+                                        <th>Unit Price</th>
+                                        <th> Requisition Qty</th>
+                                        <th>PO Quantity</th>
+                                        <th>Total Price</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
                                 <tfoot>
-                                   
+
                                     <tr>
                                         @*<td></td>
                                             <td></td>
@@ -265,6 +267,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -323,7 +326,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="ModalClose">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                             </div>
                         </div>
                     </div>
@@ -337,6 +340,7 @@
     var deleteCounter = 0;
     var deleteList = [];
     var selRow;
+    var taskCounter = 0;
 
     $(document).on({
         'change': function () {
@@ -352,8 +356,8 @@
                 $('#POQuantity_Error').hide();
                 $('#TotalPrice1').val(totalPrice);
             }
-         
-          
+
+
         }
     }, 'input[name=POQuantity1]');
 
@@ -384,7 +388,7 @@
             else {
                 $('#ModalPOQuantity_Error').hide();
                 $('#ModalTotalPrice').val(totalPrice);
-            }          
+            }
         }
     }, 'input[name=ModalPOQuantity]');
 
@@ -466,9 +470,17 @@
             }
         }
 
-        $('table.Resource-list tr').each(function () {
-            var Item = $(this).find("td input[name=ItemName1]").val();
-            if (ItemName == Item) {
+        //$('table.Resource-list tr').each(function () {
+        //    var Item = $(this).find("td input[name=ItemName1]").val();
+        //    if (ItemName == Item) {
+        //        alert('This item already exists!');
+        //        isValidItem = false;
+        //    }
+        //});
+
+        $('table.Resource-list tbody tr').each(function () {
+            var Item = $(this).find("td input[name=ItemId]").val();
+            if (ItemId == Item) {
                 alert('This item already exists!');
                 isValidItem = false;
             }
@@ -477,7 +489,8 @@
         var PurchaseOrderDetId =0;
         //Add item to list if valid
         if (isValidItem) {
-            var newRow = jQuery('<tr><td><input value="' + PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label> <input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
+            taskCounter++;
+            var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/> <input value="' + PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label> <input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
                 +'<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
               +'<td><input class="form-control" value="' + Size + '" readonly="true" type="hidden" name="Size"/><label name="label_Size">' + Size + '</label></td>'
               +'<td><input class="form-control UnitPriceNew" value="' + UnitPrice + '"  readonly="true" type="hidden" name="UnitPrice"/><label name="label_UnitPrice">' + UnitPrice + '</label></td>'
@@ -487,12 +500,12 @@
               +'<td>'
               + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
               //+'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded " onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td>'
-               +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick"><i class="icon-cross"></i></button></td>'             
+               +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick"><i class="icon-cross"></i></button></td>'
               +'</tr>');
 
-            jQuery('table.Resource-list').append(newRow);
+            jQuery('table.Resource-list tbody').append(newRow);
+            RebindItemName();
 
-            
             $('.deleteClick').click(function () {
 
                 $(this).parent().parent().remove();
@@ -503,6 +516,7 @@
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
 
+                var TaskId = row.find('input[name=TaskId]').val();
                 var itemName = row.find('input[name=ItemName]').val();
                 var itemId = row.find('input[name=ItemId]').val();
                 var UnitName = row.find('input[name=UnitName]').val();
@@ -514,6 +528,7 @@
                 var TotalPrice = row.find('input[name=TotalPrice]').val();
 
                 //$('#ModalItemName').val(SiteName);
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalItemName').val(itemId).change();
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
@@ -528,7 +543,7 @@
 
 
             totalItemCost();
-           
+
 
             //$('#POQuantity').val("");
             //$('#TotalPrice').val("");
@@ -572,9 +587,9 @@
             console.log('UnitPrice: ' + cost);
             var result = parseFloat(quantity) * parseFloat(cost);
             ItemTotalCost = parseFloat(ItemTotalCost + result);
-            
+
         }
-      
+
         if (isNaN(result)) {
             $('#totalCost').val("");
         }
@@ -640,7 +655,8 @@
                 console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     //alert(data[i].ItemName);
-                    var newRow = jQuery('<tr><td><input value="' + data[i].PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/><input value="' + data[i].ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + data[i].ItemName + '</label><input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
+                    taskCounter++;
+                    var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].PurchaseOrderDetId + '" type="hidden" name="PurchaseOrderDetId"/><input value="' + data[i].ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + data[i].ItemName + '</label><input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName1"/></td>'
                         +'<td><input value="' + data[i].UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + data[i].UnitName + '</label><input class="form-control" value="' + data[i].UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
                      +'<td><input class="form-control" value="' + data[i].Size + '" type="hidden" name="Size" readonly="true"/><label name="label_Size">' + data[i].Size  + '</label></td>'
                      +'<td><input class="form-control UnitPriceNew" value="' + data[i].UnitPrice + '"  type="hidden" name="UnitPrice" readonly="true"/><label name="label_UnitPrice">' + data[i].UnitPrice + '</label></td>'
@@ -652,13 +668,14 @@
                      +'<button class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteDetailTask"><i class="icon-cross"></i></button>'
                      +'</td></tr>');
 
-                    jQuery('table.Resource-list').append(newRow);
+                    jQuery('table.Resource-list tbody').append(newRow);
 
 
                     $('.editSite').click(function () {
                         var row = $(this).closest('tr');
                         selRow = $(this).closest('tr');
 
+                        var TaskId = row.find('input[name=TaskId]').val();
                         var itemName = row.find('input[name=ItemName]').val();
                         var itemId = row.find('input[name=ItemId]').val();
                         var UnitName = row.find('input[name=UnitName]').val();
@@ -670,6 +687,7 @@
                         var TotalPrice = row.find('input[name=TotalPrice]').val();
 
                         //$('#ModalItemName').val(SiteName);
+                        $('#ModalTaskId').val(TaskId);
                         $('#ModalItemName').val(itemId).change();
                         $('#modalunitId').val(UnitId);
                         $('#ModalUnitName').val(UnitName);
@@ -750,6 +768,8 @@
     $('#ModalDetailSave').click(function () {
         var isAllValid = true;
 
+        
+        var TaskId = $('#ModalTaskId').val();
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -788,6 +808,19 @@
 
             }
         }
+
+        $('table.Resource-list tbody tr').each(function () {
+            var Itemname = $(this).find("td input[name=ItemId]").val();
+            var task = $(this).find("td input[name=TaskId]").val();
+
+            //alert(task + "-->" + TaskId);
+            if (task != TaskId.trim()) {
+                if (ItemId.trim() == Itemname.trim()) {
+                    alert('This item already exists!');
+                    isAllValid = false;
+                }
+            }
+        });
 
 
         if (isAllValid) {
@@ -1003,155 +1036,155 @@
 
 
         if (isValid) {
-        var AddedDetItems = [];
+            var AddedDetItems = [];
 
-        var tableCounter = $('#Item-list tr').length - 1;
-        //   alert('Length: ' + tableCounter);
+            var tableCounter = $('#Item-list tr').length - 1;
+            //   alert('Length: ' + tableCounter);
 
-        for (var i = 0; i < tableCounter-1; i++) {
-            AddedDetItems.push({
-                ItemId: ItemId[i].value,
-                ItemName: ItemName[i].value,
-                UnitId: UnitId[i].value,
-                UnitName: UnitName[i].value,
-                Size: Size[i].value,
-                UnitPrice: UnitPrice[i].value,
-                POQuantity: POQuantity[i].value,
-                TotalPrice: TotalPrice[i].value,
-                ProcPurchaseMasterId :ProcPurchaseMasterId,
-                ProcPurchaseDetId :PurchaseOrderDetId[i].value
-            });
+            for (var i = 0; i < tableCounter-1; i++) {
+                AddedDetItems.push({
+                    ItemId: ItemId[i].value,
+                    ItemName: ItemName[i].value,
+                    UnitId: UnitId[i].value,
+                    UnitName: UnitName[i].value,
+                    Size: Size[i].value,
+                    UnitPrice: UnitPrice[i].value,
+                    POQuantity: POQuantity[i].value,
+                    TotalPrice: TotalPrice[i].value,
+                    ProcPurchaseMasterId :ProcPurchaseMasterId,
+                    ProcPurchaseDetId :PurchaseOrderDetId[i].value
+                });
 
-            console.log('---------->');
-            console.log('ItemId: ' + AddedDetItems[i].ItemId);
-            console.log('ItemName: ' + AddedDetItems[i].ItemName);
-            console.log('UnitId: ' + AddedDetItems[i].UnitId);
-            console.log('UnitName: ' + AddedDetItems[i].UnitName);
-            console.log('Size: ' + AddedDetItems[i].Size);
-            console.log('UnitPrice: ' + AddedDetItems[i].UnitPrice);
-            console.log('POQuantity: ' + AddedDetItems[i].POQuantity);
-            console.log('TotalPrice: ' + AddedDetItems[i].TotalPrice);
-            console.log('---------->');
+                console.log('---------->');
+                console.log('ItemId: ' + AddedDetItems[i].ItemId);
+                console.log('ItemName: ' + AddedDetItems[i].ItemName);
+                console.log('UnitId: ' + AddedDetItems[i].UnitId);
+                console.log('UnitName: ' + AddedDetItems[i].UnitName);
+                console.log('Size: ' + AddedDetItems[i].Size);
+                console.log('UnitPrice: ' + AddedDetItems[i].UnitPrice);
+                console.log('POQuantity: ' + AddedDetItems[i].POQuantity);
+                console.log('TotalPrice: ' + AddedDetItems[i].TotalPrice);
+                console.log('---------->');
 
-        }
-        //alert('Test');
-
-        ResourceDetails = JSON.stringify({
-            AddedDetItems: AddedDetItems,
-            DeleteItems:deleteList,
-            PONo : PONo,
-            PODate: PODate,
-            //ProjectId :ProjectId,
-            //SiteId : SiteId,
-            //PurchaseAddress : PurchaseAddress,
-            VendorId : VendorId,
-            TenderId : TenderId,
-            VendorAttention :VendorAttention,
-            AttnManager : AttnManager,
-            AttnCell : AttnCell,
-            Email : Email,
-            Subject : Subject,
-            LeadTime : LeadTime,
-            Content : Content,
-            RcvConcernPerson : RcvConcernPerson,
-            RcvConcernPersonCell: RcvConcernPersonCell,
-            POTotalAmt: POTotalAmt,
-            ProcPurchaseMasterId:ProcPurchaseMasterId,
-            //ProcPurchaseDetId:ProcPurchaseDetId
-        });
-        //  debugger;
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '/PurchaseOrders/PurchaseUpdate',
-            data: ResourceDetails,
-            success: function (result) {
-                console.log(result);
-                if (result.flag === true) {
-                    alert("Record save successfully!");
-                    window.location.replace("/PurchaseOrders/Index");
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            failure: function (response) {
-                alert('error');
             }
-        });
-    }
+            //alert('Test');
+
+            ResourceDetails = JSON.stringify({
+                AddedDetItems: AddedDetItems,
+                DeleteItems:deleteList,
+                PONo : PONo,
+                PODate: PODate,
+                //ProjectId :ProjectId,
+                //SiteId : SiteId,
+                //PurchaseAddress : PurchaseAddress,
+                VendorId : VendorId,
+                TenderId : TenderId,
+                VendorAttention :VendorAttention,
+                AttnManager : AttnManager,
+                AttnCell : AttnCell,
+                Email : Email,
+                Subject : Subject,
+                LeadTime : LeadTime,
+                Content : Content,
+                RcvConcernPerson : RcvConcernPerson,
+                RcvConcernPersonCell: RcvConcernPersonCell,
+                POTotalAmt: POTotalAmt,
+                ProcPurchaseMasterId:ProcPurchaseMasterId,
+                //ProcPurchaseDetId:ProcPurchaseDetId
+            });
+            //  debugger;
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '/PurchaseOrders/PurchaseUpdate',
+                data: ResourceDetails,
+                success: function (result) {
+                    console.log(result);
+                    if (result.flag === true) {
+                        alert("Record save successfully!");
+                        window.location.replace("/PurchaseOrders/Index");
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                failure: function (response) {
+                    alert('error');
+                }
+            });
+        }
 
 
 
-    //$('#ProjectId').change(function () {
+        //$('#ProjectId').change(function () {
 
-    //    var id = $('#ProjectId option:selected').val();
+        //    var id = $('#ProjectId option:selected').val();
 
-    //    $.ajax({
-    //        url: "/PurchaseOrders/GetPId",
-    //        type: "post",
-    //        data: {
-    //            ProjectId: id
-    //        },
-    //        dataType: "json",
-    //        success: function (data) {
-    //            $('#SiteId').removeAttr("disabled");
-    //            $('#ProjectManager').val(data.manager);
-    //            var listOfSites = data.Sites.length;
+        //    $.ajax({
+        //        url: "/PurchaseOrders/GetPId",
+        //        type: "post",
+        //        data: {
+        //            ProjectId: id
+        //        },
+        //        dataType: "json",
+        //        success: function (data) {
+        //            $('#SiteId').removeAttr("disabled");
+        //            $('#ProjectManager').val(data.manager);
+        //            var listOfSites = data.Sites.length;
 
-    //            var sites = "<select id='sites'>";
-    //            sites = sites + '<option value="">--Select--</option>';
-    //            for (var i = 0; i < listOfSites; i++) {
-    //                sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
-    //            }
-    //            sites = sites + '</select>';
-    //            $('#SiteId').html(sites);
+        //            var sites = "<select id='sites'>";
+        //            sites = sites + '<option value="">--Select--</option>';
+        //            for (var i = 0; i < listOfSites; i++) {
+        //                sites = sites + '<option value=' + data.Sites[i].Value + '>' + data.Sites[i].Text + '</option>';
+        //            }
+        //            sites = sites + '</select>';
+        //            $('#SiteId').html(sites);
 
-    //        },
-    //        error: function (xhr) {
-    //            alert('error');
-    //        }
-    //    });
-    //});
-
-
-    //$("#SiteId").change(function () {
-    //    var SiteId = $('#SiteId').val();
-    //    $.ajax({
-    //        type: "post",
-    //        url: "/PurchaseOrders/GetSiteLocation",
-    //        data: { SiteId },
-    //        datatype: "json",
-    //        traditional: true,
-    //        success: function (data) {
-    //            $('#PurchaseAddress').val(data.sitesLoc);
-    //            $('#RcvConcenPerson').val(data.siteEngineer);
-    //        }
-    //    });
-    //});
-
-    //$("#VendorId").change(function () {
-    //    var VendorId = $('#VendorId').val();
-    //    $.ajax({
-    //        type: "post",
-    //        url: "/PurchaseOrders/GetVendorContactPerson",
-    //        data: { VendorId },
-    //        datatype: "json",
-    //        traditional: true,
-    //        success: function (data) {
-    //            $('#VContactPerson').val(data.vContactPerson);
-    //        }
-    //    });
-    //});
+        //        },
+        //        error: function (xhr) {
+        //            alert('error');
+        //        }
+        //    });
+        //});
 
 
+        //$("#SiteId").change(function () {
+        //    var SiteId = $('#SiteId').val();
+        //    $.ajax({
+        //        type: "post",
+        //        url: "/PurchaseOrders/GetSiteLocation",
+        //        data: { SiteId },
+        //        datatype: "json",
+        //        traditional: true,
+        //        success: function (data) {
+        //            $('#PurchaseAddress').val(data.sitesLoc);
+        //            $('#RcvConcenPerson').val(data.siteEngineer);
+        //        }
+        //    });
+        //});
+
+        //$("#VendorId").change(function () {
+        //    var VendorId = $('#VendorId').val();
+        //    $.ajax({
+        //        type: "post",
+        //        url: "/PurchaseOrders/GetVendorContactPerson",
+        //        data: { VendorId },
+        //        datatype: "json",
+        //        traditional: true,
+        //        success: function (data) {
+        //            $('#VContactPerson').val(data.vContactPerson);
+        //        }
+        //    });
+        //});
 
 
 
 
-    var PurchaseMasId = @ViewBag.PurchaseMasId;
-    var TenderMasId= @ViewBag.TenderMasId;
+
+
+        var PurchaseMasId = @ViewBag.PurchaseMasId;
+        var TenderMasId= @ViewBag.TenderMasId;
 
         function RemoveTask(PurchaseOrderDetId){
             // alert('test');
@@ -1256,7 +1289,32 @@
 
     //end
 
+    function RebindItemName() {
+        var VendorId = $('#VendorId').val();
+        var Tenderid = $('#TenderId option:selected').val();
 
+        $.ajax({
+            type: "post",
+            url: "/PurchaseOrders/RebindItemName",
+            datatype: "json",
+            data: { VendorId, Tenderid },
+            traditional: true,
+            success: function (data) {
+
+                $('#ItemName').empty();
+                var listOfitems = data.Items.length;
+                var items = "<select id='ItemName'>";
+                items = items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                items = items + '</select>';
+                $('#ItemName').html(items);
+
+            }
+
+        });
+    }
 
 
 </script>

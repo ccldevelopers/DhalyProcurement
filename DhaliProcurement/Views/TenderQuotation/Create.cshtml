@@ -177,21 +177,24 @@
                             <br />
                             <div class="table-responsive scrolling">
                                 <table class="Resource-list table table-bordered" id="RequisitionDetails">
-                                    <tr class="bg-grey">
-                                        @*<th>Sl. No.</th>*@
-                                        <th>Project Name</th>
-                                        <th>Site</th>
-                                        <th>Req. No.</th>
-                                        <th>Item Name</th>
-                                        <th>Qty</th>
-                                        <th>Unit</th>
-                                        <th>Vendor Name</th>
-                                        <th>Qtn. No.</th>
-                                        <th>Qtn. Date</th>
-                                        <th>Unit Price</th>
-                                        <th>Total Price</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
+                                    <thead>
+                                        <tr class="bg-grey">
+                                            @*<th>Sl. No.</th>*@
+                                            <th>Project Name</th>
+                                            <th>Site</th>
+                                            <th>Req. No.</th>
+                                            <th>Item Name</th>
+                                            <th>Qty</th>
+                                            <th>Unit</th>
+                                            <th>Vendor Name</th>
+                                            <th>Qtn. No.</th>
+                                            <th>Qtn. Date</th>
+                                            <th>Unit Price</th>
+                                            <th>Total Price</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -226,6 +229,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -233,6 +237,7 @@
                        {
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
+
                                 @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
                                 <span class="error" id="ModalProjectName_Error"></span>
                             </div>
@@ -331,7 +336,7 @@
 <script>
     var counter = 0; //counter for the serial
     var selRow;
-
+    var taskCounter = 0;
 
     $(document).ready(function () {
         RebindDatePicker();
@@ -646,9 +651,23 @@
             $('#QtnNo_Error').hide();
         }
 
+        $('table.Resource-list tbody tr').each(function () {
+            var Itemname = $(this).find("td input[name=ItemId]").val();
+            var Vendorname = $(this).find("td input[name=Vendor]").val();
+            //var task = $(this).find("td input[name=TaskId]").val();
+
+            //if (task != TaskId.trim()) {
+            if (ItemId.trim() == Itemname.trim() && VendorId.trim() == Vendorname.trim()) {
+                    alert('Same Vendor against this item exists!');
+                    isAllValid = false;
+                }
+            //}
+        });
+
         if (isAllValid) {
+            taskCounter++;
             var newRow = jQuery('<tr>'
-                + '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId" disabled="disabled"/><label name="label_ProjectName" style="width:150px;">' + ProjectName + '</label><input class="form-control" value="' + ProjectName + '" type="hidden" name="ProjectName" disabled="disabled" style="width:110px;"/></td>'
+                + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + ProjectId + '" type="hidden" name="ProjectId" disabled="disabled"/><label name="label_ProjectName" style="width:150px;">' + ProjectName + '</label><input class="form-control" value="' + ProjectName + '" type="hidden" name="ProjectName" disabled="disabled" style="width:110px;"/></td>'
                 + '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label name="label_SiteName"  style="width:150px;">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" type="hidden" name="SiteName" disabled="disabled" style="width:110px;"/></td>'
                 + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:90px;"/><label name="label_RCodeName"  style="width:100px;">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" name="RCodeName" class="form-control" style="width:90px;"/><input value="' + Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
                 + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName"  style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName" disabled="disabled" style="width:80px;"/>'
@@ -665,7 +684,7 @@
                 + '</td></tr>');
 
 
-            jQuery('table.Resource-list').append(newRow);
+            jQuery('table.Resource-list tbody').append(newRow);
 
             $('#ProjectId').val("");
             $('#SiteId').val("");
@@ -689,6 +708,7 @@
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
 
+                var TaskId = row.find('input[name=TaskId]').val();
                 var ProjectId = row.find('input[name=ProjectId]').val();
                 var ProjectName = row.find('input[name=ProjectName]').val();
                 var SiteId = row.find('input[name=SiteId]').val();
@@ -704,7 +724,7 @@
                 var TQPrice = row.find('input[name=TQPrice]').val();
                 var TotalPrice = row.find('input[name=TotalPrice]').val();
 
-
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalProjectId').val(ProjectId);
                 $('#ModalSiteId').val(SiteId);
                 $('#ModalRequisition').val(RCode);
@@ -736,6 +756,7 @@
     $('#ModalDetailSave').click(function () {
         var isAllValid = true;
 
+        var TaskId = $('#ModalTaskId').val();
         var ModalProjectId = $('#ModalProjectId option:selected').val();
         var ModalProjectName = $('#ModalProjectId option:selected').text();
         var ModalSiteId = $('#ModalSiteId option:selected').val();
@@ -812,6 +833,22 @@
         else {
             $('#ModalQtnNo_Error').hide();
         }
+
+
+        //validation for checking duplicate item
+        $('table.Resource-list tbody tr').each(function () {
+            var Itemname = $(this).find("td input[name=ItemId]").val();
+            var Vendorname = $(this).find("td input[name=Vendor]").val();
+            var task = $(this).find("td input[name=TaskId]").val();
+
+            if (task != TaskId.trim()) {
+                if (ModalItemId.trim() == Itemname.trim() && ModalVendorId.trim() == Vendorname.trim()) {
+                    alert('Same Vendor against this item exists!');
+                    isAllValid = false;
+                }
+            }
+        });
+
 
         if (isAllValid) {
             selRow.find('input[name=ProjectId]').val(ModalProjectId);

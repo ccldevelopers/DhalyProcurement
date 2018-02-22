@@ -201,6 +201,8 @@ namespace DhaliProcurement.Controllers
         }
 
 
+
+
         [HttpPost]
         public JsonResult GetSites(int ProjectId)
         {
@@ -244,6 +246,30 @@ namespace DhaliProcurement.Controllers
             {
                 manager = projectManager,
                 Sites = siteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult RebindItemName(int SiteId, int ProjectId)
+        {
+            List<SelectListItem> ItemList = new List<SelectListItem>();
+
+            var items = (from procProjectItem in db.ProcProjectItem
+                         join procproject in db.ProcProject on procProjectItem.ProcProjectId equals procproject.Id
+                         join site in db.ProjectSite on procproject.ProjectSiteId equals site.Id
+                         join project in db.Project on site.ProjectId equals project.Id
+                         where project.Id == ProjectId && site.Id == SiteId
+                         select procProjectItem).Distinct().ToList();
+
+            foreach (var x in items.Distinct())
+            {
+                var itemName = db.Item.SingleOrDefault(m => m.Id == x.ItemId);
+                ItemList.Add(new SelectListItem { Text = itemName.Name, Value = x.ItemId.ToString() });
+            }
+            var result = new
+            {
+                Items = ItemList
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }

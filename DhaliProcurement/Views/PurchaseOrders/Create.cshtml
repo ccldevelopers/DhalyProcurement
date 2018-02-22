@@ -211,16 +211,19 @@
                         <br />
 
                         <table class="Resource-list table table-bordered" id="Item-list">
-                            <tr class="bg-grey">
-                                <th>Item Name</th>
-                                <th>Unit</th>
-                                <th>Size</th>
-                                <th>Unit Price</th>
-                                <th> Requisition Qty</th>
-                                <th>PO Quantity</th>
-                                <th>Total Price</th>
-                                <th></th>
-                            </tr>
+                            <thead>
+                                <tr class="bg-grey">
+                                    <th>Item Name</th>
+                                    <th>Unit</th>
+                                    <th>Size</th>
+                                    <th>Unit Price</th>
+                                    <th> Requisition Qty</th>
+                                    <th>PO Quantity</th>
+                                    <th>Total Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
                             <tfoot>
                                 <tr>
                                     @*<td></td>
@@ -261,6 +264,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -332,6 +336,7 @@
 <script>
     var counter = 0; //counter for the serial
     var selRow;
+    var taskCounter = 0;
 
     $(document).on({
         'change': function () {
@@ -432,18 +437,19 @@
             }
         }
 
-        //$('table.Resource-list tr').each(function () {
-        //    var Item = $(this).find("td input[name=ItemName1]").val();
-        //    if (ItemName == Item) {
-        //        alert('This item already exists!');
-        //        isValidItem = false;
-        //    }
-        //});
+        $('table.Resource-list tbody tr').each(function () {
+            var Item = $(this).find("td input[name=ItemId]").val();
+            if (ItemId == Item) {
+                alert('This item already exists!');
+                isValidItem = false;
+            }
+        });
+
         //Add item to list if valid
         if (isValidItem) {
-
+            taskCounter++;
             var newRow = jQuery('<tr>'
-              + '<td> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"/></td>'
+              + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/> <label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input class="form-control" value="' + ItemName + '" readonly="true" type="hidden" name="ItemName"/></td>'
               + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input class="form-control" value="' + UnitName + '" readonly="true" type="hidden" name="UnitName"/></td>'
               + '<td><input class="form-control" value="' + Size + '" type="hidden" name="Size" disabled="disabled"/><label name="label_Size">' + Size + '</label></td>'
               + '<td><input class="form-control UnitPriceNew" value="' + UnitPrice + '"  type="hidden" name="UnitPrice" disabled="disabled"/><label name="label_UnitPrice">' + UnitPrice + '</label></td>'
@@ -457,7 +463,8 @@
                  + '<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick" value="Delete"><i class="icon-cross"></i></button></td>'
               + '</tr>');
 
-            jQuery('table.Resource-list').append(newRow);
+            jQuery('table.Resource-list tbody').append(newRow);
+            RebindItemName();
             totalItemCost();
 
             $('.deleteClick').click(function () {
@@ -476,6 +483,7 @@
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
 
+                var TaskId = row.find('input[name=TaskId]').val();
                 var itemName = row.find('input[name=ItemName]').val();
                 var itemId = row.find('input[name=ItemId]').val();
                 var UnitName = row.find('input[name=UnitName]').val();
@@ -487,6 +495,7 @@
                 var TotalPrice = row.find('input[name=TotalPrice]').val();
 
                 //$('#ModalItemName').val(SiteName);
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalItemName').val(itemId).change();
                 $('#modalunitId').val(UnitId);
                 $('#ModalUnitName').val(UnitName);
@@ -506,8 +515,6 @@
             $('#POQuantity1').val("");
         }
 
-
-
         //end
     });
 
@@ -515,6 +522,7 @@
     $('#ModalDetailSave').click(function () {
         var isAllValid = true;
 
+        var TaskId = $('#ModalTaskId').val();
         var ItemName = $('#ModalItemName option:selected').text();
         var ItemId = $('#ModalItemName option:selected').val();
         var Unitid = $('#modalunitId').val();
@@ -550,6 +558,19 @@
                 $('#ModalPOQuantity_Error').hide();
             }
         }
+
+        $('table.Resource-list tbody tr').each(function () {
+            var Itemname = $(this).find("td input[name=ItemId]").val();
+            var task = $(this).find("td input[name=TaskId]").val();
+
+            //alert(task + "-->" + TaskId);
+            if (task != TaskId.trim()) {
+                if (ItemId.trim() == Itemname.trim()) {
+                    alert('This item already exists!');
+                    isAllValid = false;
+                }
+            }
+        });
 
         if (isAllValid) {
             selRow.find('input[name=ItemName]').val(ItemName);
@@ -1017,7 +1038,32 @@
         });
     });
 
+    function RebindItemName() {
+        var VendorId = $('#VendorId').val();
+        var Tenderid = $('#TenderId option:selected').val();
 
+        $.ajax({
+            type: "post",
+            url: "/PurchaseOrders/RebindItemName",
+            datatype: "json",
+            data: { VendorId, Tenderid },
+            traditional: true,
+            success: function (data) {
+
+                $('#ItemName').empty();
+                var listOfitems = data.Items.length;
+                var items = "<select id='ItemName'>";
+                items = items + '<option value="">--Select--</option>';
+                for (var i = 0; i < listOfitems; i++) {
+                    items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                }
+                items = items + '</select>';
+                $('#ItemName').html(items);
+
+            }
+
+        });
+    }
 
 
 </script>
