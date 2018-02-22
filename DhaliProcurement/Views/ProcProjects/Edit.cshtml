@@ -236,9 +236,10 @@
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
                             <div class="form-group">
+                                <input type="hidden" id="ModalTaskId" />
                                 @Html.Label("Item Name", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;", @disabled = "disabled" })
+                                    @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                                     <span class="error" id="ModalItemName_Error"></span>
                                 </div>
                             </div>
@@ -294,7 +295,7 @@
         var deleteCounter = 0;
         var deleteList = [];
         var selRow;
-
+        var taskCounter =0;
 
         $(document).ready(function (){
 
@@ -346,7 +347,8 @@
                         //if(data[i].Remarks == "null"){
                         //    data[i].Remarks = "";
                         //}
-                        var newRow = jQuery('<tr><td> <input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + data[i].ItemName  + '</label></td>'
+                        taskCounter++;
+                        var newRow = jQuery('<tr><td> <input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + data[i].ItemISLNO + '" type="hidden" name="ItemId"/> <input class="form-control" value="' + data[i].ItemName + '" readonly="true" type="hidden" name="ItemName"/><label name="label_ItemName">' + data[i].ItemName  + '</label></td>'
                             +'<td><input class="form-control" value="' + data[i].PQuantity + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + data[i].PQuantity + '</label></td>'
                             +'<td><input value="' + data[i].UnitUSLNO + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + data[i].UnitName + '" " readonly="true" type="hidden" name="ItemUnit"/><label name="label_ItemUnit">' + data[i].UnitName + '</label></td>'
                             +'<td><input class="form-control" value="' + data[i].PCost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + data[i].PCost  + '</label></td>'
@@ -364,8 +366,11 @@
                     totalItemCost();
 
                     $('.editSite').click(function () {
+
                         var row = $(this).closest('tr');
                         selRow = $(this).closest('tr');
+
+                        var TaskId = row.find('input[name=TaskId]').val();
                         var itemName = row.find('input[name=ItemName]').val();
                         var itemId = row.find('input[name=ItemId]').val();
                         var Quantity = row.find('input[name=Quantity]').val();
@@ -377,6 +382,7 @@
 
 
                         //$('#ModalItemName').val(SiteName);
+                        $('#ModalTaskId').val(TaskId);
                         $('#ModalQty').val(Quantity);
                         $('#ModalCost').val(ItemCost);
                         $('#ModalRemarks').val(ItemRemarks);
@@ -451,6 +457,7 @@
 
         $('#ModalDetailSave').click(function () {
             var isValidItem = true;
+            var TaskId = $('#ModalTaskId').val();
             var ItemName = $('#ModalItemName option:selected').text();
             var ItemId = $('#ModalItemName option:selected').val();
             var Qty = $('#ModalQty').val();
@@ -521,16 +528,17 @@
                 $('#ModalRemarks_Error').hide();
             }
 
-            //$('table.Resource-list tr').each(function () {
-            //    var name = $(this).find("td input[name=ItemName]").val();
-            //    //alert(name);
-            //    if (ItemName == name) {
-            //        alert('This item already exists!');
-            //        //swal('This item already exists!');
-            //        isValidItem = false;
-            //    }
+            $('table.Resource-list tbody tr').each(function () {
+                var name = $(this).find("td input[name=ItemId]").val();
+                var task = $(this).find("td input[name=TaskId]").val();
 
-            //});
+                if (task != TaskId.trim()) {
+                    if (ItemId.trim() == name.trim()){
+                        alert('This item already exists!');
+                        isValidItem = false;
+                    }
+                } 
+            });
 
             if (isValidItem) {
 
@@ -806,24 +814,10 @@
                 $('#ItemRemarks_Error').hide();
             }
 
-            //$('table.Resource-list tr').each(function () {
-            //    var name = $(this).find("td input[name=ItemName]").val();
-            //    //alert(name);
-            //    if (ItemName == name) {
-            //        alert('This item already exists!');
-            //        //swal('This item already exists!');
-            //        isValidItem = false;
-            //    }
-
-            //});
-
-
             $('table.Resource-list tbody tr').each(function () {
-                var name = $(this).find("td input[name=ItemName]").val().toUpperCase();
-                var ChekkItem = ItemName.toUpperCase();
-                //alert(ChekkItem+'->'+name);
-                if (ChekkItem == name) {
-                    //alert(name.toUpperCase());
+                var name = $(this).find("td input[name=ItemId]").val();
+                //alert(name);
+                if (ItemId.trim() == name.trim()) {
                     alert('This item already exists!');
                     //swal('This item already exists!');
                     isValidItem = false;
@@ -832,21 +826,70 @@
             });
 
 
+            //$('table.Resource-list tbody tr').each(function () {
+            //    var name = $(this).find("td input[name=ItemName]").val().toUpperCase();
+            //    var ChekkItem = ItemName.toUpperCase();
+            //    //alert(ChekkItem+'->'+name);
+            //    if (ChekkItem == name) {
+            //        //alert(name.toUpperCase());
+            //        alert('This item already exists!');
+            //        //swal('This item already exists!');
+            //        isValidItem = false;
+            //    }
+
+            //});
+
+
             //Add item to list if valid
             if (isValidItem) {
-
-                var newRow = jQuery('<tr><td> <input value="' + ItemId + '" type="hidden" name="ItemId"/><input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
+                taskCounter++;
+                var newRow = jQuery('<tr><td><input type="hidden" name="TaskId" value="' + taskCounter + '"/> <input value="' + ItemId + '" type="hidden" name="ItemId"/><input class="form-control" value="' + ItemName + '" type="hidden" name="ItemName"/><label name="label_ItemName">' + ItemName + '</label></td>'
                     +'<td><input class="form-control" value="' + Qty + '" type="hidden" name="Quantity"/><label name="label_Quantity">' + Qty + '</label></td>'
                     +'<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><input type="hidden" class="form-control" value="' + Unit + '" name="ItemUnit"/><label name="label_ItemUnit">' + Unit + '</label></td>'
                     +'<td><input class="form-control" value="' + Cost + '"  type="hidden" name="ItemCost"/><label name="label_ItemCost">' + Cost  + '</label></td>'
                     +'<td><input class="form-control" value="' + ItemRemarks + '" type="hidden" name="ItemRemarks"/><label name="label_ItemRemarks">' + ItemRemarks + '</label></td>'
                     +' <td> '
                          + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
-                       +'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();" ><i class="icon-cross"></i></button></td></tr>');
+                       //+'<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick"  onclick="$(this).parent().parent().remove();" ><i class="icon-cross"></i></button>'
+                             + '<button type="button" class="btn text-warning-600 btn-flat btn-icon btn-rounded deleteClick" value="Delete"><i class="icon-cross"></i></button>'
+                       +'</td></tr>');
 
                 jQuery('table.Resource-list').append(newRow);
+
+                
+                RebindItemName();
                 totalItemCost();
 
+                $('.deleteClick').click(function () {
+
+                    $(this).parent().parent().remove();
+                    totalItemCost();
+                });
+
+                $('.editSite').click(function () {
+
+                    var row = $(this).closest('tr');
+                    selRow = $(this).closest('tr');
+
+                    var TaskId = row.find('input[name=TaskId]').val();
+                    var itemName = row.find('input[name=ItemName]').val();
+                    var itemId = row.find('input[name=ItemId]').val();
+                    var Quantity = row.find('input[name=Quantity]').val();
+                    var ItemUnit = row.find('input[name=ItemUnit]').val();
+                    var UnitId = row.find('input[name=UnitId]').val();
+                    var ItemCost = row.find('input[name=ItemCost]').val();
+                    var ItemRemarks = row.find('input[name=ItemRemarks]').val();
+                    //alert(itemName);
+
+
+                    //$('#ModalItemName').val(SiteName);
+                    $('#ModalTaskId').val(TaskId);
+                    $('#ModalQty').val(Quantity);
+                    $('#ModalCost').val(ItemCost);
+                    $('#ModalRemarks').val(ItemRemarks);
+                    $('#ModalItemName').val(itemId).change();
+                    $('#ModalUnit').val(UnitId).change();
+                });
                 $('#Qty').val("");
                 $('#Cost').val("");
                 $('#ItemRemarks').val("");
@@ -1004,6 +1047,40 @@
             }
 
         };
+
+        function RebindItemName() {
+            $.ajax({
+                type: "post",
+                url: "/ProcProjects/getItemNameandUnit",
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+
+
+                    var listOfitems = data.Items.length;
+                    $('#ItemName').empty();
+
+                    var items = "<select id='ItemName'>";
+                    items = items + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfitems; i++) {
+                        items = items + '<option value=' + data.Items[i].Value + '>' + data.Items[i].Text + '</option>';
+                    }
+                    items = items + '</select>';
+                    $('#ItemName').html(items);
+
+                    var listOfunits = data.Units.length;
+                    $('#Unit').empty();
+                    var units = "<select id='Unit'>";
+                    units = units + '<option value="">--Select--</option>';
+                    for (var i = 0; i < listOfunits; i++) {
+                        units = units + '<option value=' + data.Units[i].Value + '>' + data.Units[i].Text + '</option>';
+                    }
+                    units = units + '</select>';
+                    $('#Unit').html(units);
+                }
+
+            });
+        }
 
     </script>
     @section Scripts {

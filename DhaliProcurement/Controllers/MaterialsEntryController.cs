@@ -76,9 +76,6 @@ namespace DhaliProcurement.Controllers
                                 where purchaseMas.Proc_TenderMasId == tenderMas.Id && purchaseMas.VendorId == tenderDet.VendorId && tenderDet.Status == "A"
                                 select project).Distinct().ToList();
 
-
-
-
             var procprojects = db.ProcProject.ToList();
             List<ProjectSite> sites = new List<ProjectSite>();
             foreach (var i in procprojects)

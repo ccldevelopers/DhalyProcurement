@@ -175,15 +175,17 @@
 
                         <br />
                         <table class="Resource-list table table-bordered" id="Item-list">
-                            <tr class="bg-grey">
-                                <th class="col-lg-2">Item Name</th>
-                                <th class="col-lg-2">Qty</th>
-                                <th class="col-lg-2">Unit</th>
-                                <th class="col-lg-2">Cost</th>
-                                <th class="col-lg-2">Remarks</th>
-                                <th class="col-lg-2"></th>
-                            </tr>
-
+                            <thead>
+                                <tr class="bg-grey">
+                                    <th class="col-lg-2">Item Name</th>
+                                    <th class="col-lg-2">Qty</th>
+                                    <th class="col-lg-2">Unit</th>
+                                    <th class="col-lg-2">Cost</th>
+                                    <th class="col-lg-2">Remarks</th>
+                                    <th class="col-lg-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
                             <tfoot>
                                 <tr>
                                     @*<td></td>
@@ -401,9 +403,25 @@
             //});
 
 
-            $('table.Resource-list tr').each(function () {
-                var name = $(this).find("td input[name=ItemName]").val();
-                if (ItemName == name) {
+            //$('table.Resource-list tbody tr').each(function () {
+            //    var name = $(this).find("td input[name=ItemName]").val();
+            //    name.replace(/"/g, '\\\"');
+            //    ItemName.replace(/"/g, '\\\"');
+
+            //    alert(ItemName + "-->" + name);
+            //    if (ItemName == name) {
+            //        alert('This item already exists!');
+            //        isValidItem = false;
+            //    }
+            //});
+
+
+            $('table.Resource-list tbody tr').each(function () {
+                var name = $(this).find("td input[name=ItemId]").val();
+                //name.replace(/"/g, '\\\"');
+                //ItemName.replace(/"/g, '\\\"');
+
+                if (ItemId.trim() == name.trim()) {
                     alert('This item already exists!');
                     isValidItem = false;
                 }
@@ -426,7 +444,7 @@
                   + '</td>'
                 + '</tr>');
 
-                jQuery('table.Resource-list').append(newRow);
+                jQuery('table.Resource-list tbody').append(newRow);
 
 
                 RebindItemName();
