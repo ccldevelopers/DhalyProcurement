@@ -157,7 +157,7 @@
                                 </tr>
                                 <tr style="text-align:center;">
                                     <td style="font-weight: bold;">Brand/Quantity</td>
-                                    
+
                                     <td>
                                         <input type="text" id="Brand" class="form-control" />
                                         <span class="error" id="Brand_Error"></span>
@@ -313,7 +313,7 @@
                         </div>
                     </div>
 
-                                                    }
+                                                        }
             </div>
 
         </div>
@@ -484,7 +484,7 @@
         $('#Brand_Error').hide();
         $('#Size_Error').hide();
         $('#ItemRemarks_Error').hide();
-        
+
         //RebindDatePicker();
 
         $('#ModalItemName_Error').hide();
@@ -577,7 +577,7 @@
                 }
                 else {
                     $('#CurrentStock_Error').hide();
-                }            
+                }
             }
         }
         else {
@@ -632,7 +632,7 @@
 
         //});
 
-        
+
         $('table.Resource-list tbody tr').each(function () {
             var name = $(this).find("td input[name=ItemId]").val();
             //alert(name);
@@ -903,7 +903,7 @@
             var name = $(this).find("td input[name=ItemId]").val();
             var task = $(this).find("td input[name=TaskIdForDuplicateCheck]").val();
 
-            
+
             if (task != TaskId.trim()) {
                 if (ItemId.trim() == name.trim()) {
                     alert('This item already exists!');
@@ -1268,8 +1268,8 @@
 <style>
     span.error {
         display: block;
-        /*visibility: hidden;*/
-        color: red;
+        font-style: italic;
+        color: #c12a2a;
         font-size: 90%;
     }
 </style>

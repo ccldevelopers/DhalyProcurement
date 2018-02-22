@@ -195,9 +195,7 @@
                                     <th class="col-lg-2"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-
-                            </tbody>
+                            <tbody></tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="3" style="text-align:right;font-weight:bold;font-size:120%;">Total Cost</td>
@@ -258,7 +256,7 @@
                                     <input type="hidden" id="modalSiteEng" />
                                     @Html.DropDownList("Unit", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @id = "ModalUnit", @data_required = "required", @style = "width: 150px;" })
                                     <span class="error" id="ModalUnit_Error"></span>
-                                 </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 @Html.Label("Cost", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -279,7 +277,7 @@
                             <div class="modal-footer">
                                 <div class="col-md-offset-2 col-md-10">
                                     <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"  id="ModalClose">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -307,11 +305,11 @@
             $('#UnitName_Error').hide();
             $('#Costing_Error').hide();
             $('#BOQNo_Error').hide();
-            $('#NOANo_Error').hide();           
+            $('#NOANo_Error').hide();
             $('#QuantityMax_Error').hide();
-            $('#CostMax_Error').hide();            
+            $('#CostMax_Error').hide();
             $('#ItemRemarks_Error').hide();
-            
+
             $('#ModalItemName_Error').hide();
             $('#ModalQty_Error').hide();
             $('#ModalQtyMax_Error').hide();
@@ -490,7 +488,7 @@
                     else {
                         $('#ModalQtyMax_Error').hide();
                     }
-                }               
+                }
             }
             if (UnitName.trim() == "--Select--") {
                 isValidItem = false;
@@ -537,7 +535,7 @@
                         alert('This item already exists!');
                         isValidItem = false;
                     }
-                } 
+                }
             });
 
             if (isValidItem) {
@@ -564,7 +562,7 @@
         });
 
 
-        
+
         $('#ModalClose').click(function () {
             $('#ModalItemName_Error').hide();
             $('#ModalQtyMax_Error').hide();
@@ -772,7 +770,7 @@
                     else {
                         $('#QuantityMax_Error').hide();
                     }
-                }               
+                }
             }
 
 
@@ -803,8 +801,8 @@
                         $('#CostMax_Error').hide();
                     }
                 }
-            } 
-            
+            }
+
 
             if (ItemRemarks.trim().length > 50) {
                 isValidItem = false;
@@ -856,7 +854,7 @@
 
                 jQuery('table.Resource-list').append(newRow);
 
-                
+
                 RebindItemName();
                 totalItemCost();
 
@@ -946,7 +944,7 @@
             else {
                 $('#BOQNo_Error').hide();
             }
-            
+
             if (NOANo.trim().length > 100) {
                 $('#NOANo_Error').text("NOA No. can not be greater than 100 characters!").show();
                 isValid = false;
@@ -1097,21 +1095,21 @@
         </script>
     }
     <style>
-            /*.scrolling {
+        /*.scrolling {
             width: 100%;
             height: 350px;
             /*border: 13px solid #bed5cd;
             overflow-x: scroll;
             overflow-y: scroll;
         }*/
-            span.error {
-                display: block;
-                /*visibility: hidden;*/
-                color: red;
-                font-size: 90%;
-            }
+        span.error {
+            display: block;
+            font-style: italic;
+            color: #c12a2a;
+            font-size: 90%;
+        }
 
-            textarea {
-                resize: none;
-            }
+        textarea {
+            resize: none;
+        }
     </style>

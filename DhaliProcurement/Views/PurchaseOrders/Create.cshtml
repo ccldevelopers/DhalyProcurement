@@ -274,7 +274,7 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "Select item", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
                                 <span class="error" id="ModalItemName_Error"></span>
-                              </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -352,11 +352,11 @@
                 $('#POQuantity_Error').hide();
                 $('#TotalPrice1').val(totalPrice);
             }
-         
-          
+
+
         }
     }, 'input[name=POQuantity1]');
-    
+
 
     $(document).on({
         'change': function () {
@@ -389,7 +389,7 @@
                 $('#ModalTotalPrice').val(totalPrice);
             }
 
-           
+
         }
     }, 'input[name=ModalPOQuantity]');
 
@@ -625,7 +625,7 @@
             console.log('POQuantity: ' + quantity);
             var cost = $('#Item-list tr').eq(cn).find("td input[name=UnitPrice]").val();
             console.log('UnitPrice: ' + cost);
-            var result = parseFloat(quantity) * parseFloat(cost);         
+            var result = parseFloat(quantity) * parseFloat(cost);
         }
         if (isNaN(result)) {
             $('#totalCost').val("");
@@ -634,7 +634,7 @@
             ItemTotalCost = parseFloat(ItemTotalCost + result);
             $('#totalCost').val(ItemTotalCost);
         }
-      
+
     }
 
     $(document).ready(function () {
@@ -829,7 +829,7 @@
             var AddedDetItems = [];
             var tableCounter = $('#Item-list tr').length - 1;
             //alert('Length: ' + tableCounter);
- 
+
             for (var i = 0; i < tableCounter - 1; i++) {
                 AddedDetItems.push({
                     ItemId: ItemId[i].value,
@@ -896,7 +896,7 @@
             });
         }
 
-   
+
     }
 
 
@@ -1092,8 +1092,8 @@
     }*/
     span.error {
         display: block;
-        /*visibility: hidden;*/
-        color: red;
+        font-style: italic;
+        color: #c12a2a;
         font-size: 90%;
     }
 </style>

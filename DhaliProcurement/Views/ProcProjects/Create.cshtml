@@ -157,8 +157,8 @@
                                 <td>
                                     @*<input type="text" id="ItemRemarks" class="form-control" />*@
                                     <textarea id="ItemRemarks" class="form-control" rows="1"></textarea>
-                                  
-                                    
+
+
                                 </td>
                                 <td>
                                     <input type="button" id="addNewRow" value="+" class="btn btn-primary" style="background-color: grey;border: none;" />
@@ -330,7 +330,7 @@
             //    else {
             //        $('#QuantityMax_Error').hide();
             //    }
-              
+
             //}
 
             if (Qty.trim() == "") {
@@ -506,7 +506,7 @@
             var Unitid = $('#ModalUnit option:selected').val();
             var UnitName = $('#ModalUnit option:selected').text();
             var Cost = $('#ModalCost').val();
-            var Remarks = $('#ModalRemarks').val();         
+            var Remarks = $('#ModalRemarks').val();
 
             if (ItemName.trim() == "--Select--") {
                 isValidItem = false;
@@ -533,7 +533,7 @@
                     else {
                         $('#ModalQtyMax_Error').hide();
                     }
-                }               
+                }
             }
 
             if (UnitName.trim() == "--Select--") {
@@ -671,18 +671,18 @@
             $('#UnitName_Error').hide();
             $('#Costing_Error').hide();
             $('#BOQNo_Error').hide();
-            $('#NOANo_Error').hide();           
+            $('#NOANo_Error').hide();
             $('#QuantityMax_Error').hide();
-            $('#CostMax_Error').hide();            
+            $('#CostMax_Error').hide();
             $('#ItemRemarks_Error').hide();
-            
+
             $('#ModalItemName_Error').hide();
             $('#ModalQty_Error').hide();
             $('#ModalQtyMax_Error').hide();
             $('#ModalUnit_Error').hide();
             $('#ModalCost_Error').hide();
             $('#ModalRemarks_Error').hide();
-            
+
         });
 
         $('#ProjectId').change(function () {
@@ -768,7 +768,7 @@
             var ProjectType = $('#ProjectType').val();
             var ProjectStatus = $('#ProjectStatus').val();
             var ProjectRemarks = $('#ProjectRemarks ').val();
-            
+
             if (BOQNo.trim().length > 100) {
                 $('#BOQNo_Error').text("BOQ No. can not be greater than 100 characters!").show();
                 isValid = false;
@@ -776,7 +776,7 @@
             else {
                 $('#BOQNo_Error').hide();
             }
-            
+
             if (NOANo.trim().length > 100) {
                 $('#NOANo_Error').text("NOA No. can not be greater than 100 characters!").show();
                 isValid = false;
@@ -973,21 +973,21 @@
     }
 
     <style>
-            /*.scrolling {
+        /*.scrolling {
             width: 100%;
             height: 350px;
             /*border: 13px solid #bed5cd;
             overflow-x: scroll;
             overflow-y: scroll;
         }*/
-            span.error {
-                display: block;
-                /*visibility: hidden;*/
-                color: red;
-                font-size: 90%;
-            }
+        span.error {
+            display: block;
+            font-style: italic;
+            color: #c12a2a;
+            font-size: 90%;
+        }
 
-            textarea {
-                resize: none;
-            }
+        textarea {
+            resize: none;
+        }
     </style>

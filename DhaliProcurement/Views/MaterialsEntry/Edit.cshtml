@@ -94,7 +94,7 @@
                                 <tr>
                                     <td style="font-weight: bold;" class="col-lg-1">PO No.</td>
                                     <td class="col-lg-3">
-                                        @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo1", @name= "PONo1" })
+                                        @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "PONo1", @name = "PONo1" })
                                     </td>
                                     <td style="font-weight: bold;" class="col-lg-1">Vendor Name</td>
                                     <td class="col-lg-3">
@@ -180,23 +180,26 @@
                             <br />
                             <div class="table-responsive scrolling">
                                 <table class="Resource-list table table-bordered scrolling" id="RequisitionDetails">
-                                    <tr class="bg-grey">
-                                        <th>Sl. No.</th>
-                                        <th>Required Material</th>
-                                        <th>Unit</th>
-                                        <th>Req. No.</th>
-                                        <th>PO No.</th>
-                                        <th>Vendor Name</th>
-                                        <th>Total Material</th>
-                                        <th>Previous Received Qty</th>
-                                        <th>Remaining Qty</th>
-                                        <th>Challan No.</th>
-                                        <th>Challan Date</th>
-                                        <th>Material Entry(Qty)</th>
-                                        <th>Unit Price</th>
-                                        <th>Cost</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
+                                    <thead>
+                                        <tr class="bg-grey">
+                                            @*<th>Sl. No.</th>*@
+                                            <th>Required Material</th>
+                                            <th>Unit</th>
+                                            <th>Req. No.</th>
+                                            <th>PO No.</th>
+                                            <th>Vendor Name</th>
+                                            <th>Total Material</th>
+                                            <th>Previous Received Qty</th>
+                                            <th>Remaining Qty</th>
+                                            <th>Challan No.</th>
+                                            <th>Challan Date</th>
+                                            <th>Material Entry(Qty)</th>
+                                            <th>Unit Price</th>
+                                            <th>Cost</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -228,6 +231,7 @@
                         @Html.AntiForgeryToken()
                         <div class="form-horizontal">
                             <div class="form-group">
+                                <input type="hidden" id="ModalTaskId" />
                                 <input type="hidden" id="ProjectId" value="" />
                             </div>
                             <div class="form-group">
@@ -236,8 +240,8 @@
                                @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
                                     @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
-                                    <span class="error" id="ModalItemName_Error"></span> 
-                                 </div>
+                                    <span class="error" id="ModalItemName_Error"></span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 @Html.Label("Unit", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -251,7 +255,7 @@
                                 @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
-                                    <span class="error" id="ModalReqNo_Error"></span> 
+                                    <span class="error" id="ModalReqNo_Error"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -259,9 +263,9 @@
                            {
                                @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo"})
-                                    <span class="error" id="ModalPONo_Error"></span> 
-                                 </div>
+                                    @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
+                                    <span class="error" id="ModalPONo_Error"></span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 @Html.Label("VendorName", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -269,8 +273,8 @@
                                 <div class="col-md-10">
                                     <input type="hidden" id="ModalVendorId" />
                                     @Html.TextBox("ModalVendorName", null, new { @class = "form-control", @disabled = "disabled" })
-                              
-                                  </div>
+
+                                </div>
                             </div>
                             <div class="form-group">
                                 @Html.Label("Total Material", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -349,6 +353,7 @@
         var deleteCounter = 0;
         var deleteList = [];
         var selRow;
+        var taskCounter = 0;
 
         $(document).ready(function () {
             //$('#SiteId').attr("disabled", "true");
@@ -382,11 +387,11 @@
                         for (var i = 0; i < data.List.length; i++) {
                             counter++;
                             //cnTaskRow++;
-                            //alert(data.List[i].PONo);
+                            taskCounter++;
                             var remainingQty = (data.List[i].TotalMaterial)-(data.List[i].PreviousReceivedQty);
                             var row = $('<tr>'
-                               +'<td class="index"><label name="TaskId">'+ counter + '</label><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="Proc_MaterialEntryDetId" value="'+data.List[i].Proc_MaterialEntryDetId+'"/></td>'
-                               + '<td><input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + data.List[i].ItemName + '</label><input class="form-control" value="' + data.List[i].ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
+                               +'<td class="index"><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input type="hidden" name="SLNo" value="'+counter+'"/><input type="hidden" name="Proc_MaterialEntryDetId" value="'+data.List[i].Proc_MaterialEntryDetId+'"/>'
+                               + '<input value="' + data.List[i].ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + data.List[i].ItemName + '</label><input class="form-control" value="' + data.List[i].ItemName + '" readonly="true" type="hidden" name="ItemName"  style="width:90px;" disabled="disabled"/><input value="' + data.List[i].Proc_RequisitionDetId + '" type="hidden" name="Proc_RequisitionDetId"/></td>'
                                + '<td><input value="" type="hidden" name="UnitId"/><label name="label_UnitName">' + data.List[i].UnitName + '</label><input class="form-control" value="' + data.List[i].UnitName + '" readonly="true" type="hidden" name="UnitName"  style="width:90px;" disabled="disabled"/></td>'
                                + '<td><input value="' + data.List[i].RCode + '" type="hidden" class="form-control"  name="RCode" style="width:90px;"/><label name="label_RCodeName">' + data.List[i].RCodeName + '</label><input value="' + data.List[i].RCodeName + '" type="hidden" class="form-control"  name="RCodeName" style="width:90px;" disabled="disabled"/></td>'
                                + '<td><input value="' + data.List[i].PONo + '" type="hidden" name="PurchaseOrder" class="form-control" style="width:90px;" disabled="disabled"/><label name="label_PONo">' + data.List[i].PONo + '</label></td>'
@@ -412,13 +417,15 @@
                             //         ' <button   type="button"  onclick="AddNewRowAfter(this);"   class="btn  text-success-600 btn-flat btn-icon btn-rounded "><i class=" icon-plus-circle2"></i></button></td>'
                             //+'</tr>');
 
-                            $('#RequisitionDetails').append(row);
+                            $('#RequisitionDetails tbody').append(row);
                             RebindDatePicker();
 
                             $('.editSite').click(function () {
                                 var row = $(this).closest('tr');
                                 selRow = $(this).closest('tr');
 
+
+                                var TaskId = row.find('input[name=TaskId]').val();
                                 var itemName = row.find('input[name=ItemName]').val();
                                 var itemId = row.find('input[name=ItemId]').val();
                                 var UnitName = row.find('input[name=UnitName]').val();
@@ -439,6 +446,7 @@
                                 //alert(PayOrderNo);
 
                                 //$('#ModalItemName').val(SiteName);
+                                $('#ModalTaskId').val(TaskId);
                                 $('#ModalItemName').val(itemId);
                                 $('#modalunitId').val(UnitId);
                                 $('#ModalUnitName').val(UnitName);
@@ -630,9 +638,9 @@
 
 
         $('#ModalDetailSave').click(function () {
-          
             var isAllValid = true;
 
+            var TaskId = $('#ModalTaskId').val();
             var ItemName = $('#ModalItemName option:selected').text();
             var ItemId = $('#ModalItemName option:selected').val();
             var Unitid = $('#modalunitId').val();
@@ -649,7 +657,7 @@
             var ModalMaterialEntry = $('#ModalMaterialEntry').val();
             var ModalUnitPrice = $('#ModalUnitPrice').val();
             var ModalTotalPrice = ModalUnitPrice * ModalMaterialEntry;
-           
+
 
             if (ItemName == "" || ItemName == "--Select--") {
                 $('#ModalItemName_Error').text("Item required").show();
@@ -659,7 +667,7 @@
                 $('#ModalItemName_Error').hide();
             }
 
-           
+
             if (ReqNo == "" || ReqNo == "--Select--") {
                 $('#ModalReqNo_Error').text("Req No. required").show();
                 isAllValid = false;
@@ -667,7 +675,7 @@
             else {
                 $('#ModalReqNo_Error').hide();
             }
-          
+
             if (ModalPONo == "" || ModalPONo == "--Select--") {
                 $('#ModalPONo_Error').text("PO No. required").show();
                 isAllValid = false;
@@ -675,7 +683,7 @@
             else {
                 $('#ModalPONo_Error').hide();
             }
-           
+
             if (ModalChallanNo == "") {
                 $('#ModalChallanNo_Error').text("Challan No. required").show();
                 isAllValid = false;
@@ -683,7 +691,7 @@
             else {
                 $('#ModalChallanNo_Error').hide();
             }
-           
+
             if (ModalChallanNo != "") {
                 if (ChallanNo.length > 50) {
                     $('#ModalChallanNo_Error').text("Challan No. cannot be greater than 50 characters!").show();
@@ -694,7 +702,7 @@
                 }
             }
 
-            
+
 
             if (ModalMaterialEntry == "") {
                 $('#ModalMaterialEntry_Error').text("Material Entry required").show();
@@ -703,7 +711,7 @@
             else {
                 $('#ModalMaterialEntry_Error').hide();
             }
-           
+
 
             if (ModalMaterialEntry != "") {
                 if (isNaN(ModalMaterialEntry)) {
@@ -722,10 +730,21 @@
                 }
             }
 
-            //alert('test');
+            $('table.Resource-list tbody tr').each(function () {
+                var Itemname = $(this).find("td input[name=ChallanNo]").val();
+                var task = $(this).find("td input[name=TaskId]").val();
+
+                alert(task + "-->" + TaskId);
+                if (task != TaskId.trim()) {
+                    if (ModalChallanNo.trim().toUpperCase() == Itemname.trim().toUpperCase()) {
+                        alert('This Challan No.already exists!');
+                        isAllValid = false;
+                    }
+                }
+            });
 
             if (isAllValid) {
-              
+
 
                 selRow.find('input[name=ItemName]').val(ItemName);
                 selRow.find('input[name=ItemId]').val(ItemId);
@@ -1133,25 +1152,26 @@
                     else {
                         $('#MaterialEntry_Error').hide();
                     }
-               
+
                 }
             }
 
-            $('table.Resource-list tr').each(function () {
+            $('table.Resource-list tbody tr').each(function () {
                 var Item = $(this).find("td input[name=ChallanNo]").val();
                 //var VName = $(this).find("td input[name=VendorName]").val();
-                if (ChallanNo == Item) {
+                if (ChallanNo.toUpperCase() == Item.toUpperCase()) {
                     alert('This challan no. already exists!');
                     isAllValid = false;
                 }
             });
 
             if (isAllValid) {
+                taskCounter++;
                 var newRow = jQuery('<tr>'
                     //+ '<td><input value="' + ProjectId + '" type="hidden" name="ProjectId"/><label>' + ProjectName + '<label></td>'
                     //+ '<td><input value="' + SiteId + '" type="hidden" name="SiteId"/><label>' + SiteName + '<label></td>'
-                    + '<td><label>' + counter + '<label><input type="hidden" name="Proc_MaterialEntryDetId" value="'+Proc_MaterialEntryDetId+'"/></td>'
-                    + '<td><input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input value="' + ItemName + '" type="hidden" name="ItemName" class="form-control" style="width:90px;"/></td>'
+                    + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><label>' + counter + '<label><input type="hidden" name="Proc_MaterialEntryDetId" value="'+Proc_MaterialEntryDetId+'"/>'
+                    + '<input value="' + ItemId + '" type="hidden" name="ItemId"/><label name="label_ItemName" style="width:150px;">' + ItemName + '</label><input value="' + ItemName + '" type="hidden" name="ItemName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + UnitId + '" type="hidden" name="UnitId"/><label name="label_UnitName">' + UnitName + '</label><input value="' + UnitName + '" type="hidden" name="UnitName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + RCode + '" type="hidden" name="RCode" class="form-control" style="width:50px;"/><label name="label_RCodeName">' + RCodeName + '</label><input value="' + RCodeName + '" type="hidden" name="RCodeName" class="form-control" style="width:90px;"/></td>'
                     + '<td><input value="' + PONo + '" type="hidden" name="PurchaseOrder" class="form-control" style="width:90px;"/><label name="label_PONo">' + PONo + '</label></td>'
@@ -1169,13 +1189,13 @@
                     +'<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
                 //+ '<td> <input type="button" class="btn btn-danger btn-xs" value="Delete" onclick="$(this).parent().parent().remove();" /></td></tr>');
 
-                jQuery('table.Resource-list').append(newRow);
+                jQuery('table.Resource-list tbody').append(newRow);
 
                 //$('#ProjectId').val("");
                 //$('#SiteId').val("");
                 $('#ReqNo').val("");
                 $('#ItemName').val("");
-                //$('#PONo1').val("");
+                $('#PONo1').val("");
                 $('#UnitName').val("");
                 $('#VendorName').val("");
                 $('#TotalMaterial').val("");
@@ -1396,8 +1416,8 @@
     <style>
         span.error {
             display: block;
-            /*visibility: hidden;*/
-            color: red;
+            font-style: italic;
+            color: #c12a2a;
             font-size: 90%;
         }
     </style>

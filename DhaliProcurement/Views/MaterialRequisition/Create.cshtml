@@ -223,7 +223,7 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName", @style = "width: 150px;" })
-                              <span class="error" id="ModalItemName_Error"></span>
+                                <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -305,7 +305,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-2 col-md-10">
                                 <button type="submit" class="btn btn-primary" id="ModalDetailSave">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose" >Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ModalClose">Close</button>
                             </div>
                         </div>
                     </div>
@@ -327,11 +327,11 @@
         RebindDatePicker();
         $('#SiteId').attr("disabled", "true");
         $("#ItemName").attr("disabled", "true");
-        
+
         $('#ReqNO_Error').hide();
         $('#ProjectRemarks_Error').hide();
         $('#ItemName_Error').hide();
-        $('#CurrentStock_Error').hide();       
+        $('#CurrentStock_Error').hide();
         $('#ReqQty_Error').hide();
         $('#ReqQty_Error2').hide();
         $('#Brand_Error').hide();
@@ -339,7 +339,7 @@
         $('#ItemRemarks_Error').hide();
 
         //RebindDatePicker();
-        
+
         $('#ModalItemName_Error').hide();
         $('#ModalCurrentStock_Error').hide();
         $('#ModalQty_Error').hide();
@@ -480,10 +480,10 @@
             isAllValid = false;
         }
         else {
-            
+
             $('#ItemName_Error').hide();
         }
-        
+
         if (CurrentStock != "") {
             if (isNaN(CurrentStock)) {
                 $('#CurrentStock_Error').show();
@@ -497,7 +497,7 @@
                 else {
                     $('#CurrentStock_Error').hide();
                 }
-               
+
             }
         }
         else {
@@ -521,7 +521,7 @@
                 else {
                     $('#ReqQty_Error').hide();
                 }
-               
+
             }
             $('#ReqQty_Error2').hide();
         }
@@ -709,7 +709,7 @@
                 }
                 else {
                     $('#ModalCurrentStock_Error').hide();
-                }               
+                }
             }
         }
         else {
@@ -718,9 +718,9 @@
 
 
         if (Qty.trim() == "") {
-                isValidItem = false;
-                $('#ModalQty_Error').text("Qty required").show();
-            
+            isValidItem = false;
+            $('#ModalQty_Error').text("Qty required").show();
+
         }
         else {
             if (Qty.trim() != "") {
@@ -736,7 +736,7 @@
                     else {
                         $('#ModalQty_Error').hide();
                     }
-             
+
                 }
             }
         }
@@ -762,13 +762,13 @@
         else {
             $('#ModalRemarks_Error').hide();
         }
-        
+
         //validation for checking duplicate item
         $('table.Resource-list tbody tr').each(function () {
             var name = $(this).find("td input[name=ItemId]").val();
             var task = $(this).find("td input[name=TaskId]").val();
 
-            
+
             if (task != TaskId.trim()) {
                 if (ItemId.trim() == name.trim()) {
                     alert('This item already exists!');
@@ -998,7 +998,7 @@
             type: "post",
             url: "/MaterialRequisition/RebindItemName",
             datatype: "json",
-            data: {SiteId, ProjectId},
+            data: { SiteId, ProjectId },
             traditional: true,
             success: function (data) {
 
@@ -1029,8 +1029,8 @@
     }*/
     span.error {
         display: block;
-        /*visibility: hidden;*/
-        color: red;
+        font-style: italic;
+        color: #c12a2a;
         font-size: 90%;
     }
 </style>

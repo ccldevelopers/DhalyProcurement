@@ -152,23 +152,26 @@
                         <br />
                         <div class="table-responsive scrolling">
                             <table class="Resource-list table table-bordered" id="PaymentDetails">
-                                <tr class="bg-grey">
-                                    @*<th>Sl. No.</th>*@
-                                    <th>Project Name</th>
-                                    <th>Site</th>
-                                    <th>Req. No.</th>
-                                    <th>PO No.</th>
-                                    <th>Item Name</th>
-                                    <th>Req. Qty Material</th>
-                                    <th>Unit</th>
-                                    <th>Challan No</th>
-                                    <th>Bill No.</th>
-                                    <th>Challan Amount(tk)</th>
-                                    <th>Payment</th>
-                                    <th>Remarks</th>
-                                    <th>&nbsp;</th>
+                                <thead>
+                                    <tr class="bg-grey">
 
-                                </tr>
+                                        @*<th>Sl. No.</th>*@
+                                        <th>Project Name</th>
+                                        <th>Site</th>
+                                        <th>Req. No.</th>
+                                        <th>PO No.</th>
+                                        <th>Item Name</th>
+                                        <th>Req. Qty Material</th>
+                                        <th>Unit</th>
+                                        <th>Challan No</th>
+                                        <th>Bill No.</th>
+                                        <th>Challan Amount(tk)</th>
+                                        <th>Payment</th>
+                                        <th>Remarks</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -201,6 +204,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" id="ModalTaskId" />
                             <input type="hidden" id="ProjectId" value="" />
                         </div>
                         <div class="form-group">
@@ -210,7 +214,7 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("ProjectId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalProjectId" })
                                 <span class="error" id="ModalProjectId_Error"></span>
-                             </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Site Name", htmlAttributes: new
@@ -219,7 +223,7 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("SiteId", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalSiteId" })
                                 <span class="error" id="ModalSiteId_Error"></span>
-                             </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -235,7 +239,7 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
                                 <span class="error" id="ModalPO_Error"></span>
-                             </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Item Name", htmlAttributes: new
@@ -244,7 +248,7 @@
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
                                 <span class="error" id="ModalItemId_Error"></span>
-                             </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Req Qty", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -268,7 +272,7 @@
                                 @Html.DropDownList("ChallanNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalChallanNo" })
                                 @*@Html.TextBox("ModalChallanNo", null, new { @class = "form-control", @disabled = "disabled" })*@
                                 <span class="error" id="ModalChallan_Error"></span>
-                              </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             @Html.Label("Bill No", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -282,7 +286,7 @@
                             @Html.Label("Challan Amount(tk)", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.TextBox("ModalTotalAmount", null, new { @class = "form-control" ,@disabled= "disabled" })
+                                @Html.TextBox("ModalTotalAmount", null, new { @class = "form-control", @disabled = "disabled" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -317,6 +321,7 @@
 <script>
     var counter = 0;
     var selRow;
+    var taskCounter = 0;
 
     $(document).ready(function () {
 
@@ -665,7 +670,7 @@
         else {
             $('#Challan_Error').hide();
         }
-        
+
         if (BillNo.length > 50) {
             $('#BillNo_Error').text("Bill No. cannot be greater than 50 characters!").show();
             isAllValid = false;
@@ -679,7 +684,7 @@
             $('#Payment_Error').text("Payment required").show();
         }
         else {
-            if(isNaN($('#Payment').val().trim())){
+            if (isNaN($('#Payment').val().trim())) {
                 isAllValid = false;
                 $('#Payment_Error').text("Payment must be a numeric value!").show();
             }
@@ -693,31 +698,33 @@
                 }
 
             }
-           
+
         }
-        if (Remarks.length> 50) {
+        if (Remarks.length > 50) {
             $('#Remarks_Error').text("Remarks cannot be greater than 50 characters!").show();
             isAllValid = false;
         }
         else {
             $('#Remarks_Error').hide();
         }
-        
 
-        $('table.Resource-list tr').each(function () {
-            var Item = $(this).find("td input[name=BillNo]").val();
-            //var VName = $(this).find("td input[name=VendorName]").val();
-            if (BillNo == Item) {
-                alert('This bill no. already exists!');
+
+        $('table.Resource-list tbody tr').each(function () {
+
+            var Item = $(this).find("td input[name=ItemId]").val();
+            var bill = $(this).find("td input[name=BillNo]").val();
+            if (BillNo.trim().toUpperCase() == bill.trim().toUpperCase() && ItemId.trim() == Item.trim()) {
+                alert('This payment already exists!');
                 isAllValid = false;
             }
         });
-        
+
 
 
         if (isAllValid) {
+            taskCounter++;
             var newRow = jQuery('<tr>'
-                + '<td><input value="' + Proc_MaterialEntryDetId + '" type="hidden" name="Proc_MaterialEntryDetId"/>'
+                + '<td><input type="hidden" name="TaskId" value="' + taskCounter + '"/><input value="' + Proc_MaterialEntryDetId + '" type="hidden" name="Proc_MaterialEntryDetId"/>'
                 + '<input value="' + ProjectId + '" type="hidden" name="ProjectId" class="form-control" style="width:50px;"/><label name="label_ProjectName" style="width:150px;">' + ProjectName + '</label><input class="form-control" value="' + ProjectName + '" readonly="true" type="hidden" name="ProjectName"  style="width:90px;"/></td>'
                 + '<td><input value="' + SiteId + '" type="hidden" name="SiteId" class="form-control" style="width:50px;"/><label name="label_SiteName" style="width:150px;">' + SiteName + '</label><input class="form-control" value="' + SiteName + '" readonly="true" type="hidden" name="SiteName"  style="width:90px;"/></td>'
                 + '<td><input value="' + ReqNo + '" type="hidden" name="ReqNo" class="form-control" style="width:50px;"/><label name="label_ReqNoName" style="width:150px;">' + ReqNoName + '</label><input class="form-control" value="' + ReqNoName + '" readonly="true" type="hidden" name="ReqNoName"  style="width:90px;"/></td>'
@@ -734,11 +741,17 @@
                 + '<button type="button" id="editSite" class="btn text-primary-400 btn-flat btn-icon btn-rounded  btn-xs editSite " data-toggle="modal" data-target="#detailForm"><i class="icon-pencil"></i></button>'
                 + '<button class="btn  text-warning-600 btn-flat btn-icon btn-rounded"  onclick="$(this).parent().parent().remove();"><i class="icon-cross"></i></button></td></tr>');
 
-            jQuery('table.Resource-list').append(newRow);
+            jQuery('table.Resource-list tbody').append(newRow);
 
 
+            $("#ProjectId").val("");
+            $("#SiteId").val("");
+            $("#ReqNo").val("");
+            $("#PONo").val("");
+            $("#ItemName").val("");
             $('#ReqQty').val("");
-            //$('#UnitId').val("");
+            $("#ChallanNo").val("");
+            $('#UnitName').val("");
             $('#BillNo').val("");
             $('#TotalAmount').val("");
             $('#Payment').val("");
@@ -752,6 +765,7 @@
                 var row = $(this).closest('tr');
                 selRow = $(this).closest('tr');
 
+                var TaskId = row.find('input[name=TaskId]').val();
                 var ProjectName = row.find('input[name=ProjectName]').val();
                 var ProjectId = row.find('input[name=ProjectId]').val();
                 var SiteName = row.find('input[name=SiteName]').val();
@@ -771,7 +785,7 @@
                 var Payment = row.find('input[name=Payment]').val();
                 var Remarks = row.find('input[name=Remarks]').val();
 
-
+                $('#ModalTaskId').val(TaskId);
                 $('#ModalProjectId').val(ProjectId);
                 $('#ModalSiteId').val(SiteId);
                 $('#ModalReqNo').val(ReqNo);
@@ -990,6 +1004,7 @@
     $('#ModalDetailSave').click(function () {
         var isAllValid = true;
 
+        var TaskId = $('#ModalTaskId').val();
         var ModalProjectId = $('#ModalProjectId option:selected').val();
         var ModalProjectName = $('#ModalProjectId option:selected').text();
         var ModalSiteId = $('#ModalSiteId option:selected').val();
@@ -1061,7 +1076,7 @@
             $('#ModalBillNo_Error').hide();
         }
 
-        if (ModalPayment.trim() == '' ) {
+        if (ModalPayment.trim() == '') {
             $('#ModalPayment_Error').text("Payment required").show();
             isAllValid = false;
         }
@@ -1079,7 +1094,7 @@
                     $('#ModalPayment_Error').hide();
                 }
 
-            }           
+            }
         }
         if (ModalRemarks.length > 50) {
             $('#ModalRemarks').text("Remarks cannot be greater than 50 characters!").show();
@@ -1088,6 +1103,20 @@
         else {
             $('#ModalRemarks').hide();
         }
+
+        $('table.Resource-list tbody tr').each(function () {
+            var Itemname = $(this).find("td input[name=ItemId]").val();
+            var Bill = $(this).find("td input[name=BillNo]").val();
+            var task = $(this).find("td input[name=TaskId]").val();
+
+            //alert(task + "-->" + TaskId);
+            if (task != TaskId.trim()) {
+                if (ModalItemId.trim() == Itemname.trim() && ModalBillNo.trim().toUpperCase() == Bill.trim().toUpperCase()) {
+                    alert('This payment already exists!');
+                    isAllValid = false;
+                }
+            }
+        });
 
         if (isAllValid) {
             selRow.find('input[name=ProjectName]').val(ModalProjectName);
@@ -1136,13 +1165,9 @@
     $('#SaveItem').click(function (e) {
         //alert('Length:' + $('.Resource-list tr').length)
 
-        if ($('#ProjectId option:selected').text() === "--Select--") {
-            alert('Please select project');
-            $('#ProjectId option:selected').focus();
-        }
-        else if ($('#SiteId option:selected').text() === "--Select--") {
-            alert('Please select site');
-            $('#SiteId option:selected').focus();
+        if ($('#VendorId option:selected').text() === "--Select--") {
+            alert('Please select vendor');
+            $('#VendorId option:selected').focus();
         }
         else if ($.trim($('#PayDate').val()) === "") {
             alert('Pay date required');
@@ -1164,7 +1189,7 @@
 
         //===========Detail Form===========
 
-       
+
 
         var ProjectId = document.getElementsByName("ProjectId");
         var SiteId = document.getElementsByName("SiteId");
@@ -1264,7 +1289,8 @@
 <style>
     span.error {
         display: block;
-        color: red;
+        font-style: italic;
+        color: #c12a2a;
         font-size: 90%;
     }
 </style>

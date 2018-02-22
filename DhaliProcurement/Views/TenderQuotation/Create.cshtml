@@ -27,7 +27,7 @@
                                 @Html.TextBox("TNo", "", new { @class = "form-control " })
                                 <span class="error" id="TNo_Error"></span>
                             </td>
-  
+
                             <td>Tender Date</td>
                             <td>
                                 @Html.TextBox("TDate", "", new { @class = "form-control datepicker" })
@@ -86,7 +86,7 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><span class="error" id="ProjectName_Error"  style="padding-left:10px;">Project required</span></td>
+                                    <td><span class="error" id="ProjectName_Error" style="padding-left:10px;">Project required</span></td>
                                     <td></td>
                                     <td><span class="error" id="SiteName_Error" style="padding-left:10px;">Site required</span></td>
                                     <td></td>
@@ -271,7 +271,7 @@
                             @Html.Label("Qty", htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
-                                @Html.TextBox("ModalQty", null, new { @class = "form-control", @disabled = "disabled" })                           
+                                @Html.TextBox("ModalQty", null, new { @class = "form-control", @disabled = "disabled" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -640,7 +640,7 @@
                 else {
                     $('#UnitPrice_Error').hide();
                 }
-            }         
+            }
         }
 
         if (TQNo.trim().length > 50) {
@@ -658,9 +658,9 @@
 
             //if (task != TaskId.trim()) {
             if (ItemId.trim() == Itemname.trim() && VendorId.trim() == Vendorname.trim()) {
-                    alert('Same Vendor against this item exists!');
-                    isAllValid = false;
-                }
+                alert('Same Vendor against this item exists!');
+                isAllValid = false;
+            }
             //}
         });
 
@@ -824,7 +824,7 @@
             }
             $('#ModalUnitPrice_Error').hide();
         }
-       
+
 
         if (ModalQtnNo.trim().length > 50) {
             $('#ModalQtnNo_Error').text("Qtn No. can not be greater than 50 characters!").show();
@@ -1188,7 +1188,7 @@
             });
         }
 
-  
+
     }
 
     function RebindDatePicker() {
@@ -1216,8 +1216,8 @@
 <style>
     span.error {
         display: block;
-        /*visibility: hidden;*/
-        color: red;
+        font-style: italic;
+        color: #c12a2a;
         font-size: 90%;
     }
 </style>

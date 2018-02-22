@@ -223,7 +223,7 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("ItemName", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalItemName" })
-                                <span class="error" id="ModalItemName_Error"></span> 
+                                <span class="error" id="ModalItemName_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -238,7 +238,7 @@
                             @Html.Label("Req No", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownList("ReqNo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalReqNo" })
-                                <span class="error" id="ModalReqNo_Error"></span> 
+                                <span class="error" id="ModalReqNo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -247,7 +247,7 @@
                            @class = "control-label col-md-2"@*, @style="font-weight:bold;"*@ })
                             <div class="col-md-10">
                                 @Html.DropDownList("PONo", null, "--Select--", htmlAttributes: new { @class = "form-control select2", @data_required = "required", @id = "ModalPONo" })
-                                <span class="error" id="ModalPONo_Error"></span> 
+                                <span class="error" id="ModalPONo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -284,7 +284,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="col-md-10">
                                 @Html.TextBox("ModalChallanNo", null, new { @class = "form-control" })
-                                <span class="error" id="ModalChallanNo_Error"></span> 
+                                <span class="error" id="ModalChallanNo_Error"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -712,8 +712,7 @@
             $('#ChallanNo_Error').hide();
         }
         if (ChallanNo != "") {
-            if(ChallanNo.length>50)
-            {
+            if (ChallanNo.length > 50) {
                 $('#ChallanNo_Error').text("Challan No. cannot be greater than 50 characters!").show();
                 isAllValid = false;
             }
@@ -755,7 +754,7 @@
         $('table.Resource-list tbody tr').each(function () {
             var Item = $(this).find("td input[name=ChallanNo]").val();
             //var VName = $(this).find("td input[name=VendorName]").val();
-            if (ChallanNo == Item) {
+            if (ChallanNo.toUpperCase() == ItemtoUpperCase()) {
                 alert('This challan no. already exists!');
                 isAllValid = false;
             }
@@ -1037,7 +1036,7 @@
         else {
             $('#ModalMaterialEntry_Error').hide();
         }
-       
+
 
         if (ModalMaterialEntry != "") {
             if (isNaN(ModalMaterialEntry)) {
@@ -1246,8 +1245,8 @@
 <style>
     span.error {
         display: block;
-        /*visibility: hidden;*/
-        color: red;
+        font-style: italic;
+        color: #c12a2a;
         font-size: 90%;
     }
 </style>
